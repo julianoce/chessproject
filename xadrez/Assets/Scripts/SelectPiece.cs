@@ -9,10 +9,12 @@ public class SelectPiece : MonoBehaviour {
     private Component[] comp;
 
     private GameManager gm;
+    private PlayerScript ps;
 
     // Use this for initialization
     void Start () {
         gm = GameObject.FindObjectOfType(typeof(GameManager)) as GameManager;
+        ps = GameObject.FindObjectOfType(typeof(PlayerScript)) as PlayerScript;
 
     }
 
@@ -29,6 +31,7 @@ public class SelectPiece : MonoBehaviour {
         foreach (Outline c in comp)
         {
             c.enabled = false;
+            ps.setSelected(null);
         }
     }
 
@@ -40,6 +43,7 @@ public class SelectPiece : MonoBehaviour {
             {
                 cleanSelection();
                 this.GetComponent<Outline>().enabled = true;
+                ps.setSelected(this.gameObject);
             } 
         }
         else
@@ -48,6 +52,7 @@ public class SelectPiece : MonoBehaviour {
             {
                 cleanSelection();
                 this.GetComponent<Outline>().enabled = true;
+                ps.setSelected(this.gameObject);
             }
         }
         

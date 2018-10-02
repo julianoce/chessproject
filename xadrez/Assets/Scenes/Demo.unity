@@ -2646,6 +2646,48 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4191545686351694, guid: 37ecd5f41fe05c049889dc4e5d4c6b0f,
     type: 2}
   m_PrefabInternal: {fileID: 778977084}
+--- !u!1 &790016659
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 790016661}
+  - component: {fileID: 790016660}
+  m_Layer: 0
+  m_Name: Players
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &790016660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 790016659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f32e7f30bc4b0ec408ccae5107c0bee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0.15
+  heigth: 20
+--- !u!4 &790016661
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 790016659}
+  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: -7.862793, y: 17.046875, z: 106.39844}
+  m_LocalScale: {x: 787.1331, y: 750.9385, z: 35.738728}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &790253367
 GameObject:
   m_ObjectHideFlags: 0
@@ -3352,7 +3394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: 2
-  minutes: 2
+  minutes: 15
   seconds: 0
   totalSec: 0
   invert: 1
@@ -4550,7 +4592,7 @@ GameObject:
   - component: {fileID: 1224411371}
   - component: {fileID: 1224411372}
   m_Layer: 0
-  m_Name: GameManage
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4851,48 +4893,6 @@ Transform:
   m_Father: {fileID: 1289726644}
   m_RootOrder: 41
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!1001 &1283056518
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4866047304807872, guid: 95a6ffa08a0073b4fbfabe4152505149, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 21.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4866047304807872, guid: 95a6ffa08a0073b4fbfabe4152505149, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 105.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4866047304807872, guid: 95a6ffa08a0073b4fbfabe4152505149, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 74.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4866047304807872, guid: 95a6ffa08a0073b4fbfabe4152505149, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4866047304807872, guid: 95a6ffa08a0073b4fbfabe4152505149, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4866047304807872, guid: 95a6ffa08a0073b4fbfabe4152505149, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4866047304807872, guid: 95a6ffa08a0073b4fbfabe4152505149, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4866047304807872, guid: 95a6ffa08a0073b4fbfabe4152505149, type: 2}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 95a6ffa08a0073b4fbfabe4152505149, type: 2}
-  m_IsPrefabAsset: 0
 --- !u!1 &1289726643
 GameObject:
   m_ObjectHideFlags: 0
@@ -5011,9 +5011,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greenTile: {fileID: 1865412015466684, guid: 95a6ffa08a0073b4fbfabe4152505149, type: 2}
   movimentos:
-  - {x: 0, y: 3}
-  - {x: 4, y: 5}
-  - {x: 4, y: 7}
+  - {x: 4, y: 3}
+  - {x: 3, y: 3}
   tiles:
   - {fileID: 693008691}
   - {fileID: 55865256}
@@ -7544,7 +7543,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: 1
-  minutes: 2
+  minutes: 15
   seconds: 0
   totalSec: 0
   invert: 1

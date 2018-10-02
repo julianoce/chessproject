@@ -5,10 +5,11 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public int turno = 1;
+    private SelectPiece sp;
     // Use this for initialization
     void Start()
     {
-
+        sp = GameObject.FindObjectOfType(typeof(SelectPiece)) as SelectPiece;
     }
 
     // Update is called once per frame
@@ -31,5 +32,6 @@ public class GameManager : MonoBehaviour
         {
             turno = 2;
         }
+        sp.cleanSelection();
     }
 }

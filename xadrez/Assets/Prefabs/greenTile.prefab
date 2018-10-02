@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33908974210142688}
   - component: {fileID: 23389708354625348}
   - component: {fileID: 64193849469517412}
-  - component: {fileID: 114658696471689688}
+  - component: {fileID: 114044265657089126}
   m_Layer: 0
   m_Name: greenTile
   m_TagString: Untagged
@@ -59,8 +59,6 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 32c5faa964e1cda49833765f58becb65, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -101,7 +99,7 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114658696471689688
+--- !u!114 &114044265657089126
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,12 +107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1865412015466684}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Script: {fileID: 11500000, guid: 2e12a659c2a1b68448f5e161d4b41d0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 0, b: 0, a: 1}
-  outlineWidth: 10
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
+  selected: {r: 0.058823552, g: 0.9529412, b: 0.8260394, a: 1}
