@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class SelectTile : MonoBehaviour {
 
-    private MeshRenderer render;
-    private Material mat;
-    private Color cInit;
+    public Color change;
+	private Color ini;
+	private SpriteRenderer[] children;
 
     private PlayerScript ps;
 
-    public Color selected;
 	// Use this for initialization
 	void Start () {
         ps = GameObject.FindObjectOfType(typeof(PlayerScript)) as PlayerScript;
-        render = this.GetComponent<MeshRenderer>();
-        mat = render.materials[0];
-        cInit = mat.color;
+        ini = this.GetComponentInChildren<SpriteRenderer>().color;
+        children = GetComponentsInChildren<SpriteRenderer>();
     }
 	
 	// Update is called once per frame
@@ -25,7 +23,9 @@ public class SelectTile : MonoBehaviour {
     }
     void OnMouseEnter()
     {
-        mat.color = selected;
+        foreach(SpriteRenderer c in children){
+            c.color = change;
+        }
     }
     void OnMouseOver()
     {
@@ -36,6 +36,8 @@ public class SelectTile : MonoBehaviour {
     }
     void OnMouseExit()
     {
-        mat.color = cInit;
+         foreach(SpriteRenderer c in children){
+            c.color = ini;
+        }
     }
 }

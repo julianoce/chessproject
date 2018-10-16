@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject white, black;
     public int turno = 1;
     private SelectPiece sp;
+    private Collider[] coll;
     // Use this for initialization
     void Start()
     {
@@ -28,9 +30,25 @@ public class GameManager : MonoBehaviour
         if(turno == 2)
         {
             turno = 1;
+            coll = white.GetComponentsInChildren<Collider>();
+            foreach(Collider c in coll){
+                c.enabled = true;
+            }
+            coll = black.GetComponentsInChildren<Collider>();
+            foreach(Collider c in coll){
+                c.enabled = false;
+            }
         }else if (turno == 1)
         {
             turno = 2;
+             coll = white.GetComponentsInChildren<Collider>();
+            foreach(Collider c in coll){
+                c.enabled = false;
+            }
+            coll = black.GetComponentsInChildren<Collider>();
+            foreach(Collider c in coll){
+                c.enabled = true;
+            }
         }
         sp.cleanSelection();
     }
