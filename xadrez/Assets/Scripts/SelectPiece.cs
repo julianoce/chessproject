@@ -9,10 +9,14 @@ public class SelectPiece : MonoBehaviour {
     private Component[] comp;
 
     private GameManager gm;
+    private PlayerScript ps;
+    private BoardMapping bm;
 
     // Use this for initialization
     void Start () {
         gm = GameObject.FindObjectOfType(typeof(GameManager)) as GameManager;
+        ps = GameObject.FindObjectOfType(typeof(PlayerScript)) as PlayerScript;
+        bm = GameObject.FindObjectOfType(typeof(BoardMapping)) as BoardMapping;
 
     }
 
@@ -29,6 +33,7 @@ public class SelectPiece : MonoBehaviour {
         foreach (Outline c in comp)
         {
             c.enabled = false;
+            ps.setSelected(null);
         }
     }
 
@@ -38,16 +43,22 @@ public class SelectPiece : MonoBehaviour {
         {
             if (this.tag == "whitePiece")
             {
+                bm.clearTiles();
                 cleanSelection();
                 this.GetComponent<Outline>().enabled = true;
-            } 
+                ps.setSelected(this.gameObject);
+                bm.makeTiles();
+            }
         }
         else
         {
             if (this.tag == "blackPiece")
             {
+                bm.clearTiles();
                 cleanSelection();
                 this.GetComponent<Outline>().enabled = true;
+                ps.setSelected(this.gameObject);
+                bm.makeTiles();
             }
         }
         
