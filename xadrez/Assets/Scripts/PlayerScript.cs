@@ -11,6 +11,7 @@ public class PlayerScript : MonoBehaviour {
 
     private GameManager gm;
     private BoardMapping bm;
+    private BoardRules br;
 
     private float halfDist;
     private bool ctrlMove;
@@ -18,6 +19,7 @@ public class PlayerScript : MonoBehaviour {
 	void Start () {
         gm = GameObject.FindObjectOfType(typeof(GameManager)) as GameManager;
         bm = GameObject.FindObjectOfType(typeof(BoardMapping)) as BoardMapping;
+        br = GameObject.FindObjectOfType(typeof(BoardRules)) as BoardRules;
 
         piece = null;
         tile = null;
@@ -38,6 +40,7 @@ public class PlayerScript : MonoBehaviour {
             halfDist = Vector3.Distance(piece.transform.position, tile.transform.position) / 2;
             ctrlMove = true;
         }
+        br.AtualizaPosicoes(null, new Vector2());
     }
 
     // Update is called once per frame

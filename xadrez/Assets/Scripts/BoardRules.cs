@@ -86,8 +86,6 @@ public class BoardRules : MonoBehaviour {
 				}
 			}
 		}
-
-		
 	}
 	
 	// Update is called once per frame
@@ -106,12 +104,146 @@ public class BoardRules : MonoBehaviour {
 				}	
 			}
 		} 
+
+		// Movimento do peões
 		if(peca.name.StartsWith("White Pawn")) {
-			resultado.Add(posPeca);
-			Debug.Log(resultado);
-			return resultado;
+			if(posPeca.x + 1 <= 7) {
+				resultado.Add(new Vector2(posPeca.x + 1, posPeca.y));
+			} 
+		} else if(peca.name.StartsWith("Black Pawn")) {
+			if(posPeca.x - 1 >= 0) {
+				resultado.Add(new Vector2(posPeca.x - 1, posPeca.y));
+			} 
 		}
 
-		return null;
+		// Movimento das torres
+		else if(peca.name.StartsWith("White Rook")) {
+			// Os 2 'for' seguintes são para subir e descer no tabuleiro
+			for(int i = (int)posPeca.x + 1; i < tabuleiro.Length; i++) {
+				if(tabuleiro[i][(int)posPeca.y] == null ) {
+					//Se o lugar ta vazio pode mover
+					resultado.Add(new Vector2(i, (int)posPeca.y));
+				} else if (tabuleiro[i][(int)posPeca.y].name.StartsWith("Black")) {
+					// Se o lugar possui uma peça preta pode mover, mas se sabe que a posições seguintes são invalidas
+					resultado.Add(new Vector2(i, (int)posPeca.y));
+					break;
+				} else {
+					// Se o lugar não ta vazio e nem é uma peça preta significa que é uma peça branca, logo não pode mover
+					break;
+				}
+			}
+			for(int i = (int)posPeca.x - 1; i >= 0; i--) {
+				if(tabuleiro[i][(int)posPeca.y] == (null)) {
+					// Se o lugar ta vazio pode mover
+					resultado.Add(new Vector2(i, (int)posPeca.y));
+				} else if (tabuleiro[i][(int)posPeca.y].name.StartsWith("Black")) {
+					// Se o lugar possui uma peça preta pode mover, mas se sabe que as posições seguintes são invalidas
+					resultado.Add(new Vector2(i, (int)posPeca.y));
+					break;
+				} else {
+					// Se o lugar não ta vazio e nem é uma peça preta significa que é uma peça branca, logo não pode mover
+					break;
+				}
+			}
+
+			// Os proximos dois 'for' são para os movimentos laterais
+			for(int i = (int)posPeca.y + 1; i < tabuleiro[(int)posPeca.x].Length; i++) {
+				if(tabuleiro[(int)posPeca.x][i] == (null)) {
+					//Se o lugar ta vazio pode mover
+					resultado.Add(new Vector2((int)posPeca.x, i));
+				} else if(tabuleiro[(int)posPeca.x][i].name.StartsWith("Black")) {
+					// Se o lugar possui uma peça preta pode mover, mas se sabe que as posições seguintes são invalidas
+					resultado.Add(new Vector2((int)posPeca.x, i));
+					break;
+				} else {
+					// Se o lugar não ta vazio e nem é uma peça preta significa que é uma peça branca, logo não pode mover
+					break;
+				}
+			}
+			for(int i = (int)posPeca.y - 1; i >= 0; i--) {
+				if(tabuleiro[(int)posPeca.x][i] == (null)) {
+					//Se o lugar ta vazio pode mover
+					resultado.Add(new Vector2((int)posPeca.x, i));
+				} else if(tabuleiro[(int)posPeca.x][i].name.StartsWith("Black")) {
+					// Se o lugar possui uma peça preta pode mover, mas se sabe que as posições seguintes são invalidas
+					resultado.Add(new Vector2((int)posPeca.x, i));
+					break;
+				} else {
+					// Se o lugar não ta vazio e nem é uma peça preta significa que é uma peça branca, logo não pode mover
+					break;
+				}
+			}
+
+		} else if(peca.name.StartsWith("Black Rook")) {
+			// Os 2 'for' seguintes são para subir e descer no tabuleiro
+			for(int i = (int)posPeca.x + 1; i < tabuleiro.Length; i++) {
+				if(tabuleiro[i][(int)posPeca.y] == null ) {
+					//Se o lugar ta vazio pode mover
+					resultado.Add(new Vector2(i, (int)posPeca.y));
+				} else if (tabuleiro[i][(int)posPeca.y].name.StartsWith("White")) {
+					// Se o lugar possui uma peça branca pode mover, mas se sabe que a posições seguintes são invalidas
+					resultado.Add(new Vector2(i, (int)posPeca.y));
+					break;
+				} else {
+					// Se o lugar não ta vazio e nem é uma peça branca significa que é uma peça preta, logo não pode mover
+					break;
+				}
+			}
+			for(int i = (int)posPeca.x - 1; i >= 0; i--) {
+				if(tabuleiro[i][(int)posPeca.y] == (null)) {
+					// Se o lugar ta vazio pode mover
+					resultado.Add(new Vector2(i, (int)posPeca.y));
+				} else if (tabuleiro[i][(int)posPeca.y].name.StartsWith("White")) {
+					// Se o lugar possui uma peça branca pode mover, mas se sabe que as posições seguintes são invalidas
+					resultado.Add(new Vector2(i, (int)posPeca.y));
+					break;
+				} else {
+					// Se o lugar não ta vazio e nem é uma peça branca significa que é uma peça preta, logo não pode mover
+					break;
+				}
+			}
+
+			// Os proximos dois 'for' são para os movimentos laterais
+			for(int i = (int)posPeca.y + 1; i < tabuleiro[(int)posPeca.x].Length; i++) {
+				if(tabuleiro[(int)posPeca.x][i] == (null)) {
+					//Se o lugar ta vazio pode mover
+					resultado.Add(new Vector2((int)posPeca.x, i));
+				} else if(tabuleiro[(int)posPeca.x][i].name.StartsWith("White")) {
+					// Se o lugar possui uma peça branca pode mover, mas se sabe que as posições seguintes são invalidas
+					resultado.Add(new Vector2((int)posPeca.x, i));
+					break;
+				} else {
+					// Se o lugar não ta vazio e nem é uma peça branca significa que é uma peça preta, logo não pode mover
+					break;
+				}
+			}
+			for(int i = (int)posPeca.y - 1; i >= 0; i--) {
+				if(tabuleiro[(int)posPeca.x][i] == (null)) {
+					//Se o lugar ta vazio pode mover
+					resultado.Add(new Vector2((int)posPeca.x, i));
+				} else if(tabuleiro[(int)posPeca.x][i].name.StartsWith("White")) {
+					// Se o lugar possui uma peça branca pode mover, mas se sabe que as posições seguintes são invalidas
+					resultado.Add(new Vector2((int)posPeca.x, i));
+					break;
+				} else {
+					// Se o lugar não ta vazio e nem é uma peça branca significa que é uma peça preta, logo não pode mover
+					break;
+				}
+			}
+		}
+
+		return resultado;
+	}
+
+	private bool VaiFicarEmCheck(Vector2 posRei) {
+		return false;
+	}
+
+	public void AtualizaPosicoes(GameObject peca, Vector2 pos) {
+		// QUEBRADO POR CAUSA DAS REFERENCIAS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+		// Fazer funcionar para qualquer peça
+		
+		tabuleiro[2][0] = brancas.transform.Find(tabuleiro[1][0].name).gameObject;
+		tabuleiro[1][0] = null;
 	}
 }
