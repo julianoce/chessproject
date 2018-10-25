@@ -13,11 +13,13 @@ public class BoardMapping : MonoBehaviour {
 
     private int pos;
     private List<GameObject> auxList;
+    private BoardRules br;
 
 
     // Use this for initialization
     void Start() {
         auxList = new List<GameObject>();
+        br = GameObject.FindObjectOfType(typeof(BoardRules)) as BoardRules;
     }
 
     // Update is called once per frame
@@ -25,7 +27,7 @@ public class BoardMapping : MonoBehaviour {
         //tiles[pos];
         if (Input.GetKeyDown(KeyCode.I))
         {
-            makeTiles();
+            // makeTiles();
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -33,7 +35,8 @@ public class BoardMapping : MonoBehaviour {
         }
     }
 
-    public void makeTiles(){
+    public void makeTiles(GameObject peca){
+        movimentos = br.MovimentosPossiveis(peca);
         foreach (Vector2 v in movimentos)
         {
             pos = findInList(int.Parse(v.x + ""), int.Parse(v.y + ""));

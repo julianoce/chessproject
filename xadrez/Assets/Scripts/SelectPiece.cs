@@ -47,7 +47,7 @@ public class SelectPiece : MonoBehaviour {
                 cleanSelection();
                 this.GetComponent<Outline>().enabled = true;
                 ps.setSelected(this.gameObject);
-                bm.makeTiles();
+                bm.makeTiles(this.gameObject);
             }
         }
         else
@@ -58,7 +58,7 @@ public class SelectPiece : MonoBehaviour {
                 cleanSelection();
                 this.GetComponent<Outline>().enabled = true;
                 ps.setSelected(this.gameObject);
-                bm.makeTiles();
+                bm.makeTiles(this.gameObject);
             }
         }
         
