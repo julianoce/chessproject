@@ -9,6 +9,7 @@ public class BoardRules : MonoBehaviour {
 	private GameObject[][] tabuleiro;
 	private Vector2 reiBranco;
 	private Vector2 reiPreto;
+	Vector2 posPeca = new Vector2();
 	
 	// Use this for initialization
 	void Start () {
@@ -94,16 +95,18 @@ public class BoardRules : MonoBehaviour {
 	}
 
 	public List<Vector2> MovimentosPossiveis(GameObject peca) {
-		Vector2 posPeca = new Vector2();
+		posPeca = new Vector2();
 		List<Vector2> resultado = new List<Vector2>();
 		for(int i = 0; i < tabuleiro.Length; i++) {
 			for(int j = 0; j < tabuleiro[i].Length; j++) {
 				//acha a peça
 				if(peca.Equals(tabuleiro[i][j])) {
 					posPeca = new Vector2(i, j);
-				}	
+				}
 			}
 		} 
+
+		bool parouDir, parouEsq;
 
 		// Movimento do peões
 		if(peca.name.StartsWith("White Pawn")) {
@@ -173,7 +176,6 @@ public class BoardRules : MonoBehaviour {
 					break;
 				}
 			}
-
 		} else if(peca.name.StartsWith("Black Rook")) {
 			// Os 2 'for' seguintes são para subir e descer no tabuleiro
 			for(int i = (int)posPeca.x + 1; i < tabuleiro.Length; i++) {
@@ -219,7 +221,7 @@ public class BoardRules : MonoBehaviour {
 			}
 			for(int i = (int)posPeca.y - 1; i >= 0; i--) {
 				if(tabuleiro[(int)posPeca.x][i] == (null)) {
-					//Se o lugar ta vazio pode mover
+					// Se o lugar ta vazio pode mover
 					resultado.Add(new Vector2((int)posPeca.x, i));
 				} else if(tabuleiro[(int)posPeca.x][i].name.StartsWith("White")) {
 					// Se o lugar possui uma peça branca pode mover, mas se sabe que as posições seguintes são invalidas
@@ -232,6 +234,199 @@ public class BoardRules : MonoBehaviour {
 			}
 		}
 
+		// Movimento dos bispos
+		else if(peca.name.StartsWith("White Bishop")) {
+			parouEsq = false; parouDir = false;
+			// Primeiro 'for' é para os bispos brancos subirem no tabuleiro
+			int j = 1;
+			for(int i = (int)posPeca.x + 1; i < tabuleiro.Length; i++) {
+				if(!parouEsq || !parouDir) {
+					// Se entrou aqui ainda da pra subir pra algum lado
+
+					// Os 'ifs' abaixo são pra saber se saiu do tabuleiro
+					if((int)posPeca.y + j >= tabuleiro.Length) {
+						parouEsq = true;
+					}
+					if((int)posPeca.y - j < 0) {
+						parouDir = true;
+					}
+
+					if(!parouEsq) {
+						// Se entrou aqui ainda da pra subir pra esquerda
+						if(tabuleiro[i][(int)posPeca.y + j] == null) {
+							// Se o lugar ta vazio
+							resultado.Add(new Vector2(i, (int)posPeca.y + j));
+						} else if(tabuleiro[i][(int)posPeca.y + j].name.StartsWith("Black")) {
+							// Se o lugar possui uma peça preta pode mover, mas se sabe as posições seguintes são invalidas
+							resultado.Add(new Vector2(i, (int)posPeca.y + j));
+							parouEsq = true;
+						} else {
+							parouEsq = true;
+						} 
+					}
+					if(!parouDir) {
+						// Se entrou aqui ainda da pra subir pra direita
+						if(tabuleiro[i][(int)posPeca.y - j] == null) {
+							// Se o lugar ta vazio
+							resultado.Add(new Vector2(i, (int)posPeca.y - j));
+						} else if(tabuleiro[i][(int)posPeca.y + j].name.StartsWith("Black")) {
+							// Se o lugar possui uma peça preta pode mover, mas se sabe as posições seguintes são invalidas
+							resultado.Add(new Vector2(i, (int)posPeca.y - j));
+							parouDir = true;
+						} else {
+							parouDir = true;
+						} 
+					}
+					j++;
+				} else {
+					// parouEsq && parouDir
+					break;
+				}
+			}
+			parouDir = false; parouEsq = false;
+			//Segundo for é para os bispos brancos descerem no tabuleiro
+			j = 1;
+			for(int i = (int)posPeca.x - 1; i >= 0; i--) {
+				if(!parouDir || !parouEsq) {
+					// Se entrou aqui ainda da para descer para algum lado
+
+					// Os 'ifs' abaixo são pra saber se saiu do tabuleiro
+					if((int)posPeca.y + j >= tabuleiro.Length) {
+						parouEsq = true;
+					}
+					if((int)posPeca.y - j < 0) {
+						parouDir = true;
+					}
+					if(!parouEsq) {
+						// Se entrou aqui ainda da pra descer pra esquerda
+						if(tabuleiro[i][(int)posPeca.y + j] == null) {
+							// Se o lugar ta vazio
+							resultado.Add(new Vector2(i, (int)posPeca.y + j));
+						} else if(tabuleiro[i][(int)posPeca.y + j].name.StartsWith("Black")) {
+							// Se o lugar possui uma peça preta pode mover, mas se sabe as posições seguintes são invalidas
+							resultado.Add(new Vector2(i, (int)posPeca.y + j));
+							parouEsq = true;
+						} else {
+							parouEsq = true;
+						} 
+					}
+					if(!parouDir) {
+						// Se entrou aqui ainda da pra descer pra direita
+						if(tabuleiro[i][(int)posPeca.y - j] == null) {
+							// Se o lugar ta vazio
+							resultado.Add(new Vector2(i, (int)posPeca.y - j));
+						} else if(tabuleiro[i][(int)posPeca.y + j].name.StartsWith("Black")) {
+							// Se o lugar possui uma peça preta pode mover, mas se sabe as posições seguintes são invalidas
+							resultado.Add(new Vector2(i, (int)posPeca.y - j));
+							parouDir = true;
+						} else {
+							parouDir = true;
+						} 
+					}
+					j++;
+				} else {
+					// parouEsq && parouDir
+					break;
+				}
+			} 
+		} else if(peca.name.StartsWith("Black Bishop")) {
+			parouEsq = false; parouDir = false;
+			// Primeiro 'for' é para os bispos pretos subirem no tabuleiro
+			// "Subir" segundo a logica da matriz e não visualmente
+			int j = 1;
+			for(int i = (int)posPeca.x + 1; i < tabuleiro.Length; i++) {
+				if(!parouEsq || !parouDir) {
+					// Se entrou aqui ainda da pra subir pra algum lado
+
+					// Os 'ifs' abaixo são pra saber se saiu do tabuleiro
+					if((int)posPeca.y + j >= tabuleiro.Length) {
+						parouEsq = true;
+					}
+					if((int)posPeca.y - j < 0) {
+						parouDir = true;
+					}
+
+					if(!parouEsq) {
+						// Se entrou aqui ainda da pra subir pra esquerda
+						if(tabuleiro[i][(int)posPeca.y + j] == null) {
+							// Se o lugar ta vazio
+							resultado.Add(new Vector2(i, (int)posPeca.y + j));
+						} else if(tabuleiro[i][(int)posPeca.y + j].name.StartsWith("White")) {
+							// Se o lugar possui uma peça branca pode mover, mas se sabe as posições seguintes são invalidas
+							resultado.Add(new Vector2(i, (int)posPeca.y + j));
+							parouEsq = true;
+						} else {
+							parouEsq = true;
+						} 
+					}
+					if(!parouDir) {
+						// Se entrou aqui ainda da pra subir pra direita
+						if(tabuleiro[i][(int)posPeca.y - j] == null) {
+							// Se o lugar ta vazio
+							resultado.Add(new Vector2(i, (int)posPeca.y - j));
+						} else if(tabuleiro[i][(int)posPeca.y + j].name.StartsWith("White")) {
+							// Se o lugar possui uma peça branca pode mover, mas se sabe as posições seguintes são invalidas
+							resultado.Add(new Vector2(i, (int)posPeca.y - j));
+							parouDir = true;
+						} else {
+							parouDir = true;
+						} 
+					}
+					j++;
+				} else {
+					// parouEsq && parouDir
+					break;
+				}
+			}
+			parouDir = false; parouEsq = false;
+			//Segundo for é para os bispos pretos descerem no tabuleiro
+			j = 1;
+			for(int i = (int)posPeca.x - 1; i >= 0; i--) {
+				if(!parouDir || !parouEsq) {
+					// Se entrou aqui ainda da para descer para algum lado
+
+					// Os 'ifs' abaixo são pra saber se saiu do tabuleiro
+					if((int)posPeca.y + j >= tabuleiro.Length) {
+						parouEsq = true;
+					}
+					if((int)posPeca.y - j < 0) {
+						parouDir = true;
+					}
+					if(!parouEsq) {
+						// Se entrou aqui ainda da pra descer pra esquerda
+						if(tabuleiro[i][(int)posPeca.y + j] == null) {
+							// Se o lugar ta vazio
+							resultado.Add(new Vector2(i, (int)posPeca.y + j));
+						} else if(tabuleiro[i][(int)posPeca.y + j].name.StartsWith("White")) {
+							// Se o lugar possui uma peça branca pode mover, mas se sabe as posições seguintes são invalidas
+							resultado.Add(new Vector2(i, (int)posPeca.y + j));
+							parouEsq = true;
+						} else {
+							parouEsq = true;
+						} 
+					}
+					if(!parouDir) {
+						// Se entrou aqui ainda da pra descer pra direita
+						if(tabuleiro[i][(int)posPeca.y - j] == null) {
+							// Se o lugar ta vazio
+							resultado.Add(new Vector2(i, (int)posPeca.y - j));
+						} else if(tabuleiro[i][(int)posPeca.y + j].name.StartsWith("White")) {
+							// Se o lugar possui uma peça branca pode mover, mas se sabe as posições seguintes são invalidas
+							resultado.Add(new Vector2(i, (int)posPeca.y - j));
+							parouDir = true;
+						} else {
+							parouDir = true;
+						} 
+					}
+					j++;
+				} else {
+					// parouEsq && parouDir
+					break;
+				}
+			} 
+		}
+		
+
 		return resultado;
 	}
 
@@ -240,10 +435,11 @@ public class BoardRules : MonoBehaviour {
 	}
 
 	public void AtualizaPosicoes(GameObject peca, Vector2 pos) {
-		// QUEBRADO POR CAUSA DAS REFERENCIAS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		// Fazer funcionar para qualquer peça
-		
-		tabuleiro[2][0] = brancas.transform.Find(tabuleiro[1][0].name).gameObject;
-		tabuleiro[1][0] = null;
+		if(peca.tag == "whitePiece") {
+			tabuleiro[(int)pos.x][(int)pos.y] = brancas.transform.Find(peca.name).gameObject;
+		} else {
+			tabuleiro[(int)pos.x][(int)pos.y] = pretas.transform.Find(peca.name).gameObject;
+		}
+		tabuleiro[(int)posPeca.x][(int)posPeca.y] = null;
 	}
 }
