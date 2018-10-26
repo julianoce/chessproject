@@ -97,6 +97,9 @@ public class BoardRules : MonoBehaviour {
 	public List<Vector2> MovimentosPossiveis(GameObject peca) {
 		posPeca = new Vector2();
 		List<Vector2> resultado = new List<Vector2>();
+		if(tabuleiro == null) {
+			Debug.Log("oiiiiii");
+		}
 		for(int i = 0; i < tabuleiro.Length; i++) {
 			for(int j = 0; j < tabuleiro[i].Length; j++) {
 				//acha a peça
@@ -424,6 +427,83 @@ public class BoardRules : MonoBehaviour {
 					break;
 				}
 			} 
+		}
+
+		// Movimento dos cavalos
+		else if(peca.name.Contains("Knight")) {
+			int xPeca = (int)posPeca.x, yPeca = (int)posPeca.y;
+			Debug.Log(peca.name + ": (" + xPeca + "," + yPeca + ")");
+			for(int i = 1; i < 3; i++) {
+				for(int j = 1; j < 3; j++) {
+					if(i == j) continue;
+					if(xPeca + i < tabuleiro.Length) {
+						// Pode subir
+						if(yPeca + j < tabuleiro.Length) {
+							// Pode ir para a esquerda da matriz
+							if(peca.name.StartsWith("White") && 
+								((tabuleiro[xPeca + i][yPeca + j] == null) || 
+								tabuleiro[xPeca + i][yPeca + j].name.StartsWith("Black"))) {
+								// Se a peça clicada é branca e a posição desejada contem uma peça preta ou nenhuma peça
+								resultado.Add(new Vector2(xPeca + i, yPeca + j));
+							}
+							else if(peca.name.StartsWith("Black") && 
+								((tabuleiro[xPeca + i][yPeca + j] == null) || 
+								tabuleiro[xPeca + i][yPeca + j].name.StartsWith("White"))) {
+								// Se a peça clicada é preta e a posição desejada contem uma peça branca ou nenhuma peça
+								resultado.Add(new Vector2(xPeca + i, yPeca + j));
+							}
+						}
+						if(yPeca - j >= 0) {
+							// Pode ir para a direita da matriz
+							if(peca.name.StartsWith("White") && 
+								((tabuleiro[xPeca + i][yPeca - j] == null) || 
+								tabuleiro[xPeca + i][yPeca - j].name.StartsWith("Black"))) {
+								// Se a peça clicada é branca e a posição desejada contem uma peça preta ou nenhuma peça
+								resultado.Add(new Vector2(xPeca + i, yPeca - j));
+							}
+							else if(peca.name.StartsWith("Black") && 
+								((tabuleiro[xPeca + i][yPeca - j] == null) || 
+								tabuleiro[xPeca + i][yPeca - j].name.StartsWith("White"))) {
+								// Se a peça clicada é preta e a posição desejada contem uma peça branca ou nenhuma peça
+								resultado.Add(new Vector2(xPeca + i, yPeca - j));
+							}
+						}
+					}
+					if(xPeca - i >= 0) {
+						// Pode descer!! LEMBRANDO: SEMPRE EM RELAÇÃO A MATRIZ
+						if(yPeca + j < tabuleiro.Length) {
+							// Pode ir para a esquerda da matriz
+							if(peca.name.StartsWith("White") && 
+								((tabuleiro[xPeca - i][yPeca + j] == null) || 
+								tabuleiro[xPeca - i][yPeca + j].name.StartsWith("Black"))) {
+								// Se a peça clicada é branca e a posição desejada contem uma peça preta ou nenhuma peça
+								resultado.Add(new Vector2(xPeca - i, yPeca + j));
+							}
+							else if(peca.name.StartsWith("Black") && 
+								((tabuleiro[xPeca - i][yPeca + j] == null) || 
+								tabuleiro[xPeca - i][yPeca + j].name.StartsWith("White"))) {
+								// Se a peça clicada é preta e a posição desejada contem uma peça branca ou nenhuma peça
+								resultado.Add(new Vector2(xPeca - i, yPeca + j));
+							}
+						}
+						if(yPeca - j >= 0) {
+							// Pode ir para a direita da matriz
+							if(peca.tag == "whitePiece" && 
+								((tabuleiro[xPeca - i][yPeca - j] == null) || 
+								tabuleiro[xPeca - i][yPeca - j].name.StartsWith("Black"))) {
+								// Se a peça clicada é branca e a posição desejada contem uma peça preta ou nenhuma peça
+								resultado.Add(new Vector2(xPeca - i, yPeca - j));
+							}
+							else if(peca.name.StartsWith("Black") && 
+								((tabuleiro[xPeca - i][yPeca - j] == null) || 
+								tabuleiro[xPeca - i][yPeca - j].name.StartsWith("White"))) {
+								// Se a peça clicada é preta e a posição desejada contem uma peça branca ou nenhuma peça
+								resultado.Add(new Vector2(xPeca - i, yPeca - j));
+							}
+						}
+					}
+				}
+			}
 		}
 		
 
