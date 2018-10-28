@@ -113,12 +113,36 @@ public class BoardRules : MonoBehaviour {
 
 		// Movimento do peões
 		if(peca.name.StartsWith("White Pawn")) {
-			if(posPeca.x + 1 <= 7) {
+			if((int)posPeca.x + 1 < tabuleiro.Length) {
 				resultado.Add(new Vector2(posPeca.x + 1, posPeca.y));
+				if((int)posPeca.y + 1 < tabuleiro.Length && 
+					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y + 1] != null && 
+					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y + 1].name.StartsWith("Black")) {
+					// Comer para diagonal direita
+					resultado.Add(new Vector2(posPeca.x + 1, posPeca.y + 1));
+				}
+				if((int)posPeca.y - 1 >= 0 && 
+					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y - 1] != null && 
+					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y - 1].name.StartsWith("Black")) {
+					// Comer para diagonal esquerda
+					resultado.Add(new Vector2(posPeca.x + 1, posPeca.y - 1));
+				} 
 			} 
 		} else if(peca.name.StartsWith("Black Pawn")) {
-			if(posPeca.x - 1 >= 0) {
+			if((int)posPeca.x - 1 >= 0) {
 				resultado.Add(new Vector2(posPeca.x - 1, posPeca.y));
+				if((int)posPeca.y + 1 < tabuleiro.Length && 
+					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y + 1] != null && 
+					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y + 1].name.StartsWith("White")) {
+					// Comer para diagonal esquerda em relação as peças pretas
+					resultado.Add(new Vector2(posPeca.x - 1, posPeca.y + 1));
+				}
+				if((int)posPeca.y - 1 >= 0 && 
+					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y - 1] != null && 
+					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y - 1].name.StartsWith("White")) {
+					// Comer para diagonal direita em relação as peças pretas
+					resultado.Add(new Vector2(posPeca.x - 1, posPeca.y - 1));
+				} 
 			} 
 		}
 
@@ -503,6 +527,69 @@ public class BoardRules : MonoBehaviour {
 						}
 					}
 				}
+			}
+		}
+
+		// Movimento do Rei
+		else if(peca.name.Contains("King")) {
+			int xPeca = (int)posPeca.x, yPeca = (int)posPeca.y;
+			if(xPeca + 1 < tabuleiro.Length) {
+				// Pode subir
+				if(tabuleiro[xPeca + 1][yPeca] == null || 
+				(peca.name.StartsWith("White") && tabuleiro[xPeca + 1][yPeca].name.StartsWith("Black")) ||
+				(peca.name.StartsWith("Black") && tabuleiro[xPeca + 1][yPeca].name.StartsWith("White"))) {
+					// Para cima na matriz está vazio ou contem peça inimiga
+					resultado.Add(new Vector2(xPeca + 1, yPeca));
+				}
+				if(yPeca + 1 < tabuleiro.Length && 
+				(tabuleiro[xPeca + 1][yPeca + 1] == null || 
+				(peca.name.StartsWith("White") && tabuleiro[xPeca + 1][yPeca + 1].name.StartsWith("Black")) ||
+				(peca.name.StartsWith("Black") && tabuleiro[xPeca + 1][yPeca + 1].name.StartsWith("White")))) {
+					// Para cima e para esquerda em relação a matriz está vazio ou contem peça inimiga
+					resultado.Add(new Vector2(xPeca + 1, yPeca + 1));
+				}
+				if(yPeca - 1 >= 0 && 
+				(tabuleiro[xPeca + 1][yPeca - 1] == null || 
+				(peca.name.StartsWith("White") && tabuleiro[xPeca + 1][yPeca - 1].name.StartsWith("Black")) ||
+				(peca.name.StartsWith("Black") && tabuleiro[xPeca + 1][yPeca - 1].name.StartsWith("White")))) {
+					// Para cima e para direita em relação a matriz está vazio ou contem peça inimiga
+					resultado.Add(new Vector2(xPeca + 1, yPeca - 1));
+				}
+			}
+			if(xPeca - 1 >= 0) {
+				// Pode descer
+				if(tabuleiro[xPeca - 1][yPeca] == null || 
+				(peca.name.StartsWith("White") && tabuleiro[xPeca - 1][yPeca].name.StartsWith("Black")) ||
+				(peca.name.StartsWith("Black") && tabuleiro[xPeca - 1][yPeca].name.StartsWith("White"))) {
+					// Para baixo na matriz está vazio ou contem peça inimiga
+					resultado.Add(new Vector2(xPeca - 1, yPeca));
+				}
+				if(yPeca + 1 < tabuleiro.Length && 
+				(tabuleiro[xPeca - 1][yPeca + 1] == null || 
+				(peca.name.StartsWith("White") && tabuleiro[xPeca - 1][yPeca + 1].name.StartsWith("Black")) ||
+				(peca.name.StartsWith("Black") && tabuleiro[xPeca - 1][yPeca + 1].name.StartsWith("White")))) {
+					// Para baixo e para esquerda em relação a matriz está vazio ou contem peça inimiga
+					resultado.Add(new Vector2(xPeca - 1, yPeca + 1));
+				}
+				if(yPeca - 1 >= 0 && 
+				(tabuleiro[xPeca - 1][yPeca - 1] == null || 
+				(peca.name.StartsWith("White") && tabuleiro[xPeca - 1][yPeca - 1].name.StartsWith("Black")) ||
+				(peca.name.StartsWith("Black") && tabuleiro[xPeca - 1][yPeca - 1].name.StartsWith("White")))) {
+					// Para baixo e para direita em relação a matriz está vazio ou contem peça inimiga
+					resultado.Add(new Vector2(xPeca - 1, yPeca - 1));
+				}
+			}
+			if(yPeca + 1 < tabuleiro.Length &&
+				(peca.name.StartsWith("White") && tabuleiro[xPeca][yPeca + 1].name.StartsWith("Black")) ||
+				(peca.name.StartsWith("Black") && tabuleiro[xPeca][yPeca + 1].name.StartsWith("White"))) {
+					// Para esquerda em relação a matriz está vazio ou contem peça inimiga
+					resultado.Add(new Vector2(xPeca, yPeca + 1));
+			}
+			if(yPeca - 1 >= 0 &&
+				(peca.name.StartsWith("White") && tabuleiro[xPeca][yPeca - 1].name.StartsWith("Black")) ||
+				(peca.name.StartsWith("Black") && tabuleiro[xPeca][yPeca - 1].name.StartsWith("White"))) {
+					// Para direita em relação a matriz está vazio ou contem peça inimiga
+					resultado.Add(new Vector2(xPeca, yPeca - 1));
 			}
 		}
 		
