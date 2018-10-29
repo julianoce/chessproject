@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class SelectTile : MonoBehaviour {
 
-    public Color change;
+    public Color change, enemyPiece, enemyPieceChanged;
 	private Color ini;
 	private SpriteRenderer[] children;
+    private bool enemy;
 
     private PlayerScript ps;
 
 	// Use this for initialization
 	void Start () {
+        enemy = false;
         ps = GameObject.FindObjectOfType(typeof(PlayerScript)) as PlayerScript;
         ini = this.GetComponentInChildren<SpriteRenderer>().color;
         children = GetComponentsInChildren<SpriteRenderer>();
@@ -21,10 +23,23 @@ public class SelectTile : MonoBehaviour {
 	void Update () {
       
     }
+
+    public void setEnemyColor(){
+        enemy = true;
+        foreach(SpriteRenderer c in children){
+           c.color = enemyPiece;
+        }
+    }
+
     void OnMouseEnter()
     {
         foreach(SpriteRenderer c in children){
-            c.color = change;
+            if(enemy){
+                c.color = enemyPieceChanged;
+            }else
+            {
+                c.color = change;
+            } 
         }
     }
     void OnMouseOver()
@@ -37,7 +52,12 @@ public class SelectTile : MonoBehaviour {
     void OnMouseExit()
     {
          foreach(SpriteRenderer c in children){
-            c.color = ini;
+           if(enemy){
+                c.color = enemyPiece;
+            }else
+            {
+                c.color = ini;
+            } 
         }
     }
 }

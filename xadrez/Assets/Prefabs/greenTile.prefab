@@ -223,6 +223,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   change: {r: 0.066233076, g: 0.0047169924, b: 1, a: 1}
+  enemyPiece: {r: 1, g: 0.6273585, b: 0.8028606, a: 1}
+  enemyPieceChanged: {r: 1, g: 0, b: 0, a: 1}
 --- !u!212 &212137323283380886
 SpriteRenderer:
   m_ObjectHideFlags: 1

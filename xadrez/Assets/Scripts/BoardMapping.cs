@@ -37,10 +37,14 @@ public class BoardMapping : MonoBehaviour {
 
     public void makeTiles(GameObject peca){
         movimentos = br.MovimentosPossiveis(peca);
+        GameObject temp;
         foreach (Vector2 v in movimentos)
         {
             pos = findInList(int.Parse(v.x + ""), int.Parse(v.y + ""));
-            auxList.Add(Instantiate(greenTile, tiles[pos].transform.position, tiles[pos].transform.localRotation));
+            temp = Instantiate(greenTile, tiles[pos].transform.position, tiles[pos].transform.localRotation);
+            temp.name = v.x+","+v.y;
+            temp.GetComponent<SelectTile>().setEnemyColor();
+            auxList.Add(temp);
         }
     }
 
