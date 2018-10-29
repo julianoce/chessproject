@@ -592,6 +592,176 @@ public class BoardRules : MonoBehaviour {
 					resultado.Add(new Vector2(xPeca, yPeca - 1));
 			}
 		}
+
+		// Movimento da Rainha
+		else if(peca.name.Contains("Queen")) {
+			parouDir = false; parouEsq = false;
+			bool parouCima = false, parouBaixo = false;
+			bool parouDSD = false, parouDSE = false, parouDID = false, parouDIE = false;
+			int xPeca = (int)posPeca.x, yPeca = (int)posPeca.y;
+			for(int i = 1; i < tabuleiro.Length; i++) {
+				if(!parouCima && xPeca + i < tabuleiro.Length) {
+					// 'if' para subir no tabuleiro em relação a matriz
+					// Ainda não achou peça inimiga e nem chegou no fim do tabuleiro
+					if(tabuleiro[xPeca + i][yPeca] == null) {
+						// Lugar vazio, só adicionar
+						resultado.Add(new Vector2(xPeca + i, yPeca));
+					} else if(peca.name.StartsWith("White") && 
+						tabuleiro[xPeca + i][yPeca].name.StartsWith("black")) {
+						// Peça selecionada é branca, lugar checado tem peça preta
+						resultado.Add(new Vector2(xPeca + i, yPeca));
+						parouCima = true;
+					} else if(peca.name.StartsWith("Black") && 
+						tabuleiro[xPeca + i][yPeca].name.StartsWith("White")) {
+						// Peça selecionada é preta, lugar checado tem peça branca
+						resultado.Add(new Vector2(xPeca + i, yPeca));
+						parouCima = true;
+					} else {
+						parouCima = true;
+					}
+				}
+				if(!parouBaixo && xPeca - i >= 0) {
+					// 'if' para descer no tabuleiro em relação a matriz
+					// Ainda não achou peça inimiga e nem chegou no fim do tabuleiro
+					if(tabuleiro[xPeca - i][yPeca] == null) {
+						// Lugar vazio, só adicionar
+						resultado.Add(new Vector2(xPeca - i, yPeca));
+					} else if(peca.name.StartsWith("White") && 
+						tabuleiro[xPeca - i][yPeca].name.StartsWith("black")) {
+						// Peça selecionada é branca, lugar checado tem peça preta
+						resultado.Add(new Vector2(xPeca - i, yPeca));
+						parouBaixo = true;
+					} else if(peca.name.StartsWith("Black") && 
+						tabuleiro[xPeca - i][yPeca].name.StartsWith("White")) {
+						// Peça selecionada é preta, lugar checado tem peça branca
+						resultado.Add(new Vector2(xPeca - i, yPeca));
+						parouBaixo = true;
+					} else {
+						parouBaixo = true;
+					}
+				}
+				if(!parouEsq && yPeca + i < tabuleiro.Length) {
+					// 'if' para andar pra esquerda no tabuleiro em relação a matriz
+					// Ainda não achou peça inimiga e nem chegou no fim do tabuleiro
+					if(tabuleiro[xPeca][yPeca + i] == null) {
+						// Lugar vazio, só adicionar
+						resultado.Add(new Vector2(xPeca, yPeca + i));
+					} else if(peca.name.StartsWith("White") && 
+						tabuleiro[xPeca][yPeca + i].name.StartsWith("black")) {
+						// Peça selecionada é branca, lugar checado tem peça preta
+						resultado.Add(new Vector2(xPeca, yPeca + i));
+						parouEsq = true;
+					} else if(peca.name.StartsWith("Black") && 
+						tabuleiro[xPeca][yPeca + i].name.StartsWith("White")) {
+						// Peça selecionada é preta, lugar checado tem peça branca
+						resultado.Add(new Vector2(xPeca, yPeca + i));
+						parouEsq = true;
+					} else {
+						parouEsq = true;
+					}
+				} 
+				if(!parouDir && yPeca - i >= 0) {
+					// 'if' para andar pra direita no tabuleiro em relação a matriz
+					// Ainda não achou peça inimiga e nem chegou no fim do tabuleiro
+					if(tabuleiro[xPeca][yPeca - i] == null) {
+						// Lugar vazio, só adicionar
+						resultado.Add(new Vector2(xPeca, yPeca - i));
+					} else if(peca.name.StartsWith("White") && 
+						tabuleiro[xPeca][yPeca - i].name.StartsWith("black")) {
+						// Peça selecionada é branca, lugar checado tem peça preta
+						resultado.Add(new Vector2(xPeca, yPeca - i));
+						parouDir = true;
+					} else if(peca.name.StartsWith("Black") && 
+						tabuleiro[xPeca][yPeca - i].name.StartsWith("White")) {
+						// Peça selecionada é preta, lugar checado tem peça branca
+						resultado.Add(new Vector2(xPeca, yPeca - i));
+						parouDir = true;
+					} else {
+						parouDir = true;
+					}
+				}
+				if(!parouDSE && xPeca + i < tabuleiro.Length && yPeca + i < tabuleiro.Length) {
+					// 'if' para andar para diagonal superior esquerda no tabuleiro em relação a matriz
+					// Ainda não achou peça inimiga e nem chegou no fim do tabuleiro
+					if(tabuleiro[xPeca + i][yPeca + i] == null) {
+						// Lugar vazio, só adicionar
+						resultado.Add(new Vector2(xPeca + 1, yPeca + i));
+					} else if(peca.name.StartsWith("White") && 
+						tabuleiro[xPeca + i][yPeca + i].name.StartsWith("black")) {
+						// Peça selecionada é branca, lugar checado tem peça preta
+						resultado.Add(new Vector2(xPeca + i, yPeca + i));
+						parouDSE = true;
+					} else if(peca.name.StartsWith("Black") && 
+						tabuleiro[xPeca + i][yPeca + i].name.StartsWith("White")) {
+						// Peça selecionada é preta, lugar checado tem peça branca
+						resultado.Add(new Vector2(xPeca + i, yPeca + i));
+						parouDSE = true;
+					} else {
+						parouDSE = true;
+					}
+				}
+				if(!parouDSD && xPeca + i < tabuleiro.Length && yPeca - i >= 0) {
+					// 'if' para andar para diagonal superior direita no tabuleiro em relação a matriz
+					// Ainda não achou peça inimiga e nem chegou no fim do tabuleiro
+					if(tabuleiro[xPeca + i][yPeca - i] == null) {
+						// Lugar vazio, só adicionar
+						resultado.Add(new Vector2(xPeca + 1, yPeca - i));
+					} else if(peca.name.StartsWith("White") && 
+						tabuleiro[xPeca + i][yPeca - i].name.StartsWith("black")) {
+						// Peça selecionada é branca, lugar checado tem peça preta
+						resultado.Add(new Vector2(xPeca + i, yPeca - i));
+						parouDSD = true;
+					} else if(peca.name.StartsWith("Black") && 
+						tabuleiro[xPeca + i][yPeca - i].name.StartsWith("White")) {
+						// Peça selecionada é preta, lugar checado tem peça branca
+						resultado.Add(new Vector2(xPeca + i, yPeca - i));
+						parouDSD = true;
+					} else {
+						parouDSD = true;
+					}
+				}
+				if(!parouDIE && xPeca - i >= 0 && yPeca + i < tabuleiro.Length) {
+					// 'if' para andar para diagonal inferior esquerda no tabuleiro em relação a matriz
+					// Ainda não achou peça inimiga e nem chegou no fim do tabuleiro
+					if(tabuleiro[xPeca - i][yPeca + i] == null) {
+						// Lugar vazio, só adicionar
+						resultado.Add(new Vector2(xPeca - 1, yPeca + i));
+					} else if(peca.name.StartsWith("White") && 
+						tabuleiro[xPeca - i][yPeca + i].name.StartsWith("black")) {
+						// Peça selecionada é branca, lugar checado tem peça preta
+						resultado.Add(new Vector2(xPeca - i, yPeca + i));
+						parouDIE = true;
+					} else if(peca.name.StartsWith("Black") && 
+						tabuleiro[xPeca - i][yPeca + i].name.StartsWith("White")) {
+						// Peça selecionada é preta, lugar checado tem peça branca
+						resultado.Add(new Vector2(xPeca - i, yPeca + i));
+						parouDIE = true;
+					} else {
+						parouDIE = true;
+					}
+				}
+				if(!parouDID && xPeca - i >= 0 && yPeca - i >= 0) {
+					// 'if' para andar para diagonal inferior direita no tabuleiro em relação a matriz
+					// Ainda não achou peça inimiga e nem chegou no fim do tabuleiro
+					if(tabuleiro[xPeca - i][yPeca - i] == null) {
+						// Lugar vazio, só adicionar
+						resultado.Add(new Vector2(xPeca - 1, yPeca - i));
+					} else if(peca.name.StartsWith("White") && 
+						tabuleiro[xPeca - i][yPeca - i].name.StartsWith("black")) {
+						// Peça selecionada é branca, lugar checado tem peça preta
+						resultado.Add(new Vector2(xPeca - i, yPeca - i));
+						parouDID = true;
+					} else if(peca.name.StartsWith("Black") && 
+						tabuleiro[xPeca - i][yPeca - i].name.StartsWith("White")) {
+						// Peça selecionada é preta, lugar checado tem peça branca
+						resultado.Add(new Vector2(xPeca - i, yPeca - i));
+						parouDID = true;
+					} else {
+						parouDID = true;
+					}
+				}
+			}
+		}
 		
 
 		return resultado;
