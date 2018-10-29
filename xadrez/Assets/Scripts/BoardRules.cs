@@ -114,33 +114,37 @@ public class BoardRules : MonoBehaviour {
 		// Movimento do peões
 		if(peca.name.StartsWith("White Pawn")) {
 			if((int)posPeca.x + 1 < tabuleiro.Length) {
-				resultado.Add(new Vector2(posPeca.x + 1, posPeca.y));
+				if(tabuleiro[(int)posPeca.x + 1][(int)posPeca.y] == null)
+					// Só pode andar pra frente se estiver vazio
+					resultado.Add(new Vector2(posPeca.x + 1, posPeca.y));
 				if((int)posPeca.y + 1 < tabuleiro.Length && 
 					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y + 1] != null && 
 					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y + 1].name.StartsWith("Black")) {
-					// Comer para diagonal direita
+					// Comer para diagonal esquerda
 					resultado.Add(new Vector2(posPeca.x + 1, posPeca.y + 1));
 				}
 				if((int)posPeca.y - 1 >= 0 && 
 					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y - 1] != null && 
 					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y - 1].name.StartsWith("Black")) {
-					// Comer para diagonal esquerda
+					// Comer para diagonal direita
 					resultado.Add(new Vector2(posPeca.x + 1, posPeca.y - 1));
 				} 
 			} 
 		} else if(peca.name.StartsWith("Black Pawn")) {
 			if((int)posPeca.x - 1 >= 0) {
-				resultado.Add(new Vector2(posPeca.x - 1, posPeca.y));
+				if(tabuleiro[(int)posPeca.x - 1][(int)posPeca.y] == null)
+					// Só pode andar pra frente se estiver vazio
+					resultado.Add(new Vector2(posPeca.x - 1, posPeca.y));
 				if((int)posPeca.y + 1 < tabuleiro.Length && 
-					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y + 1] != null && 
-					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y + 1].name.StartsWith("White")) {
-					// Comer para diagonal esquerda em relação as peças pretas
+					tabuleiro[(int)posPeca.x - 1][(int)posPeca.y + 1] != null && 
+					tabuleiro[(int)posPeca.x - 1][(int)posPeca.y + 1].name.StartsWith("White")) {
+					// Comer para diagonal direita em relação as peças pretas
 					resultado.Add(new Vector2(posPeca.x - 1, posPeca.y + 1));
 				}
 				if((int)posPeca.y - 1 >= 0 && 
-					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y - 1] != null && 
-					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y - 1].name.StartsWith("White")) {
-					// Comer para diagonal direita em relação as peças pretas
+					tabuleiro[(int)posPeca.x - 1][(int)posPeca.y - 1] != null && 
+					tabuleiro[(int)posPeca.x - 1][(int)posPeca.y - 1].name.StartsWith("White")) {
+					// Comer para diagonal esquerda em relação as peças pretas
 					resultado.Add(new Vector2(posPeca.x - 1, posPeca.y - 1));
 				} 
 			} 
@@ -296,7 +300,7 @@ public class BoardRules : MonoBehaviour {
 						if(tabuleiro[i][(int)posPeca.y - j] == null) {
 							// Se o lugar ta vazio
 							resultado.Add(new Vector2(i, (int)posPeca.y - j));
-						} else if(tabuleiro[i][(int)posPeca.y + j].name.StartsWith("Black")) {
+						} else if(tabuleiro[i][(int)posPeca.y - j].name.StartsWith("Black")) {
 							// Se o lugar possui uma peça preta pode mover, mas se sabe as posições seguintes são invalidas
 							resultado.Add(new Vector2(i, (int)posPeca.y - j));
 							parouDir = true;
@@ -342,7 +346,7 @@ public class BoardRules : MonoBehaviour {
 						if(tabuleiro[i][(int)posPeca.y - j] == null) {
 							// Se o lugar ta vazio
 							resultado.Add(new Vector2(i, (int)posPeca.y - j));
-						} else if(tabuleiro[i][(int)posPeca.y + j].name.StartsWith("Black")) {
+						} else if(tabuleiro[i][(int)posPeca.y - j].name.StartsWith("Black")) {
 							// Se o lugar possui uma peça preta pode mover, mas se sabe as posições seguintes são invalidas
 							resultado.Add(new Vector2(i, (int)posPeca.y - j));
 							parouDir = true;
@@ -391,7 +395,7 @@ public class BoardRules : MonoBehaviour {
 						if(tabuleiro[i][(int)posPeca.y - j] == null) {
 							// Se o lugar ta vazio
 							resultado.Add(new Vector2(i, (int)posPeca.y - j));
-						} else if(tabuleiro[i][(int)posPeca.y + j].name.StartsWith("White")) {
+						} else if(tabuleiro[i][(int)posPeca.y - j].name.StartsWith("White")) {
 							// Se o lugar possui uma peça branca pode mover, mas se sabe as posições seguintes são invalidas
 							resultado.Add(new Vector2(i, (int)posPeca.y - j));
 							parouDir = true;
@@ -437,7 +441,7 @@ public class BoardRules : MonoBehaviour {
 						if(tabuleiro[i][(int)posPeca.y - j] == null) {
 							// Se o lugar ta vazio
 							resultado.Add(new Vector2(i, (int)posPeca.y - j));
-						} else if(tabuleiro[i][(int)posPeca.y + j].name.StartsWith("White")) {
+						} else if(tabuleiro[i][(int)posPeca.y - j].name.StartsWith("White")) {
 							// Se o lugar possui uma peça branca pode mover, mas se sabe as posições seguintes são invalidas
 							resultado.Add(new Vector2(i, (int)posPeca.y - j));
 							parouDir = true;
@@ -580,14 +584,16 @@ public class BoardRules : MonoBehaviour {
 				}
 			}
 			if(yPeca + 1 < tabuleiro.Length &&
+				(tabuleiro[xPeca][yPeca + 1] == null|| 
 				(peca.name.StartsWith("White") && tabuleiro[xPeca][yPeca + 1].name.StartsWith("Black")) ||
-				(peca.name.StartsWith("Black") && tabuleiro[xPeca][yPeca + 1].name.StartsWith("White"))) {
+				(peca.name.StartsWith("Black") && tabuleiro[xPeca][yPeca + 1].name.StartsWith("White")))) {
 					// Para esquerda em relação a matriz está vazio ou contem peça inimiga
 					resultado.Add(new Vector2(xPeca, yPeca + 1));
 			}
 			if(yPeca - 1 >= 0 &&
+				(tabuleiro[xPeca][yPeca - 1] == null || 
 				(peca.name.StartsWith("White") && tabuleiro[xPeca][yPeca - 1].name.StartsWith("Black")) ||
-				(peca.name.StartsWith("Black") && tabuleiro[xPeca][yPeca - 1].name.StartsWith("White"))) {
+				(peca.name.StartsWith("Black") && tabuleiro[xPeca][yPeca - 1].name.StartsWith("White")))) {
 					// Para direita em relação a matriz está vazio ou contem peça inimiga
 					resultado.Add(new Vector2(xPeca, yPeca - 1));
 			}
