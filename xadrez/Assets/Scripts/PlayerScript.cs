@@ -13,7 +13,6 @@ public class PlayerScript : MonoBehaviour {
     private BoardMapping bm;
     private BoardRules br;
 
-    private float halfDist;
     private bool ctrlMove;
 	// Use this for initialization
 	void Start () {
@@ -27,10 +26,12 @@ public class PlayerScript : MonoBehaviour {
         ctrlMove = false;
     }
 
+    //guarda qual peça está selecionada no momento
     public void setSelected(GameObject p) {
         piece = p;
     }
 
+    //movimenta a peça para a posição do tile desejado
     public void movePiece(GameObject p, GameObject t)
     {
         if (p != null) piece = p;
@@ -39,16 +40,16 @@ public class PlayerScript : MonoBehaviour {
         Vector2 vec = new Vector2();
         if(piece != null && tile != null)
         {
-            halfDist = Vector3.Distance(piece.transform.position, tile.transform.position) / 2;
             ctrlMove = true;
+
             string respStr = tile.name;
-            Debug.Log(respStr);
             resp = respStr.Split(new char[] { ',' });
             float[] respf = new float[2];
             for (int i = 0; i < 2; i++)
             {
                 respf[i] = float.Parse(resp[i]);
             }
+
             vec = new Vector2(respf[0], respf[1]);
         }
         
@@ -57,6 +58,7 @@ public class PlayerScript : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+        // faz a animação de movimentação da peça
         if (ctrlMove)
         {
             if (Vector3.Distance(piece.transform.position, tile.transform.position) > 0.01f)

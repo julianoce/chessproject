@@ -607,7 +607,7 @@ public class BoardRules : MonoBehaviour {
 						// Lugar vazio, só adicionar
 						resultado.Add(new Vector2(xPeca + i, yPeca));
 					} else if(peca.name.StartsWith("White") && 
-						tabuleiro[xPeca + i][yPeca].name.StartsWith("black")) {
+						tabuleiro[xPeca + i][yPeca].name.StartsWith("Black")) {
 						// Peça selecionada é branca, lugar checado tem peça preta
 						resultado.Add(new Vector2(xPeca + i, yPeca));
 						parouCima = true;
@@ -627,7 +627,7 @@ public class BoardRules : MonoBehaviour {
 						// Lugar vazio, só adicionar
 						resultado.Add(new Vector2(xPeca - i, yPeca));
 					} else if(peca.name.StartsWith("White") && 
-						tabuleiro[xPeca - i][yPeca].name.StartsWith("black")) {
+						tabuleiro[xPeca - i][yPeca].name.StartsWith("Black")) {
 						// Peça selecionada é branca, lugar checado tem peça preta
 						resultado.Add(new Vector2(xPeca - i, yPeca));
 						parouBaixo = true;
@@ -647,7 +647,7 @@ public class BoardRules : MonoBehaviour {
 						// Lugar vazio, só adicionar
 						resultado.Add(new Vector2(xPeca, yPeca + i));
 					} else if(peca.name.StartsWith("White") && 
-						tabuleiro[xPeca][yPeca + i].name.StartsWith("black")) {
+						tabuleiro[xPeca][yPeca + i].name.StartsWith("Black")) {
 						// Peça selecionada é branca, lugar checado tem peça preta
 						resultado.Add(new Vector2(xPeca, yPeca + i));
 						parouEsq = true;
@@ -667,7 +667,7 @@ public class BoardRules : MonoBehaviour {
 						// Lugar vazio, só adicionar
 						resultado.Add(new Vector2(xPeca, yPeca - i));
 					} else if(peca.name.StartsWith("White") && 
-						tabuleiro[xPeca][yPeca - i].name.StartsWith("black")) {
+						tabuleiro[xPeca][yPeca - i].name.StartsWith("Black")) {
 						// Peça selecionada é branca, lugar checado tem peça preta
 						resultado.Add(new Vector2(xPeca, yPeca - i));
 						parouDir = true;
@@ -685,9 +685,9 @@ public class BoardRules : MonoBehaviour {
 					// Ainda não achou peça inimiga e nem chegou no fim do tabuleiro
 					if(tabuleiro[xPeca + i][yPeca + i] == null) {
 						// Lugar vazio, só adicionar
-						resultado.Add(new Vector2(xPeca + 1, yPeca + i));
+						resultado.Add(new Vector2(xPeca + i, yPeca + i));
 					} else if(peca.name.StartsWith("White") && 
-						tabuleiro[xPeca + i][yPeca + i].name.StartsWith("black")) {
+						tabuleiro[xPeca + i][yPeca + i].name.StartsWith("Black")) {
 						// Peça selecionada é branca, lugar checado tem peça preta
 						resultado.Add(new Vector2(xPeca + i, yPeca + i));
 						parouDSE = true;
@@ -705,9 +705,9 @@ public class BoardRules : MonoBehaviour {
 					// Ainda não achou peça inimiga e nem chegou no fim do tabuleiro
 					if(tabuleiro[xPeca + i][yPeca - i] == null) {
 						// Lugar vazio, só adicionar
-						resultado.Add(new Vector2(xPeca + 1, yPeca - i));
+						resultado.Add(new Vector2(xPeca + i, yPeca - i));
 					} else if(peca.name.StartsWith("White") && 
-						tabuleiro[xPeca + i][yPeca - i].name.StartsWith("black")) {
+						tabuleiro[xPeca + i][yPeca - i].name.StartsWith("Black")) {
 						// Peça selecionada é branca, lugar checado tem peça preta
 						resultado.Add(new Vector2(xPeca + i, yPeca - i));
 						parouDSD = true;
@@ -725,9 +725,9 @@ public class BoardRules : MonoBehaviour {
 					// Ainda não achou peça inimiga e nem chegou no fim do tabuleiro
 					if(tabuleiro[xPeca - i][yPeca + i] == null) {
 						// Lugar vazio, só adicionar
-						resultado.Add(new Vector2(xPeca - 1, yPeca + i));
+						resultado.Add(new Vector2(xPeca - i, yPeca + i));
 					} else if(peca.name.StartsWith("White") && 
-						tabuleiro[xPeca - i][yPeca + i].name.StartsWith("black")) {
+						tabuleiro[xPeca - i][yPeca + i].name.StartsWith("Black")) {
 						// Peça selecionada é branca, lugar checado tem peça preta
 						resultado.Add(new Vector2(xPeca - i, yPeca + i));
 						parouDIE = true;
@@ -745,9 +745,9 @@ public class BoardRules : MonoBehaviour {
 					// Ainda não achou peça inimiga e nem chegou no fim do tabuleiro
 					if(tabuleiro[xPeca - i][yPeca - i] == null) {
 						// Lugar vazio, só adicionar
-						resultado.Add(new Vector2(xPeca - 1, yPeca - i));
+						resultado.Add(new Vector2(xPeca - i, yPeca - i));
 					} else if(peca.name.StartsWith("White") && 
-						tabuleiro[xPeca - i][yPeca - i].name.StartsWith("black")) {
+						tabuleiro[xPeca - i][yPeca - i].name.StartsWith("Black")) {
 						// Peça selecionada é branca, lugar checado tem peça preta
 						resultado.Add(new Vector2(xPeca - i, yPeca - i));
 						parouDID = true;
@@ -772,11 +772,15 @@ public class BoardRules : MonoBehaviour {
 	}
 
 	public void AtualizaPosicoes(GameObject peca, Vector2 pos) {
+		if(tabuleiro[(int)pos.x][(int)pos.y]) { 
+			Destroy(tabuleiro[(int)pos.x][(int)pos.y]);
+		}
 		if(peca.tag == "whitePiece") {
 			tabuleiro[(int)pos.x][(int)pos.y] = brancas.transform.Find(peca.name).gameObject;
 		} else {
 			tabuleiro[(int)pos.x][(int)pos.y] = pretas.transform.Find(peca.name).gameObject;
 		}
+		
 		tabuleiro[(int)posPeca.x][(int)posPeca.y] = null;
 	}
 }

@@ -24,6 +24,7 @@ public class SelectTile : MonoBehaviour {
       
     }
 
+    //coloca a cor de peça inimiga
     public void setEnemyColor(){
         enemy = true;
         foreach(SpriteRenderer c in children){
@@ -31,6 +32,7 @@ public class SelectTile : MonoBehaviour {
         }
     }
 
+    //muda a cor quando mouse entra
     void OnMouseEnter()
     {
         foreach(SpriteRenderer c in children){
@@ -42,6 +44,7 @@ public class SelectTile : MonoBehaviour {
             } 
         }
     }
+    //enquanto o mouse tiver em cima pode-se mover a peça para essa posição
     void OnMouseOver()
     {
         if (Input.GetMouseButtonDown(0))
@@ -49,6 +52,7 @@ public class SelectTile : MonoBehaviour {
             ps.movePiece(null, this.gameObject);
         }
     }
+    //volta a cor original quando o mouse sai
     void OnMouseExit()
     {
          foreach(SpriteRenderer c in children){

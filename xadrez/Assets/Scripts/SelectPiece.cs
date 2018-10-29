@@ -25,7 +25,7 @@ public class SelectPiece : MonoBehaviour {
     {
        
     }
-
+    //metodo que limpa a seleção de todas as peças
     public void cleanSelection()
     {
         comp = board.GetComponentsInChildren<Outline>();
@@ -41,25 +41,34 @@ public class SelectPiece : MonoBehaviour {
     {
         if (gm.getTurno() == 1)
         {
+            //verifica se é o truno da peça branca
             if (this.tag == "whitePiece")
             {
                 bm.clearTiles();
                 cleanSelection();
+                //liga o outline da peça
                 this.GetComponent<Outline>().enabled = true;
+                //passa para o scrip do player qual peça esta selecionada
                 ps.setSelected(this.gameObject);
+                //faz as posições possiveis de movimentação dessa peça
                 bm.makeTiles(this.gameObject);
             }
         }
         else
         {
+            //verifica se é o truno da peça preta
             if (this.tag == "blackPiece")
             {
                 bm.clearTiles();
                 cleanSelection();
+               //liga o outline da peça
                 this.GetComponent<Outline>().enabled = true;
+                //passa para o scrip do player qual peça esta selecionada
                 ps.setSelected(this.gameObject);
+                //faz as posições possiveis de movimentação dessa peça
                 bm.makeTiles(this.gameObject);
             }
+        
         }
         
     }
