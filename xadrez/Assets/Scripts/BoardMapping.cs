@@ -43,7 +43,7 @@ public class BoardMapping : MonoBehaviour {
             pos = findInList(int.Parse(v.x + ""), int.Parse(v.y + ""));
             temp = Instantiate(greenTile, tiles[pos].transform.position, tiles[pos].transform.localRotation);
             temp.name = v.x+","+v.y;
-            temp.GetComponent<SelectTile>().setEnemyColor();
+            //temp.GetComponent<SelectTile>().setEnemyColor();
             auxList.Add(temp);
         }
     }
