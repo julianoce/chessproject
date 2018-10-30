@@ -10,13 +10,16 @@ public class SelectTile : MonoBehaviour {
     private bool enemy;
 
     private PlayerScript ps;
+    private BoardRules br;
 
 	// Use this for initialization
 	void Start () {
         enemy = false;
         ps = GameObject.FindObjectOfType(typeof(PlayerScript)) as PlayerScript;
+        br = GameObject.FindObjectOfType(typeof(BoardRules)) as BoardRules;
         ini = this.GetComponentInChildren<SpriteRenderer>().color;
         children = GetComponentsInChildren<SpriteRenderer>();
+        verificaInimigo();
     }
 	
 	// Update is called once per frame
@@ -24,9 +27,27 @@ public class SelectTile : MonoBehaviour {
       
     }
 
+    void verificaInimigo (){
+        string respStr = this.name;
+        string[] resp = respStr.Split(new char[] { ',' });
+        float[] respf = new float[2];
+        for (int i = 0; i < 2; i++)
+        {
+            respf[i] = float.Parse(resp[i]);
+        }
+
+        Vector2 vec = new Vector2(respf[0], respf[1]);
+        Debug.Log(vec);
+        Debug.Log(this);
+        if(br.verifyPosition(vec)){
+            setEnemyColor();
+        }
+    }
+
     //coloca a cor de peça inimiga
     public void setEnemyColor(){
         enemy = true;
+        Debug.Log(children);
         foreach(SpriteRenderer c in children){
            c.color = enemyPiece;
         }

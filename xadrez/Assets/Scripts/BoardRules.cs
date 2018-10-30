@@ -789,4 +789,8 @@ public class BoardRules : MonoBehaviour {
 		
 		tabuleiro[(int)posPeca.x][(int)posPeca.y] = null;
 	}
+
+	public GameObject verifyPosition (Vector2 pos){
+		return tabuleiro[(int)pos.x][(int)pos.y];
+	}
 }

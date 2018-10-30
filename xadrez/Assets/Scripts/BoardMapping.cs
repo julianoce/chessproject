@@ -38,9 +38,10 @@ public class BoardMapping : MonoBehaviour {
             temp = Instantiate(greenTile, tiles[pos].transform.position, tiles[pos].transform.localRotation);
             //ajusta o nome para ser a posição em que o objeto foi colocado na matriz
             temp.name = v.x+","+v.y;
-            //temp.GetComponent<SelectTile>().setEnemyColor();
             auxList.Add(temp);
         }
+        
+        
     }
 
     //limpa todos os tiles que estavam na cena
