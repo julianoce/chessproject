@@ -6,6 +6,7 @@ public class IA : MonoBehaviour {
 	private BoardRules br;
 	private GameObject tabuleiro;
 	private GameManager gm;
+	private string time;
 
 	void Start () {
 		br = GameObject.FindObjectOfType(typeof(BoardRules)) as BoardRules;
@@ -22,6 +23,7 @@ public class IA : MonoBehaviour {
 		
 	}
 	public void olar(){
+		GameObject game;
 		Debug.Log("pqqqqqqqqqqqqqq");
 	}
 		
@@ -37,4 +39,16 @@ public class IA : MonoBehaviour {
 	// 	//para cada peça da minha cor
 	// 		//criar uma entrada na lista com a minha peça atual e a jogada possivel
 	// }
+
+	public int Utility(GameObject[][]tab){
+		string timeInimigo;
+		if(string.Equals(this.time,"White")){
+			timeInimigo = "Black";
+		}else{
+			timeInimigo = "White";
+		}
+		int numPecasInimigo = br.NumPecasTime(tab, timeInimigo);
+		int numPecas = br.NumPecasTime(tab, this.time);
+		return numPecas - numPecasInimigo;
+	}
 }
