@@ -7,6 +7,8 @@ public class IA : MonoBehaviour {
 	private GameObject tabuleiro;
 	public GameObject pretas;
 	public GameObject brancas;
+	private GameManager gm;
+	private string time;
 
 	void Start () {
 		br = GameObject.FindObjectOfType(typeof(BoardRules)) as BoardRules;
@@ -40,6 +42,7 @@ public class IA : MonoBehaviour {
 		if (!l1.Equals(l2)){
 			Debug.Log("FOI");
 		}
+
 		Debug.Log("pqqqqqqqqqqqqqq");
 	}
 		
@@ -79,4 +82,15 @@ public class IA : MonoBehaviour {
 	// 		}
 	// 	}
 	// }
+	public int Utility(GameObject[][]tab){
+		string timeInimigo;
+		if(string.Equals(this.time,"White")){
+			timeInimigo = "Black";
+		}else{
+			timeInimigo = "White";
+		}
+		int numPecasInimigo = br.NumPecasTime(tab, timeInimigo);
+		int numPecas = br.NumPecasTime(tab, this.time);
+		return numPecas - numPecasInimigo;
+	}
 }
