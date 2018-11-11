@@ -476,7 +476,7 @@ public class BoardRules : MonoBehaviour {
 		// Movimento dos cavalos
 		else if(peca.name.Contains("Knight")) {
 			int xPeca = (int)posPeca.x, yPeca = (int)posPeca.y;
-			Debug.Log(peca.name + ": (" + xPeca + "," + yPeca + ")");
+			//Debug.Log(peca.name + ": (" + xPeca + "," + yPeca + ")");
 			for(int i = 1; i < 3; i++) {
 				for(int j = 1; j < 3; j++) {
 					if(i == j) continue;
@@ -806,6 +806,17 @@ public class BoardRules : MonoBehaviour {
 		tabuleiro[(int)posPeca.x][(int)posPeca.y] = null;
 	}
 
+	public void AtualizaPosicoesRelativas(GameObject[][] tab, GameObject peca, Vector2 pos){
+		for(int i = 0; i < tab.Length; i++) {
+			for(int j = 0; j < tab[i].Length; j++) {
+				if(tab[i][j] && tab[i][j].name.Equals(peca.name)) {
+					tab[(int)pos.x][(int)pos.y] = tab[i][j];
+					tab[i][j] = null;
+					return;
+				}
+			}
+		}
+	}
 	public GameObject verifyPosition (Vector2 pos){
 		return tabuleiro[(int)pos.x][(int)pos.y];
 	}
@@ -828,6 +839,14 @@ public class BoardRules : MonoBehaviour {
 	
 	public List<Vector2> JogadasPossiveis(GameObject[][] tab, string cor){
 		List<Vector2> resultado = new List<Vector2>();
+		for(int i = 0; i < tab.Length; i++) {
+			tab[i] = new GameObject[8];
+			for(int j = 0; j < tab[i].Length; j++) {
+				if(tab[i][j] && tab[i][j].name.StartsWith(cor)){
+					resultado.AddRange(MovimentosPossiveis(tab,tab[i][j]));
+				}
+			}
+		}
 		return resultado;
 	}
 }

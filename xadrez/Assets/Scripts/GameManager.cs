@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour
     {
         if(turno == 2)
         {
-            Debug.Log("entrei porra");
             turno = 1;
             coll = white.GetComponentsInChildren<Collider>();
             foreach(Collider c in coll){
@@ -41,7 +40,6 @@ public class GameManager : MonoBehaviour
             foreach(Collider c in coll){
                 c.enabled = false;
             }
-        ia.olar();
         
         }else if (turno == 1)
         {
@@ -54,7 +52,8 @@ public class GameManager : MonoBehaviour
             foreach(Collider c in coll){
                 c.enabled = true;
             }
-
+            Debug.Log("IA pensando");
+            ia.olar();
         }
         sp.cleanSelection();
     }
