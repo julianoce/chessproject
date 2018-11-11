@@ -145,8 +145,47 @@ public class IA : MonoBehaviour {
 	}
 
 	public int Utility(GameObject[][]tab){
-		int numPecasInimigo = br.NumPecasTime(tab, this.cor_adv);
-		int numPecas = br.NumPecasTime(tab, this.cor);
+		int numPecasInimigo = 0;
+		int numPecas = 0;
+		for(int i=0; i<tab.Length;i++){
+			for(int j=0; j<tab.Length;j++){
+				if(tab[i][j]){
+					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("Queen")){
+						numPecasInimigo += 9;
+					}
+					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("Queen")){
+						numPecas += 9;
+					}
+					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("Rook")){
+						numPecasInimigo += 5;
+					}
+					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("Rook")){
+						numPecas += 5;
+					}
+
+					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("Knight") || tab[i][j].name.Contains("Bishop")){
+						numPecasInimigo += 3;
+					}
+					if(tab[i][j].name.StartsWith(this.cor) && (tab[i][j].name.Contains("Knight") || tab[i][j].name.Contains("Bishop"))){
+						numPecas += 3;
+					}
+
+					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("Pawn")){
+						numPecasInimigo += 1;
+					}
+					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("Pawn")){
+						numPecas += 1;
+					}
+
+					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("King")){
+						numPecasInimigo += 10000000;
+					}
+					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("King")){
+						numPecas += 10000000;
+					}
+				}
+			}
+		}
 		return numPecas - numPecasInimigo;
 	}
 }
