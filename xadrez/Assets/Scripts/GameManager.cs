@@ -8,10 +8,12 @@ public class GameManager : MonoBehaviour
     public int turno = 1;
     private SelectPiece sp;
     private Collider[] coll;
+    private IA ia;
     // Use this for initialization
     void Start()
     {
         sp = GameObject.FindObjectOfType(typeof(SelectPiece)) as SelectPiece;
+        ia =  GameObject.FindObjectOfType(typeof(IA)) as IA;
     }
 
     // Update is called once per frame
@@ -30,6 +32,8 @@ public class GameManager : MonoBehaviour
         if(turno == 2)
         {
             turno = 1;
+            // Debug.Log("IA pensando");
+            // ia.buscar();
             coll = white.GetComponentsInChildren<Collider>();
             foreach(Collider c in coll){
                 c.enabled = true;
@@ -38,6 +42,7 @@ public class GameManager : MonoBehaviour
             foreach(Collider c in coll){
                 c.enabled = false;
             }
+        
         }else if (turno == 1)
         {
             turno = 2;
@@ -49,6 +54,8 @@ public class GameManager : MonoBehaviour
             foreach(Collider c in coll){
                 c.enabled = true;
             }
+            Debug.Log("IA pensando");
+            ia.buscar();
         }
         sp.cleanSelection();
     }

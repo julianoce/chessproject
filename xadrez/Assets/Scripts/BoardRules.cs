@@ -93,8 +93,24 @@ public class BoardRules : MonoBehaviour {
 	void Update () {
 		
 	}
-
+	public int NumPecasTime(GameObject[][]tab, string time){
+		int countPeca = 0;
+		for(int i=0; i< tab.Length;i++){
+			for(int j=0;j<tab.Length;j++){
+				if(tab[i][j]!= null){
+					GameObject peca = tab[i][j];
+					if(peca.name.StartsWith(time)){
+						countPeca+=1;
+					}
+				}
+			}
+		}
+		return countPeca;
+	}
 	public List<Vector2> MovimentosPossiveis(GameObject peca) {
+		return MovimentosPossiveis(this.tabuleiro, peca);
+	}
+	public List<Vector2> MovimentosPossiveis(GameObject[][] tabuleiro, GameObject peca) {
 		posPeca = new Vector2();
 		List<Vector2> resultado = new List<Vector2>();
 		if(tabuleiro == null) {
@@ -460,7 +476,7 @@ public class BoardRules : MonoBehaviour {
 		// Movimento dos cavalos
 		else if(peca.name.Contains("Knight")) {
 			int xPeca = (int)posPeca.x, yPeca = (int)posPeca.y;
-			Debug.Log(peca.name + ": (" + xPeca + "," + yPeca + ")");
+			//Debug.Log(peca.name + ": (" + xPeca + "," + yPeca + ")");
 			for(int i = 1; i < 3; i++) {
 				for(int j = 1; j < 3; j++) {
 					if(i == j) continue;
@@ -790,6 +806,17 @@ public class BoardRules : MonoBehaviour {
 		tabuleiro[(int)posPeca.x][(int)posPeca.y] = null;
 	}
 
+	public void AtualizaPosicoesRelativas(GameObject[][] tab, GameObject peca, Vector2 pos){
+		for(int i = 0; i < tab.Length; i++) {
+			for(int j = 0; j < tab[i].Length; j++) {
+				if(tab[i][j] && tab[i][j].name.Equals(peca.name)) {
+					tab[(int)pos.x][(int)pos.y] = tab[i][j];
+					tab[i][j] = null;
+					return;
+				}
+			}
+		}
+	}
 	public GameObject verifyPosition (Vector2 pos){
 		return tabuleiro[(int)pos.x][(int)pos.y];
 	}
@@ -808,5 +835,18 @@ public class BoardRules : MonoBehaviour {
 
 	public GameObject[][] GetTabuleiro() {
 		return tabuleiro;
+	}
+	
+	public List<Vector2> JogadasPossiveis(GameObject[][] tab, string cor){
+		List<Vector2> resultado = new List<Vector2>();
+		for(int i = 0; i < tab.Length; i++) {
+			tab[i] = new GameObject[8];
+			for(int j = 0; j < tab[i].Length; j++) {
+				if(tab[i][j] && tab[i][j].name.StartsWith(cor)){
+					resultado.AddRange(MovimentosPossiveis(tab,tab[i][j]));
+				}
+			}
+		}
+		return resultado;
 	}
 }

@@ -6212,6 +6212,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6f8c3544649fb24289eca327a41e3ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  white: {fileID: 0}
+  black: {fileID: 0}
   turno: 1
 --- !u!1001 &1239060595
 Prefab:
