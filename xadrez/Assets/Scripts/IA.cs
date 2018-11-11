@@ -28,6 +28,7 @@ public class IA : MonoBehaviour {
 		
 	}
 	public void buscar(){
+		//receber como parametro cor escolhida pelo jogador e a dificuldade do jogo
 		GameObject[][] tab = br.GetTabuleiro();
 		GameObject[][] tab_aux = copiar(tab);
 		this.jogadas = new List<Vector2>();
