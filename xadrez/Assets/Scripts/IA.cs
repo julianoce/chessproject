@@ -8,18 +8,15 @@ public class IA : MonoBehaviour {
 	private GameObject tabuleiro;
 	public GameObject pretas;
 	public GameObject brancas;
-	private string time;
 	private string cor = "Black";
 	private List<Vector2> jogadas;
-	const int MAX_ITE = 10;
+	const int MAX_ITE = 3;
 
 	void Start () {
 		br = GameObject.FindObjectOfType(typeof(BoardRules)) as BoardRules;
 		jogadas = new List<Vector2>();
-		//receber tabuleiro como parametro
-		//proxima_jogada = new List<>;
+		cor = "Black";
 		Random r = new Random();
-		//Max(tabuleiro, int.MinValue, int.MaxValue, 0);
 		//receber como parametro cor escolhida pelo jogador
 	}
 	
@@ -30,60 +27,66 @@ public class IA : MonoBehaviour {
 	public void olar(){
 		GameObject[][] tab = br.GetTabuleiro();
 		GameObject[][] tab_aux = copiar(tab);
+		int r = Max(tab_aux, int.MinValue, int.MaxValue, 0);
+		Debug.Log("Terminou");
+		Debug.Log(r);
 	}
 
-	// int Max(GameObject tab, int alpha, int beta, int poda){
-	// 	if(poda == MAX_ITE)
-	// 		return Utility(tab);
+	int Max(GameObject[][] tab, int alpha, int beta, int poda){
+		if(poda == MAX_ITE)
+			return Utility(tab);
 
-	// 	int v = int.MinValue;
-	// 	List<Vector2> jogadasPossiveis = br.JogadasPossiveis(this.cor);
-	// 	foreach(Vector2 jogada in jogadasPossiveis) {
-	// 		GameObject tabCopy = this.copia(tab);
-	// 		// br.AtualizaPosicoes(peca, posicao);
-	// 		int vLinha =  Min(tabCopy, alpha, beta, poda+1);
+		int v = int.MinValue;
+		List<Vector2> jogadasPossiveis = br.JogadasPossiveis(tab,this.cor);
+		foreach(Vector2 jogada in jogadasPossiveis) {
+			GameObject[][] tabCopy = this.copia_ref(tab);
+			// br.AtualizaPosicoes(peca, posicao);
+			int vLinha =  Min(tabCopy, alpha, beta, poda+1);
 
-	// 		if(poda == 0 && vLinha == v)
-	// 			this.jogadas.Add(jogada);
-	// 		if(vLinha > v) {
-	// 			v = vLinha;
-	// 			if(poda == 0) {
-	// 				this.jogadas.Clear();
-	// 				this.jogadas.Add(jogada);
-	// 			}
-	// 		}
-	// 		if(vLinha >= beta)
-	// 			return v;
+			if(poda == 0 && vLinha == v)
+				this.jogadas.Add(jogada);
+
+			if(vLinha > v) {
+				v = vLinha;
+				if(poda == 0) {
+					this.jogadas.Clear();
+					this.jogadas.Add(jogada);
+				}
+			}
+			if(vLinha >= beta)
+				return v;
 			
-	// 		if(vLinha>alpha)
-	// 			alpha = vLinha;
+			if(vLinha>alpha)
+				alpha = vLinha;
 
-	// 	}
-	// 	return v;
-	// }
+		}
+		return v;
+	}
 
-	// int Min(GameObject tab, int alpha, int beta, int poda){
-	// 	if(poda == MAX_ITE)
-	// 		return Utility(tab);
+	int Min(GameObject[][] tab, int alpha, int beta, int poda){
+		if(poda == MAX_ITE)
+			return Utility(tab);
 		
-	// 	int v = int.MaxValue;
+		int v = int.MaxValue;
 
-	// 	List<Vector2> jogadasPossiveis = br.JogadasPossiveis(this.cor);
-	// 	foreach(Vector2 jogada in jogadasPossiveis) {
-	// 		GameObject tabCopy = this.copia(tab);
-	// 		// br.AtualizaPosicoes(peca, posicao);
-	// 		int vLinha = Max(tabCopy, alpha, beta, poda+1);
-	// 		if(vLinha < v)
-	// 			v = vLinha;
-	// 		if(vLinha <= alpha)
-	// 			return v;
-	// 		if(vLinha < beta)
-	// 			beta = vLinha;
+		List<Vector2> jogadasPossiveis = br.JogadasPossiveis(tab,this.cor);
+		foreach(Vector2 jogada in jogadasPossiveis) {
+			GameObject[][] tabCopy = this.copia_ref(tab);
+			// br.AtualizaPosicoes(peca, posicao);
+			int vLinha = Max(tabCopy, alpha, beta, poda+1);
+			if(vLinha < v)
+				v = vLinha;
 
-	// 	}
+			if(vLinha <= alpha)
+				return v;
 
-	// 	return v;
-	// }
+			if(vLinha < beta)
+				beta = vLinha;
+
+		}
+
+		return v;
+	}
 		
 
 	private GameObject[][] criar(GameObject[][] tab){
@@ -92,6 +95,17 @@ public class IA : MonoBehaviour {
 			tab_n[i] = new GameObject[8];
 		}
 		return tab_n;
+	}
+
+	private GameObject[][] copia_ref(GameObject[][] tab){
+		GameObject[][] tab_aux = criar(tab);
+		for(int i = 0; i < tab_aux.Length; i++) {
+			tab_aux[i] = new GameObject[8];
+			for(int j = 0; j < tab_aux[i].Length; j++) {
+				tab_aux[i][j] = tab[i][j];
+			}
+		}
+		return tab;
 	}
 
 	private GameObject[][] copiar(GameObject[][] tab){
@@ -112,13 +126,13 @@ public class IA : MonoBehaviour {
 
 	public int Utility(GameObject[][]tab){
 		string timeInimigo;
-		if(string.Equals(this.time,"White")){
+		if(string.Equals(this.cor,"White")){
 			timeInimigo = "Black";
 		}else{
 			timeInimigo = "White";
 		}
 		int numPecasInimigo = br.NumPecasTime(tab, timeInimigo);
-		int numPecas = br.NumPecasTime(tab, this.time);
+		int numPecas = br.NumPecasTime(tab, this.cor);
 		return numPecas - numPecasInimigo;
 	}
 }

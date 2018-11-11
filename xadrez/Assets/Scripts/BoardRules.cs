@@ -826,9 +826,7 @@ public class BoardRules : MonoBehaviour {
 		return tabuleiro;
 	}
 	
-	public List<Vector2> JogadasPossiveis(string cor){
-		//para cada peça da minha cor
-			//criar uma entrada na lista com a minha peça atual e a jogada possivel
+	public List<Vector2> JogadasPossiveis(GameObject[][] tab, string cor){
 		List<Vector2> resultado = new List<Vector2>();
 		return resultado;
 	}
