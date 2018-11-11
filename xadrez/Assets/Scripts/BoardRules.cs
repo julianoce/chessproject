@@ -93,8 +93,24 @@ public class BoardRules : MonoBehaviour {
 	void Update () {
 		
 	}
-
+	public int NumPecasTime(GameObject[][]tab, string time){
+		int countPeca = 0;
+		for(int i=0; i< tab.Length;i++){
+			for(int j=0;j<tab.Length;j++){
+				if(tab[i][j]!= null){
+					GameObject peca = tab[i][j];
+					if(peca.name.StartsWith(time)){
+						countPeca+=1;
+					}
+				}
+			}
+		}
+		return countPeca;
+	}
 	public List<Vector2> MovimentosPossiveis(GameObject peca) {
+		return MovimentosPossiveis(this.tabuleiro, peca);
+	}
+	public List<Vector2> MovimentosPossiveis(GameObject[][] tabuleiro, GameObject peca) {
 		posPeca = new Vector2();
 		List<Vector2> resultado = new List<Vector2>();
 		if(tabuleiro == null) {

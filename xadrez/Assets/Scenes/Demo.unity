@@ -4618,6 +4618,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1224411371}
   - component: {fileID: 1224411372}
+  - component: {fileID: 1224411373}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -4652,6 +4653,19 @@ MonoBehaviour:
   white: {fileID: 1954849656}
   black: {fileID: 1218781057}
   turno: 1
+--- !u!114 &1224411373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1224411370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0303ab9909fd7c3478aa41a9b05acae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pretas: {fileID: 1218781057}
+  brancas: {fileID: 1954849656}
 --- !u!1001 &1239060595
 Prefab:
   m_ObjectHideFlags: 0
