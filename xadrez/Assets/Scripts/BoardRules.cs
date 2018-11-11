@@ -95,6 +95,9 @@ public class BoardRules : MonoBehaviour {
 	}
 
 	public List<Vector2> MovimentosPossiveis(GameObject peca) {
+		return MovimentosPossiveis(this.tabuleiro, peca);
+	}
+	public List<Vector2> MovimentosPossiveis(GameObject[][] tabuleiro, GameObject peca) {
 		posPeca = new Vector2();
 		List<Vector2> resultado = new List<Vector2>();
 		if(tabuleiro == null) {
