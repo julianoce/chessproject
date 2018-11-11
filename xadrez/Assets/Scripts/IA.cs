@@ -27,7 +27,7 @@ public class IA : MonoBehaviour {
 	void Update () {
 		
 	}
-	public void olar(){
+	public void buscar(){
 		GameObject[][] tab = br.GetTabuleiro();
 		GameObject[][] tab_aux = copiar(tab);
 		this.jogadas = new List<Vector2>();
@@ -38,6 +38,7 @@ public class IA : MonoBehaviour {
 		Debug.Log("Respostas");
 		Debug.Log(quem[x]);
 		Debug.Log(jogadas[x]);
+		//br.AtualizaPosicoes(quem[x],jogadas[x]);
 		Debug.Log("Terminou");
 	}
 
