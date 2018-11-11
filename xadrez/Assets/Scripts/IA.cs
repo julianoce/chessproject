@@ -4,21 +4,25 @@ using UnityEngine;
 
 public class IA : MonoBehaviour {
 	private BoardRules br;
+	private GameManager gm;
 	private GameObject tabuleiro;
 	public GameObject pretas;
 	public GameObject brancas;
-	private GameManager gm;
 	private string time;
+	private string cor = "Black";
+	private List<Vector2> jogadas;
+	const int MAX_ITE = 10;
 
 	void Start () {
 		br = GameObject.FindObjectOfType(typeof(BoardRules)) as BoardRules;
-		// //receber tabuleiro como parametro
-		// //proxima_jogada = new List<>;
-		// Random r = new Random();
-		// max(tabuleiro, int.MinValue, int.MaxValue, 0);	
-		// //receber como parametro cor escolhida pelo jogador
+		jogadas = new List<Vector2>();
+		//receber tabuleiro como parametro
+		//proxima_jogada = new List<>;
+		Random r = new Random();
+		//Max(tabuleiro, int.MinValue, int.MaxValue, 0);
+		//receber como parametro cor escolhida pelo jogador
 	}
-		int MAX_PODAS = 3;
+	
 	// Update is called once per frame
 	void Update () {
 		
@@ -26,22 +30,61 @@ public class IA : MonoBehaviour {
 	public void olar(){
 		GameObject[][] tab = br.GetTabuleiro();
 		GameObject[][] tab_aux = copiar(tab);
-
-		Debug.Log("pqqqqqqqqqqqqqq");
 	}
-		
-	// int max(GameObject tab, int alpha, int beta, int poda){
-	// 	if(poda == MAX_PODAS){
-	// 		// aqui vamos chamar a funcao de avaliacao
-	// 	}
+
+	// int Max(GameObject tab, int alpha, int beta, int poda){
+	// 	if(poda == MAX_ITE)
+	// 		return Utility(tab);
+
 	// 	int v = int.MinValue;
+	// 	List<Vector2> jogadasPossiveis = br.JogadasPossiveis(this.cor);
+	// 	foreach(Vector2 jogada in jogadasPossiveis) {
+	// 		GameObject tabCopy = this.copia(tab);
+	// 		// br.AtualizaPosicoes(peca, posicao);
+	// 		int vLinha =  Min(tabCopy, alpha, beta, poda+1);
+
+	// 		if(poda == 0 && vLinha == v)
+	// 			this.jogadas.Add(jogada);
+	// 		if(vLinha > v) {
+	// 			v = vLinha;
+	// 			if(poda == 0) {
+	// 				this.jogadas.Clear();
+	// 				this.jogadas.Add(jogada);
+	// 			}
+	// 		}
+	// 		if(vLinha >= beta)
+	// 			return v;
+			
+	// 		if(vLinha>alpha)
+	// 			alpha = vLinha;
+
+	// 	}
+	// 	return v;
+	// }
+
+	// int Min(GameObject tab, int alpha, int beta, int poda){
+	// 	if(poda == MAX_ITE)
+	// 		return Utility(tab);
 		
+	// 	int v = int.MaxValue;
+
+	// 	List<Vector2> jogadasPossiveis = br.JogadasPossiveis(this.cor);
+	// 	foreach(Vector2 jogada in jogadasPossiveis) {
+	// 		GameObject tabCopy = this.copia(tab);
+	// 		// br.AtualizaPosicoes(peca, posicao);
+	// 		int vLinha = Max(tabCopy, alpha, beta, poda+1);
+	// 		if(vLinha < v)
+	// 			v = vLinha;
+	// 		if(vLinha <= alpha)
+	// 			return v;
+	// 		if(vLinha < beta)
+	// 			beta = vLinha;
+
+	// 	}
+
+	// 	return v;
 	// }
-
-	// int min(GameObject tab, int alpha, int beta, int poda){
-
-	// }
-
+		
 
 	private GameObject[][] criar(GameObject[][] tab){
 		GameObject[][] tab_n = new GameObject[8][];
