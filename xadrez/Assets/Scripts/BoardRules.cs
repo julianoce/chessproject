@@ -793,4 +793,20 @@ public class BoardRules : MonoBehaviour {
 	public GameObject verifyPosition (Vector2 pos){
 		return tabuleiro[(int)pos.x][(int)pos.y];
 	}
+
+	public List<GameObject> PecasDisponiveis(string cor) {
+		List<GameObject> pecas = new List<GameObject>();
+		for(int i = 0; i < tabuleiro.Length; i++) {
+			for(int j = 0; j < tabuleiro[i].Length; j++) {
+				if(tabuleiro[i][j].name.StartsWith(cor)) {
+					pecas.Add(tabuleiro[i][j]);
+				}
+			}
+		}
+		return pecas.Count > 0 ? pecas : null;
+	}
+
+	public GameObject[][] GetTabuleiro() {
+		return tabuleiro;
+	}
 }
