@@ -809,4 +809,11 @@ public class BoardRules : MonoBehaviour {
 	public GameObject[][] GetTabuleiro() {
 		return tabuleiro;
 	}
+	
+	public List<Vector2> JogadasPossiveis(string cor){
+		//para cada peça da minha cor
+			//criar uma entrada na lista com a minha peça atual e a jogada possivel
+		List<Vector2> resultado = new List<Vector2>();
+		return resultado;
+	}
 }
