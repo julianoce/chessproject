@@ -9,6 +9,9 @@ public class PlayerScript : MonoBehaviour {
     private GameObject piece;
     private GameObject tile;
 
+     private GameObject pieceToMove;
+    private Vector3 posToGo;
+
     private GameManager gm;
     private BoardMapping bm;
     private BoardRules br;
@@ -21,6 +24,7 @@ public class PlayerScript : MonoBehaviour {
         br = GameObject.FindObjectOfType(typeof(BoardRules)) as BoardRules;
 
         piece = null;
+        pieceToMove = null;
         tile = null;
 
         ctrlMove = false;
@@ -40,8 +44,10 @@ public class PlayerScript : MonoBehaviour {
         Vector2 vec = new Vector2();
         if(piece != null && tile != null)
         {
-            ctrlMove = true;
-
+            pieceToMove = piece;
+            posToGo = tile.transform.position;
+            bm.clearTiles();
+            
             string respStr = tile.name;
             resp = respStr.Split(new char[] { ',' });
             float[] respf = new float[2];
@@ -51,9 +57,11 @@ public class PlayerScript : MonoBehaviour {
             }
 
             vec = new Vector2(respf[0], respf[1]);
-        }
-        
-        br.AtualizaPosicoes(piece, vec);
+
+            br.AtualizaPosicoes(piece, vec);
+            gm.mudaTurno();
+            ctrlMove = true;
+        } 
     }
 
     // Update is called once per frame
@@ -61,14 +69,14 @@ public class PlayerScript : MonoBehaviour {
         // faz a animação de movimentação da peça
         if (ctrlMove)
         {
-            if (Vector3.Distance(piece.transform.position, tile.transform.position) > 0.01f)
+            if (Vector3.Distance(pieceToMove.transform.position, posToGo) > 0.01f)
             {
-               piece.transform.position =  Vector3.Lerp(piece.transform.position, tile.transform.position, speed);
+               pieceToMove.transform.position =  Vector3.Lerp(pieceToMove.transform.position, posToGo, speed);
             }else
             {
-                bm.clearTiles();
                 ctrlMove = false;
-                gm.mudaTurno();
+                posToGo = pieceToMove.transform.position;
+                pieceToMove = null;
             }
         } 
     }
