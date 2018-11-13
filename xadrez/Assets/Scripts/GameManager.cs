@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
             foreach(Collider c in coll){
                 c.enabled = false;
             }
+            ia.buscar("White");
         
         }else if (turno == 1)
         {
@@ -66,7 +67,7 @@ public class GameManager : MonoBehaviour
                 c.enabled = true;
             }
             Debug.Log("IA pensando");
-            ia.buscar();
+            ia.buscar("Black");
         }
         sp.cleanSelection();
     }

@@ -31,7 +31,13 @@ public class IA : MonoBehaviour {
 	void Update () {
 		
 	}
-	public void buscar(){
+	public void buscar(string c){
+		cor = c;
+		if(cor.Equals("Black")){
+			cor_adv = "white";
+		}else{
+			cor_adv = "Black";
+		}
 		//receber como parametro cor escolhida pelo jogador e a dificuldade do jogo
 		GameObject[][] tab = br.GetTabuleiro();
 		GameObject[][] tab_aux = copiar(tab);
