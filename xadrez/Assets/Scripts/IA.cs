@@ -6,6 +6,8 @@ using UnityEngine;
 public class IA : MonoBehaviour {
 	private BoardRules br;
 	private GameManager gm;
+	private PlayerScript ps;
+	private BoardMapping bm;
 	private GameObject tabuleiro;
 	public GameObject pretas;
 	public GameObject brancas;
@@ -17,6 +19,8 @@ public class IA : MonoBehaviour {
 
 	void Start () {
 		br = GameObject.FindObjectOfType(typeof(BoardRules)) as BoardRules;
+		ps = GameObject.FindObjectOfType(typeof(PlayerScript)) as PlayerScript;
+		bm = GameObject.FindObjectOfType(typeof(BoardMapping)) as BoardMapping;
 		cor = "Black";
 		cor_adv = "White";
 		
@@ -36,11 +40,20 @@ public class IA : MonoBehaviour {
 	 	Max(tab_aux, int.MinValue, int.MaxValue, 0);
 		System.Random r = new System.Random();
 		int x = r.Next(0,jogadas.Count);
+		GameObject piece = quem[x];
 		Debug.Log("Respostas");
-		Debug.Log(quem[x]);
+		Debug.Log(piece);
 		Debug.Log(jogadas[x]);
-		//br.AtualizaPosicoes(quem[x],jogadas[x]);
+
+		bm.makeTiles(piece);
+		ps.movePiece(quem[x], findTile(jogadas[x]));
+		ps.podeJogar = false;
+		
 		Debug.Log("Terminou");
+	}
+
+	GameObject findTile(Vector2 v){
+		return GameObject.Find(v.x+","+v.y);
 	}
 
 	int Max(GameObject[][] tab, int alpha, int beta, int poda){

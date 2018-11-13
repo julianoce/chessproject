@@ -27,6 +27,17 @@ public class GameManager : MonoBehaviour
         return turno;
     }
 
+    public void disableColliders(){
+        coll = white.GetComponentsInChildren<Collider>();
+        foreach(Collider c in coll){
+            c.enabled = false;
+        }
+        coll = black.GetComponentsInChildren<Collider>();
+        foreach(Collider c in coll){
+            c.enabled = false;
+        }
+    }
+
     public void mudaTurno()
     {
         if(turno == 2)

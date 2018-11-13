@@ -2695,6 +2695,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0.15
   heigth: 20
+  podeJogar: 0
 --- !u!4 &790016661
 Transform:
   m_ObjectHideFlags: 0
@@ -3749,6 +3750,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraLook: {fileID: 480647211}
   speed: 0.15
+  active: 0
 --- !u!1 &1053766125 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1031849599230294, guid: b2304cb193b41804b94e820bc4048bec,

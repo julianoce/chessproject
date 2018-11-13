@@ -16,6 +16,8 @@ public class PlayerScript : MonoBehaviour {
     private BoardMapping bm;
     private BoardRules br;
 
+    public bool podeJogar;
+
     private bool ctrlMove;
 	// Use this for initialization
 	void Start () {
@@ -28,6 +30,7 @@ public class PlayerScript : MonoBehaviour {
         tile = null;
 
         ctrlMove = false;
+        podeJogar = false;
     }
 
     //guarda qual peça está selecionada no momento
@@ -38,6 +41,7 @@ public class PlayerScript : MonoBehaviour {
     //movimenta a peça para a posição do tile desejado
     public void movePiece(GameObject p, GameObject t)
     {
+        gm.disableColliders();
         if (p != null) piece = p;
         if (t != null) tile = t;
         string[] resp = null;
@@ -59,7 +63,7 @@ public class PlayerScript : MonoBehaviour {
             vec = new Vector2(respf[0], respf[1]);
 
             br.AtualizaPosicoes(piece, vec);
-            gm.mudaTurno();
+            
             ctrlMove = true;
         } 
     }
@@ -77,6 +81,8 @@ public class PlayerScript : MonoBehaviour {
                 ctrlMove = false;
                 posToGo = pieceToMove.transform.position;
                 pieceToMove = null;
+                podeJogar = true;
+                gm.mudaTurno();
             }
         } 
     }

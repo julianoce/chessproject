@@ -6,6 +6,7 @@ public class CameraMove : MonoBehaviour {
 
     public GameObject cameraLook;
     public float speed;
+    public bool active;
 
     private GameManager gm;
     private SelectPiece select;
@@ -26,8 +27,8 @@ public class CameraMove : MonoBehaviour {
             gm.mudaTurno();
             select.cleanSelection();
         }
-
-        if (gm.getTurno() == 2)
+        if(active){
+            if (gm.getTurno() == 2)
         {
             Vector3 to = new Vector3(0, 80, 0);
             if (Vector3.Distance(to, transform.eulerAngles) > 0.01f)
@@ -42,6 +43,7 @@ public class CameraMove : MonoBehaviour {
             {
                 transform.eulerAngles = Vector3.Lerp(transform.rotation.eulerAngles, to, speed);
             }
+        }
         }
     }
 }
