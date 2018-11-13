@@ -106,6 +106,8 @@
      <Compile Include="Assets\Scripts\CameraRotation.cs" />
      <Compile Include="Assets\Scripts\Clock.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\IA.cs" />
+     <Compile Include="Assets\Scripts\Piece.cs" />
      <Compile Include="Assets\Scripts\PlayerScript.cs" />
      <Compile Include="Assets\Scripts\SelectPiece.cs" />
      <Compile Include="Assets\Scripts\SelectTile.cs" />
