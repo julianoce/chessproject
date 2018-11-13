@@ -15,7 +15,7 @@ public class IA : MonoBehaviour {
 	private string cor_adv;
 	private List<Vector2> jogadas;
 	private List<GameObject> quem;
-	const int MAX_ITE = 3;
+	const int MAX_ITE = 4;
 
 	void Start () {
 		br = GameObject.FindObjectOfType(typeof(BoardRules)) as BoardRules;
@@ -209,7 +209,6 @@ public class IA : MonoBehaviour {
 
 	public int UtilityDificil(GameObject[][]tab){
 	int value = 0;
-	value = br.NumPecasTime(tab, this.cor) - br.NumPecasTime(tab, this.cor_adv);
 	
 	int[,] black_pawn_matrix = new int[8,8]{
 		{ 0,  0,  0,  0,  0,  0,  0,  0},
@@ -335,48 +334,50 @@ int [,] black_bishop_matrix = new int[8,8] {
 			{-10,-20,-20,-20,-20,-20,-20,-10},
 			{20, 20,  0,  0,  0,  0, 20, 20},
 			{20, 30, 10,  0,  0, 10, 30, 20}};
-	
+	int value_white = 0;
+	int value_black = 0;
+
 	for(int i=0; i<tab.Length;i++){
 			for(int j=0; j<tab.Length;j++){
 				if(tab[i][j]){
 					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("Queen")){
-						value += white_queen_matrix[i,j];
+						value_white += white_queen_matrix[i,j];
 					}
 					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("Queen")){
-						value+= black_queen_matrix[i,j];
+						value_black+= black_queen_matrix[i,j];
 					}
 					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("Rook")){
-						value += white_rook_matrix[i,j];
+						value_white += white_rook_matrix[i,j];
 					}
 					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("Rook")){
-						value += black_rook_matrix[i,j];
+						value_black += black_rook_matrix[i,j];
 						
 					}
 
 					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("Knight") || tab[i][j].name.Contains("Bishop")){
-						value += white_knight_matrix[i,j];
+						value_white += white_knight_matrix[i,j];
 					}
 					if(tab[i][j].name.StartsWith(this.cor) && (tab[i][j].name.Contains("Knight") || tab[i][j].name.Contains("Bishop"))){
-						value += black_knight_matrix[i,j];						
+						value_black += black_knight_matrix[i,j];						
 					}
 
 					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("Pawn")){
-						value += white_pawn_matrix[i,j];
+						value_white += white_pawn_matrix[i,j];
 					}
 					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("Pawn")){
-						value += black_pawn_matrix[i,j];
+						value_black += black_pawn_matrix[i,j];
 					}
 
 					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("King")){
-						value += white_king_matrix_middle[i,j];
+						value_white += white_king_matrix_middle[i,j];
 					}
 					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("King")){
-						value += black_king_matrix_middle[i,j];
+						value_black += black_king_matrix_middle[i,j];
 					}
 				}
 			}
 	}
-			return value;
+			return value_white - value_black;
 
 }
 }
