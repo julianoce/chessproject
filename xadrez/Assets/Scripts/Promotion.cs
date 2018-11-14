@@ -56,6 +56,7 @@ public class Promotion : MonoBehaviour {
 					piece = black[3];
 					break;
 			}
+			this.GetComponent<Outline>().enabled = false;
 			instantiatePiece();
         }
     }
@@ -65,14 +66,19 @@ public class Promotion : MonoBehaviour {
         this.GetComponent<Outline>().enabled = false;
     }
 
+	//função que instancia a peça no tabuleiro --------- falta ajustar a posição na matriz do código
 	void instantiatePiece(){
 		toChange = gm.getPromoteToChange();
 		GameObject temp = Instantiate(piece, toChange.transform.position, toChange.transform.localRotation);
+		temp.name = piece.name;
 		if(this.gameObject.name.Contains("B ")){
+			temp.tag = "blackPiece";
 			temp.transform.parent = blackPiece.transform;
 		}else if(this.gameObject.name.Contains("W ")){
+			temp.tag = "whitePiece";
 			temp.transform.parent = whitePiece.transform;
 		}
 		Destroy(toChange);
+		gm.cleanPromotePlat();
 	}
 }

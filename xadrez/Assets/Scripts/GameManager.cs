@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public string player1, player2;
     public int turno = 1;
     private GameObject promoteToChange;
+    public GameObject wPromotePlat, bPromotePlat;
     private SelectPiece sp;
     private Collider[] coll;
     private IA ia;
@@ -19,11 +20,10 @@ public class GameManager : MonoBehaviour
         ia =  GameObject.FindObjectOfType(typeof(IA)) as IA;
         cm = GameObject.FindObjectOfType(typeof(CameraMove)) as CameraMove;
 
-
+        // ajustes de camera e jogadas de acordo com a escolha de jogadores
         if(player1.Equals("IA")){
             StartCoroutine(RunIA(1, "White"));
         }
-
         if(player1.Equals("Player")&& player2.Equals("Player")){
             cm.active = true;
         }else if(player1.Equals("IA")&& player2.Equals("Player")){
@@ -31,7 +31,8 @@ public class GameManager : MonoBehaviour
             StartCoroutine(RunIA(1, "White"));
         }  
      }
- 
+    
+     // tenta iniciar o script da IA em corotina / thread mas ainda não funciona
      IEnumerator RunIA(float waitTime, string color)
      {
          yield return new WaitForSeconds(waitTime);
@@ -48,8 +49,21 @@ public class GameManager : MonoBehaviour
 
     }
 
+    // função que ativa a visualização da promoção de peça
     public void setPromoteToChange(GameObject o){
         promoteToChange = o;
+        if (o.name.Contains("White"))
+        {
+            wPromotePlat.SetActive(true);
+        }else if (o.name.Contains("Black")){
+            bPromotePlat.SetActive(true);
+        }
+    }
+
+    //função que remove a visualização da promoção de peça
+    public void cleanPromotePlat(){
+        wPromotePlat.SetActive(false);
+        bPromotePlat.SetActive(false);
     }
     public GameObject getPromoteToChange(){
         return promoteToChange;;
@@ -59,6 +73,7 @@ public class GameManager : MonoBehaviour
         return turno;
     }
 
+    // desabilita a colisão das peças
     public void disableColliders(){
         coll = white.GetComponentsInChildren<Collider>();
         foreach(Collider c in coll){
@@ -104,6 +119,7 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(RunIA(0, "Black"));
             } 
         }
-        sp.cleanSelection();
+        sp.cleanSelection(true);
+        cleanPromotePlat();
     }
 }

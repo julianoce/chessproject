@@ -26,15 +26,18 @@ public class SelectPiece : MonoBehaviour {
     {
        
     }
-    //metodo que limpa a seleção de todas as peças
-    public void cleanSelection()
+    //metodo que limpa a seleção de todas as peças. A variável booleana indica se tira somente a borda (false)
+    // ou se limpa a seleção do objeto da peça também (true)
+    public void cleanSelection(bool p)
     {
         comp = board.GetComponentsInChildren<Outline>();
 
         foreach (Outline c in comp)
         {
             c.enabled = false;
-            ps.setSelected(null);
+            if(p){
+                ps.setSelected(null);
+            } 
         }
     }
 
@@ -46,7 +49,7 @@ public class SelectPiece : MonoBehaviour {
             if (this.tag == "whitePiece")
             {
                 bm.clearTiles();
-                cleanSelection();
+                cleanSelection(true);
                 //liga o outline da peça
                 this.GetComponent<Outline>().enabled = true;
                 //passa para o scrip do player qual peça esta selecionada
@@ -61,7 +64,7 @@ public class SelectPiece : MonoBehaviour {
             if (this.tag == "blackPiece")
             {
                 bm.clearTiles();
-                cleanSelection();
+                cleanSelection(true);
                //liga o outline da peça
                 this.GetComponent<Outline>().enabled = true;
                 //passa para o scrip do player qual peça esta selecionada
@@ -71,6 +74,6 @@ public class SelectPiece : MonoBehaviour {
             }
         
         }
-        gm.setPromoteToChange(this.gameObject);  
+        //gm.setPromoteToChange(this.gameObject);  
     }
 }

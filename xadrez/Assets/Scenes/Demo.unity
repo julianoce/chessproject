@@ -1318,7 +1318,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &815768939
 Transform:
   m_ObjectHideFlags: 0
@@ -1881,7 +1881,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraLook: {fileID: 480647211}
   speed: 0.15
-  active: 1
+  active: 0
 --- !u!1 &1062023366
 GameObject:
   m_ObjectHideFlags: 0
@@ -2278,7 +2278,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   white: {fileID: 1954849656}
   black: {fileID: 1218781057}
+  player1: Player
+  player2: Player
   turno: 1
+  wPromotePlat: {fileID: 815768938}
+  bPromotePlat: {fileID: 1454367610}
 --- !u!114 &1224411373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2675,7 +2679,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1454367611
 Transform:
   m_ObjectHideFlags: 0
