@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -28,7 +29,6 @@ public class GameManager : MonoBehaviour
             cm.active = true;
         }else if(player1.Equals("IA")&& player2.Equals("Player")){
             cm.setPlayer2();
-            StartCoroutine(RunIA(1, "White"));
         }  
      }
     
@@ -59,6 +59,19 @@ public class GameManager : MonoBehaviour
             bPromotePlat.SetActive(true);
         }
     }
+
+    // função para terminar o jogo quando o rei for eliminado
+    public void endGame(){
+        StartCoroutine(endGameWait(1));
+        turno = 0;
+    }
+
+    // wait assincrono para esperar a animação acabar
+    IEnumerator endGameWait(float waitTime)
+     {
+         yield return new WaitForSeconds(waitTime);
+        SceneManager.LoadScene("Menu");
+     }
 
     //função que remove a visualização da promoção de peça
     public void cleanPromotePlat(){

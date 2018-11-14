@@ -2278,8 +2278,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   white: {fileID: 1954849656}
   black: {fileID: 1218781057}
-  player1: Player
-  player2: Player
+  player1: IA
+  player2: IA
   turno: 1
   wPromotePlat: {fileID: 815768938}
   bPromotePlat: {fileID: 1454367610}
