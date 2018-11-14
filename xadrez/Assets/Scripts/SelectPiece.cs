@@ -12,6 +12,7 @@ public class SelectPiece : MonoBehaviour {
     private PlayerScript ps;
     private BoardMapping bm;
 
+
     // Use this for initialization
     void Start () {
         gm = GameObject.FindObjectOfType(typeof(GameManager)) as GameManager;
@@ -70,6 +71,6 @@ public class SelectPiece : MonoBehaviour {
             }
         
         }
-        
+        gm.setPromoteToChange(this.gameObject);  
     }
 }

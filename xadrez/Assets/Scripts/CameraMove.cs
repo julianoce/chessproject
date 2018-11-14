@@ -22,11 +22,7 @@ public class CameraMove : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         cameraLook.transform.LookAt(transform);
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            gm.mudaTurno();
-            select.cleanSelection();
-        }
+     
         if(active){
             if (gm.getTurno() == 2)
         {

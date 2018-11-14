@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public GameObject white, black;
     public int turno = 1;
+    private GameObject promoteToChange;
     private SelectPiece sp;
     private Collider[] coll;
     private IA ia;
@@ -22,6 +23,12 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void setPromoteToChange(GameObject o){
+        promoteToChange = o;
+    }
+    public GameObject getPromoteToChange(){
+        return promoteToChange;;
+    }
     public int getTurno()
     {
         return turno;

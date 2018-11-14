@@ -165,9 +165,10 @@ public class IA : MonoBehaviour {
 		return tab_aux;
 	}
 
+//Essa Utility eh a modo facil.
 	public int Utility(GameObject[][]tab){
-		int numPecasInimigo = 0;
-		int numPecas = 0;
+		int numPecasInimigo = br.NumPecasTime(tab, this.cor_adv);
+		int numPecas = br.NumPecasTime(tab, this.cor);
 		for(int i=0; i<tab.Length;i++){
 			for(int j=0; j<tab.Length;j++){
 				if(tab[i][j]){
@@ -199,14 +200,189 @@ public class IA : MonoBehaviour {
 					}
 
 					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("King")){
-						numPecasInimigo += 10000000;
+						numPecasInimigo += 1000000;
 					}
 					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("King")){
-						numPecas += 10000000;
+						numPecas += 1000000;
 					}
 				}
 			}
 		}
 		return numPecas - numPecasInimigo;
 	}
+
+
+
+	public int UtilityDificil(GameObject[][]tab){
+	
+	int[,] black_pawn_matrix = new int[8,8]{
+		{ 0,  0,  0,  0,  0,  0,  0,  0},
+     {4,  8,  8,-17,-17,  8,  8,  4},
+     {4, -4, -8,  4,  4, -8, -4,  4},
+     {0,  4,  8, 17, 17,  8,  4,  0},
+     {4,  8, 12, 21, 21, 12,  8,  4},
+    {25, 25, 29, 29, 29, 29, 25, 25},
+    	{75, 75, 75, 75, 75, 75, 75, 75},
+     {0,  0,  0,  0,  0,  0,  0,  0}
+	};
+	
+	int [,] white_pawn_matrix = new int[8,8] {
+    { 0,  0,  0,  0,  0,  0,  0,  0},
+    {75, 75, 75, 75, 75, 75, 75, 75},
+    {25, 25, 29, 29, 29, 29, 25, 25},
+     {4,  8, 12, 21, 21, 12,  8,  4},
+     {0,  4,  8, 17, 17,  8,  4,  0},
+     {4, -4, -8,  4,  4, -8, -4,  4},
+     {4,  8,  8,-17,-17,  8,  8,  4},
+     {0,  0,  0,  0,  0,  0,  0,  0}};  
+	 	 
+	int [,] white_knight_matrix = new int[8,8] {
+    {-50,-40,-30,-30,-30,-30,-40,-50},
+    {-40,-20,  0,  0,  0,  0,-20,-40},
+    {-30,  0, 10, 15, 15, 10,  0,-30},
+     {-30,  5, 15, 20, 20, 15,  5,-30},
+     {-30,  0, 15, 20, 20, 15,  0,-30},
+     {-30,  5, 10, 15, 15, 10,  5,-30},
+     {-40,-20,  0,  5,  5,  0,-20,-40},
+     {-50,-40,-30,-30,-30,-30,-40,-50}}; 
+
+	 int [,] black_knight_matrix = new int[8,8] {
+    {-50,-40,-30,-30,-30,-30,-40,-50},
+     {-40,-20,  0,  5,  5,  0,-20,-40},
+     {-30,  5, 10, 15, 15, 10,  5,-30},
+     {-30,  0, 15, 20, 20, 15,  0,-30},
+     {-30,  5, 15, 20, 20, 15,  5,-30},
+    {-30,  0, 10, 15, 15, 10,  0,-30},
+	{-40,-20,  0,  0,  0,  0,-20,-40},
+     {-50,-40,-30,-30,-30,-30,-40,-50}}; 
+	 
+int [,] black_bishop_matrix = new int[8,8] {
+    {-20,-10,-10,-10,-10,-10,-10,-20},
+	{-10,  5,  0,  0,  0,  0,  5,-10},
+	{-10, 10, 10, 10, 10, 10, 10,-10},
+	{-10,  0, 10, 10, 10, 10,  0,-10},
+	{-10,  5,  5, 10, 10,  5,  5,-10},
+	{-10,  0,  5, 10, 10,  5,  0,-10},
+	{-10,  0,  0,  0,  0,  0,  0,-10},
+	{-20,-10,-10,-10,-10,-10,-10,-20}}; 
+
+	int [,] white_bishop_matrix = new int[8,8] {
+    {-20,-10,-10,-10,-10,-10,-10,-20},
+	{-10,  0,  0,  0,  0,  0,  0,-10},
+	{-10,  0,  5, 10, 10,  5,  0,-10},
+	{-10,  5,  5, 10, 10,  5,  5,-10},
+	{-10,  0, 10, 10, 10, 10,  0,-10},
+	{-10, 10, 10, 10, 10, 10, 10,-10},
+	{-10,  5,  0,  0,  0,  0,  5,-10},
+	{-20,-10,-10,-10,-10,-10,-10,-20}};  
+
+	int [,] black_rook_matrix = new int[8,8] {
+	{0,  0,  0,  5,  5,  0,  0,  0},
+	{-5,  0,  0,  0,  0,  0,  0, -5},
+	{-5,  0,  0,  0,  0,  0,  0, -5},
+	{-5,  0,  0,  0,  0,  0,  0, -5},
+	{-5,  0,  0,  0,  0,  0,  0, -5},
+	{-5,  0,  0,  0,  0,  0,  0, -5},
+	{5, 10, 10, 10, 10, 10, 10,  5},
+	{0,  0,  0,  0,  0,  0,  0,  0},
+	};  
+	
+
+	int [,] white_rook_matrix = new int[8,8] {
+	{0,  0,  0,  0,  0,  0,  0,  0},
+	{5, 10, 10, 10, 10, 10, 10,  5},
+	{-5,  0,  0,  0,  0,  0,  0, -5},
+	{-5,  0,  0,  0,  0,  0,  0, -5},
+	{-5,  0,  0,  0,  0,  0,  0, -5},
+	{-5,  0,  0,  0,  0,  0,  0, -5},
+	{-5,  0,  0,  0,  0,  0,  0, -5},
+	{0,  0,  0,  5,  5,  0,  0,  0}};  
+	
+	int [,] black_queen_matrix = new int[8,8] {
+		{-20,-10,-10, -5, -5,-10,-10,-20},
+		{-10,  0,  5,  0,  0,  0,  0,-10},
+		{-10,  5,  5,  5,  5,  5,  0,-10},
+		{0,  0,  5,  5,  5,  5,  0, -5},
+		{-5,  0,  5,  5,  5,  5,  0, -5},
+		{-10,  0,  5,  5,  5,  5,  0,-10},
+		{-10,  0,  0,  0,  0,  0,  0,-10},
+		{-20,-10,-10, -5, -5,-10,-10,-20}
+		};
+	
+	int [,] white_queen_matrix = new int[8,8] {
+		{-20,-10,-10, -5, -5,-10,-10,-20},
+		{-10,  0,  0,  0,  0,  0,  0,-10},
+		{-10,  0,  5,  5,  5,  5,  0,-10},
+		{-5,  0,  5,  5,  5,  5,  0, -5},
+		{0,  0,  5,  5,  5,  5,  0, -5},
+		{-10,  5,  5,  5,  5,  5,  0,-10},
+		{-10,  0,  5,  0,  0,  0,  0,-10},
+		{-20,-10,-10, -5, -5,-10,-10,-20}};
+
+	int [,] black_king_matrix_middle = new int[8,8] {
+			{20, 30, 10,  0,  0, 10, 30, 20},
+			{20, 20,  0,  0,  0,  0, 20, 20},
+			{-10,-20,-20,-20,-20,-20,-20,-10},
+			{-20,-30,-30,-40,-40,-30,-30,-20},
+			{-30,-40,-40,-50,-50,-40,-40,-30},
+			{-30,-40,-40,-50,-50,-40,-40,-30},
+			{-30,-40,-40,-50,-50,-40,-40,-30},
+			{-30,-40,-40,-50,-50,-40,-40,-30},
+			};
+
+	int [,] white_king_matrix_middle = new int[8,8] {
+			{-30,-40,-40,-50,-50,-40,-40,-30},
+			{-30,-40,-40,-50,-50,-40,-40,-30},
+			{-30,-40,-40,-50,-50,-40,-40,-30},
+			{-30,-40,-40,-50,-50,-40,-40,-30},
+			{-20,-30,-30,-40,-40,-30,-30,-20},
+			{-10,-20,-20,-20,-20,-20,-20,-10},
+			{20, 20,  0,  0,  0,  0, 20, 20},
+			{20, 30, 10,  0,  0, 10, 30, 20}};
+	int value_white = 0;
+	int value_black = 0;
+
+	for(int i=0; i<tab.Length;i++){
+			for(int j=0; j<tab.Length;j++){
+				if(tab[i][j]){
+					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("Queen")){
+						value_white += white_queen_matrix[i,j];
+					}
+					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("Queen")){
+						value_black+= black_queen_matrix[i,j];
+					}
+					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("Rook")){
+						value_white += white_rook_matrix[i,j];
+					}
+					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("Rook")){
+						value_black += black_rook_matrix[i,j];
+						
+					}
+
+					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("Knight") || tab[i][j].name.Contains("Bishop")){
+						value_white += white_knight_matrix[i,j];
+					}
+					if(tab[i][j].name.StartsWith(this.cor) && (tab[i][j].name.Contains("Knight") || tab[i][j].name.Contains("Bishop"))){
+						value_black += black_knight_matrix[i,j];						
+					}
+
+					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("Pawn")){
+						value_white += white_pawn_matrix[i,j];
+					}
+					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("Pawn")){
+						value_black += black_pawn_matrix[i,j];
+					}
+
+					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("King")){
+						value_white += white_king_matrix_middle[i,j];
+					}
+					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("King")){
+						value_black += black_king_matrix_middle[i,j];
+					}
+				}
+			}
+	}
+			return value_white - value_black;
+
+}
 }
