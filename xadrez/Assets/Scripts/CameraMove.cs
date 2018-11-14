@@ -18,6 +18,10 @@ public class CameraMove : MonoBehaviour {
 
         transform.rotation = Quaternion.Euler(0, 280, 0);
     }
+
+    public void setPlayer2(){
+        transform.eulerAngles = new Vector3(0, 80, 0);
+    }
 	
 	// Update is called once per frame
 	void Update () {
