@@ -84,6 +84,7 @@ public class MenuManager : MonoBehaviour {
 
 	public void quitGame()
 	{
+		Time.timeScale = 1;
 		SceneManager.LoadScene("Menu");
 	}
 
