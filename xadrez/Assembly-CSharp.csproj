@@ -109,6 +109,7 @@
      <Compile Include="Assets\Scripts\IA.cs" />
      <Compile Include="Assets\Scripts\MenuManager.cs" />
      <Compile Include="Assets\Scripts\PlayerScript.cs" />
+     <Compile Include="Assets\Scripts\Promotion.cs" />
      <Compile Include="Assets\Scripts\SelectPiece.cs" />
      <Compile Include="Assets\Scripts\SelectTile.cs" />
      <None Include="Assets\PostProcessing\Resources\Shaders\DepthOfField.shader" />

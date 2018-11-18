@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public GameObject white, black;
-    public string player1, player2;
+    public string player1, player2, mode;
     public int turno = 1;
     private GameObject promoteToChange;
     public GameObject wPromotePlat, bPromotePlat;
@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        mode = MenuManager.mode;
+        player1 = MenuManager.p1;
+        player2 = MenuManager.p2;
         sp = GameObject.FindObjectOfType(typeof(SelectPiece)) as SelectPiece;
         ia =  GameObject.FindObjectOfType(typeof(IA)) as IA;
         cm = GameObject.FindObjectOfType(typeof(CameraMove)) as CameraMove;
@@ -37,8 +40,8 @@ public class GameManager : MonoBehaviour
      {
          yield return new WaitForSeconds(waitTime);
          
-        Debug.Log("ia rodando em coroutine");
-        Debug.Log(color);
+        //Debug.Log("ia rodando em coroutine");
+       // Debug.Log(color);
         ia.buscar(color);
         
      }

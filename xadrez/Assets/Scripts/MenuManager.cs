@@ -31,24 +31,60 @@ public class MenuManager : MonoBehaviour {
     public RawImage img_sem_alto_falante;
     bool sound = true;
 
-	public static string whitePieces, blackPieces, mode; 
+	public static string whitePieces, blackPieces, mode, p1, p2; 
 
-	
+	Scene sc;
 	// Use this for initialization
 	void Start () {
+		sc = SceneManager.GetActiveScene();
 		menu =(int) MenuType.none;
 		animMain = mainMenu.GetComponent<Animator>();
 		animPause = pauseMenu.GetComponent<Animator>();
 		animRules = rulesMenu.GetComponent<Animator>();
 		animNewGame = newGameMenu.GetComponent<Animator>();
-
-		animMain.Play("slideIn");
+		if(sc.name == "Menu"){
+			animMain.Play("slideIn");
+			mode = "facil";
+		}
+		else if(sc.name == "Demo")
+		{
+			pauseMenu.SetActive(false);
+			rulesMenu.SetActive(false);
+		}
+		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
-		
+		 if(sc.name == "Demo"){
+			 if(Input.GetKeyDown(KeyCode.Escape)){
+				pauseMenu.SetActive(true);
+				Time.timeScale = 0;
+			 }
+		 }
+	}
+
+	public void continueGame()
+	{
+		pauseMenu.SetActive(false);
+		Time.timeScale = 1;
+	}
+
+	public void toRules()
+	{
+		pauseMenu.SetActive(false);
+		rulesMenu.SetActive(true);
+	}
+
+	public void backToPause()
+	{
+		pauseMenu.SetActive(true);
+		rulesMenu.SetActive(false);
+	}
+
+	public void quitGame()
+	{
+		SceneManager.LoadScene("Menu");
 	}
 
 	
@@ -266,10 +302,14 @@ public class MenuManager : MonoBehaviour {
 				whitePieces = "player";
 			else
 				whitePieces = "cpu";
-			
+
+			p1 = cpu1.enabled? "IA" : "Player";
+			p2 = cpu2.enabled? "IA" : "Player";
 			SceneManager.LoadScene("Demo");
 			break;
 		}
+
+		
 	}
 
 	
