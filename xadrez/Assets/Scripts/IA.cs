@@ -15,7 +15,7 @@ public class IA : MonoBehaviour {
 	private string cor_adv;
 	private List<Vector2> jogadas;
 	private List<GameObject> quem;
-	const int MAX_ITE = 4;
+	const int MAX_ITE = 3;
 
 	void Start () {
 		br = GameObject.FindObjectOfType(typeof(BoardRules)) as BoardRules;
@@ -31,7 +31,13 @@ public class IA : MonoBehaviour {
 	void Update () {
 		
 	}
-	public void buscar(){
+	public void buscar(string c){
+		cor = c;
+		if(cor.Equals("Black")){
+			cor_adv = "white";
+		}else{
+			cor_adv = "Black";
+		}
 		//receber como parametro cor escolhida pelo jogador e a dificuldade do jogo
 		GameObject[][] tab = br.GetTabuleiro();
 		GameObject[][] tab_aux = copiar(tab);
@@ -58,7 +64,7 @@ public class IA : MonoBehaviour {
 
 	int Max(GameObject[][] tab, int alpha, int beta, int poda){
 		if(poda == MAX_ITE)
-			return UtilityDificil(tab);
+			return Utility(tab);
 
 		int v = int.MinValue;
 
@@ -208,7 +214,6 @@ public class IA : MonoBehaviour {
 
 
 	public int UtilityDificil(GameObject[][]tab){
-	int value = 0;
 	
 	int[,] black_pawn_matrix = new int[8,8]{
 		{ 0,  0,  0,  0,  0,  0,  0,  0},

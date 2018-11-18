@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Clock : MonoBehaviour {
 
@@ -33,8 +34,15 @@ public class Clock : MonoBehaviour {
             totalSec = (minutes * 60) + seconds;
         }
         regulaPrint();
+        StartCoroutine(oi());
     }
 	
+    IEnumerator oi()
+    {
+        Debug.Log("hello world!!!");
+        yield return null;
+    }
+
 	// Update is called once per frame
 	void Update () {
         if (gm.getTurno() == player)

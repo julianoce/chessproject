@@ -11,12 +11,15 @@ public class SelectTile : MonoBehaviour {
 
     private PlayerScript ps;
     private BoardRules br;
+    private SelectPiece sp;
 
 	// Use this for initialization
 	void Start () {
         enemy = false;
         ps = GameObject.FindObjectOfType(typeof(PlayerScript)) as PlayerScript;
         br = GameObject.FindObjectOfType(typeof(BoardRules)) as BoardRules;
+        sp = GameObject.FindObjectOfType(typeof(SelectPiece)) as SelectPiece;
+
         ini = this.GetComponentInChildren<SpriteRenderer>().color;
         children = GetComponentsInChildren<SpriteRenderer>();
         verificaInimigo();
@@ -27,6 +30,7 @@ public class SelectTile : MonoBehaviour {
       
     }
 
+    // verifica se tem inimigo em cima do tile e moda a cor para a cor de ataque
     void verificaInimigo (){
         string respStr = this.name;
         string[] resp = respStr.Split(new char[] { ',' });
@@ -37,8 +41,6 @@ public class SelectTile : MonoBehaviour {
         }
 
         Vector2 vec = new Vector2(respf[0], respf[1]);
-        Debug.Log(vec);
-        Debug.Log(this);
         if(br.verifyPosition(vec)){
             setEnemyColor();
         }
@@ -70,6 +72,7 @@ public class SelectTile : MonoBehaviour {
     {
         if (Input.GetMouseButtonDown(0))
         {
+            sp.cleanSelection(false);
             ps.movePiece(null, this.gameObject);
         }
     }
