@@ -20,18 +20,23 @@ public class MenuManager : MonoBehaviour {
 	int menu;
 	
 
-	public GameObject player1;
-    public GameObject player2;
-
-	public RawImage player1w, player2w, player1b, player2b, cpu1, cpu2 ;
+	
+    public GameObject player1, player2,cpu1, cpu2;
+	
 	public Text arrow1, arrow2, arrow3, arrow4;
 	public Button bt1, bt2, bt3, bt4; 
 
 	public RawImage img_alto_falante;
     public RawImage img_sem_alto_falante;
-    bool sound = true;
+   
 
-	public static string whitePieces, blackPieces, mode, p1, p2; 
+	//guarda opçao na hora de escolher jogador. 
+	bool cpuw, cpub; 
+
+	public static string mode, p1, p2; 
+	static bool sound = true;
+
+	public AudioSource menuMusic, gameMusic, soundMenuIn, soundMenuOut, soundClick;
 
 	Scene sc;
 	// Use this for initialization
@@ -44,12 +49,29 @@ public class MenuManager : MonoBehaviour {
 		animNewGame = newGameMenu.GetComponent<Animator>();
 		if(sc.name == "Menu"){
 			animMain.Play("slideIn");
+			soundMenuIn.Play();
 			mode = "facil";
 		}
 		else if(sc.name == "Demo")
 		{
 			pauseMenu.SetActive(false);
 			rulesMenu.SetActive(false);
+		}
+
+		cpuw = false;
+		cpub = true;
+
+		img_alto_falante.enabled = sound;
+		img_sem_alto_falante.enabled = !sound;
+		if(sound)
+		{
+			menuMusic.Play();
+			gameMusic.Play();
+		}
+		else
+		{
+			menuMusic.Stop();
+			gameMusic.Stop();
 		}
 		
 	}
@@ -60,6 +82,9 @@ public class MenuManager : MonoBehaviour {
 			 if(Input.GetKeyDown(KeyCode.Escape)){
 				pauseMenu.SetActive(true);
 				Time.timeScale = 0;
+				img_alto_falante.enabled = sound;
+				img_sem_alto_falante.enabled = !sound;
+				gameMusic.Pause();
 			 }
 		 }
 	}
@@ -68,22 +93,31 @@ public class MenuManager : MonoBehaviour {
 	{
 		pauseMenu.SetActive(false);
 		Time.timeScale = 1;
+		if(sound)
+			gameMusic.Play();
+		soundClick.Play();
 	}
 
 	public void toRules()
 	{
+		
+		soundClick.Play();
 		pauseMenu.SetActive(false);
 		rulesMenu.SetActive(true);
 	}
 
 	public void backToPause()
 	{
+		
+		soundClick.Play();
 		pauseMenu.SetActive(true);
 		rulesMenu.SetActive(false);
 	}
 
 	public void quitGame()
 	{
+		
+		soundClick.Play();
 		Time.timeScale = 1;
 		SceneManager.LoadScene("Menu");
 	}
@@ -93,149 +127,88 @@ public class MenuManager : MonoBehaviour {
 
 	public void onClick(int menuOut)//}, int menuIn)
 	{
+		
+		soundClick.Play();
 	
 		switch(menuOut)
 		{
 			case (int)MenuType.main:
 			animMain.Play("slideOut");
+			soundMenuOut.Play();
 			break;
 
 			case (int)MenuType.rules:
 			animRules.Play("slideOut");
+			soundMenuOut.Play();
 			break;
 
 			case (int)MenuType.newGame:
 			animNewGame.Play("slideOut");
+			soundMenuOut.Play();
 			break;
 
 			case (int)MenuType.pause:
 			animPause.Play("slideOut");
+			soundMenuOut.Play();
 			break;
 		}
 	}
 
 	public void toMenu(int menuIn){
-
+		
+		soundClick.Play();
 		this.menu = menuIn;
 	}
 
 	public void Quit(){
+		
+		soundClick.Play();
 		Application.Quit();
 	}
 
 	public void soundOnOff()
 	{
+		
+		soundClick.Play();
 		sound = !sound;
 		img_alto_falante.enabled = sound;
 		img_sem_alto_falante.enabled = !sound;
+		if(sound)
+		{
+			menuMusic.Play();
+			gameMusic.Play();
+		}
+		else
+		{
+			menuMusic.Stop();
+			gameMusic.Stop();
+		}
+		
 	}
 
 	public void choosePlayer(int arrow)
 	{
-		switch (arrow)
+		
+		soundClick.Play();
+		if(arrow == 1 || arrow == 2)
 		{
-			case 1:
-			if(arrow1.text == "<"){
-				cpu1.enabled = false;
-				player1w.enabled = true;
-				arrow1.text = ">";
-				arrow2.text = "";
-				bt2.interactable = false;
-				arrow3.text = "";
-				bt3.interactable = false;
-			}
-			else
-			{
-				cpu1.enabled = true;
-				player1w.enabled = false;
-				arrow1.text = "<";
-				arrow2.text = ">";
-				bt2.interactable = true;
-				if( cpu2.enabled)
-				{
-				arrow3.text = "<";
-				bt3.interactable = true;
-				}
-			}
-			break;
-			case 2:
-			if(arrow2.text == ">"){
-				cpu1.enabled = false;
-				player1b.enabled = true;
-				arrow1.text = "";
-				bt1.interactable = false;
-				arrow2.text = "<";
-				arrow4.text = "";
-				bt4.interactable = false;
-			}
-			else
-			{
-				cpu1.enabled = true;
-				player1b.enabled = false;
-				arrow1.text = "<";
-				bt1.interactable = true;
-				arrow2.text = ">";
-				if( cpu2.enabled)
-				{
-				arrow4.text = ">";
-				bt4.interactable = true;
-				}
-			}
-			break;
-			case 3:
-			if(arrow3.text == "<"){
-			cpu2.enabled = false;
-			player2w.enabled = true;
-			arrow3.text = ">";
-			arrow1.text = "";
-			bt1.interactable = false;
-			arrow4.text = "";
-			bt4.interactable = false;
-			}
-			else
-			{
-				cpu2.enabled = true;
-				player2w.enabled = false;
-				arrow3.text = "<";
-				arrow4.text = ">";
-				bt4.interactable = true;
-				if( cpu1.enabled)
-				{
-				arrow1.text = "<";
-				bt1.interactable = true;
-				}
-			}
-			break;
-			case 4:
-			if(arrow4.text == ">"){
-				cpu2.enabled = false;
-				player2b.enabled = true;
-				arrow3.text = "";
-				bt3.interactable = false;
-				arrow4.text = "<";
-				arrow2.text = "";
-				bt2.interactable = false;
-			}
-			else
-			{
-				cpu2.enabled = true;
-				player2b.enabled = false;
-				arrow3.text = "<";
-				bt3.interactable = true;
-				arrow4.text = ">";
-				if( cpu1.enabled)
-				{
-					arrow2.text = ">";
-					bt2.interactable = true;
-				}
-			}
-			break;
-			default:
-			break;
+			cpuw = !cpuw;
+			cpu1.SetActive(cpuw);
+			player1.SetActive(!cpuw);
 		}
+
+		else if(arrow == 3 || arrow == 4)
+		{
+			cpub = !cpub;
+			cpu2.SetActive(cpub);
+			player2.SetActive(!cpub);
+		}
+		
 	}
 
 	public void changeLevel(){
+		
+		soundClick.Play();
 		if(level.text == "FÁCIL")
 		{
 			level.text = "DIFÍCIL";
@@ -273,39 +246,31 @@ public class MenuManager : MonoBehaviour {
 			case (int)MenuType.main:
 			
 				animMain.Play("slideIn");
+				soundMenuIn.Play();
 			
 			break;
 			case (int)MenuType.rules:
 			
 				animRules.Play("slideIn");
-			
+				soundMenuIn.Play();
 			
 			break;
 			case (int)MenuType.newGame:
 			
 				animNewGame.Play("slideIn");
-			
+				soundMenuIn.Play();
 			break;
 			case (int)MenuType.pause:
 		
 				animPause.Play("slideIn");
-				
+				soundMenuIn.Play();
 			
 			break;
 
+			//menu = -1
 			default:
-			if(player1b.enabled || player2b.enabled){
-				blackPieces = "player";
-			}else
-				blackPieces = "cpu";
-
-			if(player1w.enabled || player2w.enabled)
-				whitePieces = "player";
-			else
-				whitePieces = "cpu";
-
-			p1 = cpu1.enabled? "IA" : "Player";
-			p2 = cpu2.enabled? "IA" : "Player";
+			p1 = cpuw? "IA" : "Player";
+			p2 = cpub? "IA" : "Player";
 			SceneManager.LoadScene("Demo");
 			break;
 		}
