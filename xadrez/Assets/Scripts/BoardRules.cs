@@ -10,9 +10,12 @@ public class BoardRules : MonoBehaviour {
 	private Vector2 reiBranco;
 	private Vector2 reiPreto;
 	Vector2 posPeca = new Vector2();
+
+	private GameManager gm;
 	
 	// Use this for initialization
 	void Start () {
+		gm = FindObjectOfType(typeof(GameManager)) as GameManager;
 		tabuleiro = new GameObject[8][];
 		for(int i = 0; i < tabuleiro.Length; i++) {
 			tabuleiro[i] = new GameObject[8];
@@ -803,8 +806,14 @@ public class BoardRules : MonoBehaviour {
 	}
 
 	public void AtualizaPosicoes(GameObject peca, Vector2 pos) {
+		
 		if(tabuleiro[(int)pos.x][(int)pos.y]) { 
-			Destroy(tabuleiro[(int)pos.x][(int)pos.y]);
+			if(tabuleiro[(int)pos.x][(int)pos.y].name.Contains("King")){
+				gm.endGame();
+				Destroy(tabuleiro[(int)pos.x][(int)pos.y]);
+			}else{
+				Destroy(tabuleiro[(int)pos.x][(int)pos.y]);
+			}	
 		}
 		if(peca.tag == "whitePiece") {
 			tabuleiro[(int)pos.x][(int)pos.y] = brancas.transform.Find(peca.name).gameObject;

@@ -18,6 +18,8 @@ public class PlayerScript : MonoBehaviour {
 
     public bool podeJogar;
 
+    public AudioSource toc;
+
     private bool ctrlMove;
 	// Use this for initialization
 	void Start () {
@@ -65,6 +67,7 @@ public class PlayerScript : MonoBehaviour {
             br.AtualizaPosicoes(piece, vec);
             
             ctrlMove = true;
+            toc.Play();
         } 
     }
 
