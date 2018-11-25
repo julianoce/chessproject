@@ -6,6 +6,11 @@ public class BoardRules : MonoBehaviour {
 
 	public GameObject brancas;
 	public GameObject pretas;
+
+	// false se nunca andou, true se já
+	// peão n posição 0 = peão 1. peão na posição 1 = peão 2 e por ai vai
+	public bool[] peoesPretos;
+	public bool[] peoesBrancos;
 	private GameObject[][] tabuleiro;
 	private Vector2 reiBranco;
 	private Vector2 reiPreto;
@@ -20,6 +25,8 @@ public class BoardRules : MonoBehaviour {
 		for(int i = 0; i < tabuleiro.Length; i++) {
 			tabuleiro[i] = new GameObject[8];
 			for(int j = 0; j < tabuleiro[i].Length; j++) {
+				peoesPretos[i] = false;
+				peoesBrancos[i] = false;
 				if(i == 1) {
 					string nome = "White Pawn ";
 					nome += (j+1).ToString();
@@ -132,13 +139,14 @@ public class BoardRules : MonoBehaviour {
 
 		// Movimento do peões
 		if(peca.name.StartsWith("White Pawn")) {
+			int numeroPeao = (int)peca.name.ToCharArray()[11] - 49;
 			if((int)posPeca.x + 1 < tabuleiro.Length) {
 				if(tabuleiro[(int)posPeca.x + 1][(int)posPeca.y] == null)
 					// Só pode andar pra frente se estiver vazio
 					resultado.Add(new Vector2(posPeca.x + 1, posPeca.y));
-					if(peca.GetComponent<Piece>().jogou == false) {
+					if(peca.name.StartsWith("White") && peoesBrancos[numeroPeao] == false) {
 						resultado.Add(new Vector2(posPeca.x + 2, posPeca.y));
-						peca.GetComponent<Piece>().jogar();
+						peoesBrancos[numeroPeao] = true;
 					} 
 				if((int)posPeca.y + 1 < tabuleiro.Length && 
 					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y + 1] != null && 
@@ -155,13 +163,14 @@ public class BoardRules : MonoBehaviour {
 			}
 			
 		} else if(peca.name.StartsWith("Black Pawn")) {
+			int numeroPeao = (int)peca.name.ToCharArray()[11] - 49;
 			if((int)posPeca.x - 1 >= 0) {
 				if(tabuleiro[(int)posPeca.x - 1][(int)posPeca.y] == null)
 					// Só pode andar pra frente se estiver vazio
 					resultado.Add(new Vector2(posPeca.x - 1, posPeca.y));
-					if(peca.GetComponent<Piece>().jogou == false) {
-						resultado.Add(new Vector2(posPeca.x - 2, posPeca.y));
-						peca.GetComponent<Piece>().jogar();
+					if(peca.name.StartsWith("Black") && peoesPretos[numeroPeao] == false) {
+						resultado.Add(new Vector2(posPeca.x + 2, posPeca.y));
+						peoesPretos[numeroPeao] = true;
 					} 
 				if((int)posPeca.y + 1 < tabuleiro.Length && 
 					tabuleiro[(int)posPeca.x - 1][(int)posPeca.y + 1] != null && 
