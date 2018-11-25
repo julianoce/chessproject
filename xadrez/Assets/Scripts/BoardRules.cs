@@ -22,11 +22,12 @@ public class BoardRules : MonoBehaviour {
 	void Start () {
 		gm = FindObjectOfType(typeof(GameManager)) as GameManager;
 		tabuleiro = new GameObject[8][];
+		peoesBrancos = new bool[8];
+		peoesPretos = new bool[8];
 		for(int i = 0; i < tabuleiro.Length; i++) {
 			tabuleiro[i] = new GameObject[8];
 			for(int j = 0; j < tabuleiro[i].Length; j++) {
-				peoesPretos[i] = false;
-				peoesBrancos[i] = false;
+				
 				if(i == 1) {
 					string nome = "White Pawn ";
 					nome += (j+1).ToString();
@@ -140,13 +141,13 @@ public class BoardRules : MonoBehaviour {
 		// Movimento do peões
 		if(peca.name.StartsWith("White Pawn")) {
 			int numeroPeao = (int)peca.name.ToCharArray()[11] - 49;
+			Debug.Log(numeroPeao);
 			if((int)posPeca.x + 1 < tabuleiro.Length) {
 				if(tabuleiro[(int)posPeca.x + 1][(int)posPeca.y] == null)
 					// Só pode andar pra frente se estiver vazio
 					resultado.Add(new Vector2(posPeca.x + 1, posPeca.y));
-					if(peca.name.StartsWith("White") && peoesBrancos[numeroPeao] == false) {
+					if(peca.name.StartsWith("White") && peoesBrancos[numeroPeao] == false && tabuleiro[(int)posPeca.x + 2][(int)posPeca.y] == null) {
 						resultado.Add(new Vector2(posPeca.x + 2, posPeca.y));
-						peoesBrancos[numeroPeao] = true;
 					} 
 				if((int)posPeca.y + 1 < tabuleiro.Length && 
 					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y + 1] != null && 
@@ -159,7 +160,8 @@ public class BoardRules : MonoBehaviour {
 					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y - 1].name.StartsWith("Black")) {
 					// Comer para diagonal direita
 					resultado.Add(new Vector2(posPeca.x + 1, posPeca.y - 1));
-				} 
+				}
+				//peoesBrancos[numeroPeao] = true;
 			}
 			
 		} else if(peca.name.StartsWith("Black Pawn")) {
@@ -168,9 +170,9 @@ public class BoardRules : MonoBehaviour {
 				if(tabuleiro[(int)posPeca.x - 1][(int)posPeca.y] == null)
 					// Só pode andar pra frente se estiver vazio
 					resultado.Add(new Vector2(posPeca.x - 1, posPeca.y));
-					if(peca.name.StartsWith("Black") && peoesPretos[numeroPeao] == false) {
-						resultado.Add(new Vector2(posPeca.x + 2, posPeca.y));
-						peoesPretos[numeroPeao] = true;
+					if(peca.name.StartsWith("Black") && peoesPretos[numeroPeao] == false && tabuleiro[(int)posPeca.x - 2][(int)posPeca.y] == null) {
+						resultado.Add(new Vector2(posPeca.x - 2, posPeca.y));
+						
 					} 
 				if((int)posPeca.y + 1 < tabuleiro.Length && 
 					tabuleiro[(int)posPeca.x - 1][(int)posPeca.y + 1] != null && 
@@ -184,7 +186,8 @@ public class BoardRules : MonoBehaviour {
 					// Comer para diagonal esquerda em relação as peças pretas
 					resultado.Add(new Vector2(posPeca.x - 1, posPeca.y - 1));
 				} 
-			} 
+			}
+			//peoesPretos[numeroPeao] = true; 
 		}
 
 		// Movimento das torres
@@ -824,10 +827,20 @@ public class BoardRules : MonoBehaviour {
 				Destroy(tabuleiro[(int)pos.x][(int)pos.y]);
 			}	
 		}
+
+			
 		if(peca.tag == "whitePiece") {
 			tabuleiro[(int)pos.x][(int)pos.y] = brancas.transform.Find(peca.name).gameObject;
+			if(peca.name.Contains("Pawn")) {
+				int numeroPeao = (int)peca.name.ToCharArray()[11] - 49;
+				peoesBrancos[numeroPeao] = true;
+			}
 		} else {
 			tabuleiro[(int)pos.x][(int)pos.y] = pretas.transform.Find(peca.name).gameObject;
+			if(peca.name.Contains("Pawn")) {
+				int numeroPeao = (int)peca.name.ToCharArray()[11] - 49;
+				peoesPretos[numeroPeao] = true;
+			}
 		}
 		
 		tabuleiro[(int)posPeca.x][(int)posPeca.y] = null;
