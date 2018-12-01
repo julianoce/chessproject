@@ -856,7 +856,7 @@ public class BoardRules : MonoBehaviour {
 		int y = (int)posReiInimigo.y;
 		List<Vector2> mov = MovimentosPossiveis(t, ultimaPeca);
 		foreach(Vector2 v in mov) {
-			if((int)v.x = x && (int)v.y = y) {
+			if((int)v.x == x && (int)v.y == y) {
 				return true;
 			}
 		}
