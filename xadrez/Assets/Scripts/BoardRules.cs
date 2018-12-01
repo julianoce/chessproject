@@ -11,6 +11,15 @@ public class BoardRules : MonoBehaviour {
 	// peão n posição 0 = peão 1. peão na posição 1 = peão 2 e por ai vai
 	public bool[] peoesPretos;
 	public bool[] peoesBrancos;
+
+	// posição 0 é o rei branco, posição 1 é o rei preto
+	// false se nunca andou, true se já
+	public bool[] reiAndou;
+	// posição 0 é a torre mais perto, posilão 1 é torre mais longa
+	public bool[] torresBrancas;
+	public bool[] torresPretas;
+	private bool roque;
+
 	private GameObject[][] tabuleiro;
 	private Vector2 reiBranco;
 	private Vector2 reiPreto;
@@ -21,9 +30,13 @@ public class BoardRules : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		gm = FindObjectOfType(typeof(GameManager)) as GameManager;
+		roque = false;
 		tabuleiro = new GameObject[8][];
 		peoesBrancos = new bool[8];
 		peoesPretos = new bool[8];
+		reiAndou = new bool[2];
+		torresBrancas = new bool[2];
+		torresPretas = new bool[2];
 		for(int i = 0; i < tabuleiro.Length; i++) {
 			tabuleiro[i] = new GameObject[8];
 			for(int j = 0; j < tabuleiro[i].Length; j++) {
@@ -122,6 +135,7 @@ public class BoardRules : MonoBehaviour {
 		return MovimentosPossiveis(this.tabuleiro, peca);
 	}
 	public List<Vector2> MovimentosPossiveis(GameObject[][] tabuleiro, GameObject peca) {
+		roque = false;
 		posPeca = new Vector2();
 		List<Vector2> resultado = new List<Vector2>();
 		if(tabuleiro == null) {
@@ -141,14 +155,14 @@ public class BoardRules : MonoBehaviour {
 		// Movimento do peões
 		if(peca.name.StartsWith("White Pawn")) {
 			int numeroPeao = (int)peca.name.ToCharArray()[11] - 49;
-			Debug.Log(numeroPeao);
 			if((int)posPeca.x + 1 < tabuleiro.Length) {
-				if(tabuleiro[(int)posPeca.x + 1][(int)posPeca.y] == null)
+				if(tabuleiro[(int)posPeca.x + 1][(int)posPeca.y] == null) {
 					// Só pode andar pra frente se estiver vazio
 					resultado.Add(new Vector2(posPeca.x + 1, posPeca.y));
 					if(peca.name.StartsWith("White") && peoesBrancos[numeroPeao] == false && tabuleiro[(int)posPeca.x + 2][(int)posPeca.y] == null) {
 						resultado.Add(new Vector2(posPeca.x + 2, posPeca.y));
 					} 
+				}
 				if((int)posPeca.y + 1 < tabuleiro.Length && 
 					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y + 1] != null && 
 					tabuleiro[(int)posPeca.x + 1][(int)posPeca.y + 1].name.StartsWith("Black")) {
@@ -161,19 +175,19 @@ public class BoardRules : MonoBehaviour {
 					// Comer para diagonal direita
 					resultado.Add(new Vector2(posPeca.x + 1, posPeca.y - 1));
 				}
-				//peoesBrancos[numeroPeao] = true;
 			}
 			
 		} else if(peca.name.StartsWith("Black Pawn")) {
 			int numeroPeao = (int)peca.name.ToCharArray()[11] - 49;
 			if((int)posPeca.x - 1 >= 0) {
-				if(tabuleiro[(int)posPeca.x - 1][(int)posPeca.y] == null)
+				if(tabuleiro[(int)posPeca.x - 1][(int)posPeca.y] == null) {
 					// Só pode andar pra frente se estiver vazio
 					resultado.Add(new Vector2(posPeca.x - 1, posPeca.y));
 					if(peca.name.StartsWith("Black") && peoesPretos[numeroPeao] == false && tabuleiro[(int)posPeca.x - 2][(int)posPeca.y] == null) {
 						resultado.Add(new Vector2(posPeca.x - 2, posPeca.y));
 						
 					} 
+				}
 				if((int)posPeca.y + 1 < tabuleiro.Length && 
 					tabuleiro[(int)posPeca.x - 1][(int)posPeca.y + 1] != null && 
 					tabuleiro[(int)posPeca.x - 1][(int)posPeca.y + 1].name.StartsWith("White")) {
@@ -187,7 +201,6 @@ public class BoardRules : MonoBehaviour {
 					resultado.Add(new Vector2(posPeca.x - 1, posPeca.y - 1));
 				} 
 			}
-			//peoesPretos[numeroPeao] = true; 
 		}
 
 		// Movimento das torres
@@ -637,6 +650,19 @@ public class BoardRules : MonoBehaviour {
 					// Para direita em relação a matriz está vazio ou contem peça inimiga
 					resultado.Add(new Vector2(xPeca, yPeca - 1));
 			}
+			// condições para o roque
+			if((peca.name.StartsWith("White") && reiAndou[0] == false) || (peca.name.StartsWith("Black") && reiAndou[1] == false))  {
+				// rei não andou
+				if((torresBrancas[0] == false || torresPretas[0] == false) && tabuleiro[xPeca][yPeca - 1] == null && tabuleiro[xPeca][yPeca - 2] == null) {
+					// rei pode fazer o roque com a torre mais proxima
+					resultado.Add(new Vector2(xPeca, yPeca - 2));
+					roque = true;
+				} else if((torresBrancas[1] == false || torresPretas[1] == false) && tabuleiro[xPeca][yPeca + 1] == null && tabuleiro[xPeca][yPeca + 2] == null && tabuleiro[xPeca][yPeca + 3] == null) {
+					// rei pode fazer o roque com a torre mais longe
+					resultado.Add(new Vector2(xPeca, yPeca + 2));
+					roque = true;
+				}
+			} 
 		}
 
 		// Movimento da Rainha
@@ -834,6 +860,18 @@ public class BoardRules : MonoBehaviour {
 			if(peca.name.Contains("Pawn")) {
 				int numeroPeao = (int)peca.name.ToCharArray()[11] - 49;
 				peoesBrancos[numeroPeao] = true;
+			} else if(peca.name.Equals("White Rook 2")) {
+				// torre mais proxima do rei branco
+				torresBrancas[0] = true;
+			} else if(peca.name.Equals("White Rook 1")) {
+				// torre mais longe do rei branco
+				torresBrancas[1] = true;
+			} else if(peca.name.Equals("Black Rook 2")) {
+				// torre mais proxima do rei preto
+				torresPretas[0] = true;
+			} else if(peca.name.Equals("Black Rook 1")) {
+				// torre mais longe do rei pretos
+				torresPretas[1] = true;
 			}
 		} else {
 			tabuleiro[(int)pos.x][(int)pos.y] = pretas.transform.Find(peca.name).gameObject;
