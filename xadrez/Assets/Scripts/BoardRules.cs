@@ -23,6 +23,8 @@ public class BoardRules : MonoBehaviour {
 	private GameObject[][] tabuleiro;
 	private Vector2 reiBranco;
 	private Vector2 reiPreto;
+	private bool reiBrancoEmcheck;
+	private bool reiPretoEmCheck;
 	Vector2 posPeca = new Vector2();
 
 	private GameManager gm;
@@ -32,6 +34,8 @@ public class BoardRules : MonoBehaviour {
 		gm = FindObjectOfType(typeof(GameManager)) as GameManager;
 		roque = false;
 		tabuleiro = new GameObject[8][];
+		reiBrancoEmcheck = false;
+		reiPretoEmCheck = false;
 		peoesBrancos = new bool[8];
 		peoesPretos = new bool[8];
 		reiAndou = new bool[2];
@@ -839,7 +843,23 @@ public class BoardRules : MonoBehaviour {
 		return resultado;
 	}
 
-	private bool VaiFicarEmCheck(Vector2 posRei) {
+	private bool VaiFicarEmCheck(GameObject[][] t, Vector2 posRei, List<Vector2> movimentos) {
+
+		return false;
+	}
+
+	// recebe um tabuleiro, a posRei do rei que quer checar se ta em check e a ultima peça movida
+	// retorna se o rei passado ficou em check ou não 
+	public bool EmCheck(GameObject[][] t, Vector2 posReiInimigo, GameObject ultimaPeca) {
+		
+		int x = (int)posReiInimigo.x;
+		int y = (int)posReiInimigo.y;
+		List<Vector2> mov = MovimentosPossiveis(t, ultimaPeca);
+		foreach(Vector2 v in mov) {
+			if((int)v.x = x && (int)v.y = y) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -881,6 +901,8 @@ public class BoardRules : MonoBehaviour {
 						torresBrancas[0] = true;	
 					}
 				}
+				reiBranco.x = pos.x;
+				reiBranco.y = pos.y;
 				reiAndou[0] = true;
 			}
 		} else {
@@ -895,7 +917,7 @@ public class BoardRules : MonoBehaviour {
 				// torre mais longe do rei pretos
 				torresPretas[1] = true;
 			} else if(peca.name.Contains("King")) {
-				// rei preto andou`
+				// rei preto andou
 				if(roque) {
 					if((int)pos.y > (int)posPeca.y) {
 						// significa que está fazendo o roque longo
@@ -911,6 +933,8 @@ public class BoardRules : MonoBehaviour {
 						torresPretas[0] = true;	
 					}
 				}
+				reiPreto.x = pos.x;
+				reiPreto.y = pos.y;
 				reiAndou[1] = true;
 			}
 		}
@@ -918,6 +942,11 @@ public class BoardRules : MonoBehaviour {
 		tabuleiro[(int)posPeca.x][(int)posPeca.y] = null;
 		posPeca.x = pos.x;
 		posPeca.y = pos.y;
+		if(peca.name.StartsWith("White")) {
+			reiPretoEmCheck = EmCheck(tabuleiro, reiPreto, peca);
+		} else {
+			reiBrancoEmCheck = EmCheck(tabuleiro, reiBranco, peca);
+		}
 	}
 
 	public void AtualizaPosicoesRelativas(GameObject[][] tab, GameObject peca, Vector2 pos){
