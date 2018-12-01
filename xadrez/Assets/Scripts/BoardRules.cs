@@ -848,10 +848,8 @@ public class BoardRules : MonoBehaviour {
 		if(tabuleiro[(int)pos.x][(int)pos.y]) { 
 			if(tabuleiro[(int)pos.x][(int)pos.y].name.Contains("King")){
 				gm.endGame();
-				Destroy(tabuleiro[(int)pos.x][(int)pos.y]);
-			}else{
-				Destroy(tabuleiro[(int)pos.x][(int)pos.y]);
-			}	
+			}
+			Destroy(tabuleiro[(int)pos.x][(int)pos.y]);
 		}
 
 			
@@ -866,22 +864,60 @@ public class BoardRules : MonoBehaviour {
 			} else if(peca.name.Equals("White Rook 1")) {
 				// torre mais longe do rei branco
 				torresBrancas[1] = true;
-			} else if(peca.name.Equals("Black Rook 2")) {
-				// torre mais proxima do rei preto
-				torresPretas[0] = true;
-			} else if(peca.name.Equals("Black Rook 1")) {
-				// torre mais longe do rei pretos
-				torresPretas[1] = true;
+			} else if(peca.name.Contains("King")) {
+				// rei branco andou
+				if(roque) {
+					if((int)pos.y > (int)posPeca.y) {
+						// significa que está fazendo o roque longo
+						tabuleiro[(int)posPeca.x][(int)posPeca.y + 1] = brancas.transform.Find(tabuleiro[(int)posPeca.x][tabuleiro.Length - 1].name).gameObject;
+						tabuleiro[(int)posPeca.x][tabuleiro.Length - 1] = null;
+						// torre mais longe do rei branco
+						torresBrancas[1] = true;	
+					} else {
+						// significa que está fazendo o roque curto
+						tabuleiro[(int)posPeca.x][(int)posPeca.y - 1] = brancas.transform.Find(tabuleiro[(int)posPeca.x][0].name).gameObject;
+						tabuleiro[(int)posPeca.x][0] = null;
+						// torre mais perto do rei branco
+						torresBrancas[0] = true;	
+					}
+				}
+				reiAndou[0] = true;
 			}
 		} else {
 			tabuleiro[(int)pos.x][(int)pos.y] = pretas.transform.Find(peca.name).gameObject;
 			if(peca.name.Contains("Pawn")) {
 				int numeroPeao = (int)peca.name.ToCharArray()[11] - 49;
 				peoesPretos[numeroPeao] = true;
+			} else if(peca.name.Equals("Black Rook 2")) {
+				// torre mais proxima do rei preto
+				torresPretas[0] = true;
+			} else if(peca.name.Equals("Black Rook 1")) {
+				// torre mais longe do rei pretos
+				torresPretas[1] = true;
+			} else if(peca.name.Contains("King")) {
+				// rei preto andou`
+				if(roque) {
+					if((int)pos.y > (int)posPeca.y) {
+						// significa que está fazendo o roque longo
+						tabuleiro[(int)posPeca.x][(int)posPeca.y + 1] = pretas.transform.Find(tabuleiro[(int)posPeca.x][tabuleiro.Length - 1].name).gameObject;
+						tabuleiro[(int)posPeca.x][tabuleiro.Length - 1] = null;
+						// torre mais longe do rei preto
+						torresPretas[1] = true;	
+					} else {
+						// significa que está fazendo o roque curto
+						tabuleiro[(int)posPeca.x][(int)posPeca.y - 1] = pretas.transform.Find(tabuleiro[(int)posPeca.x][0].name).gameObject;
+						tabuleiro[(int)posPeca.x][0] = null;
+						// torre mais perto do rei preto
+						torresPretas[0] = true;	
+					}
+				}
+				reiAndou[1] = true;
 			}
 		}
 		
 		tabuleiro[(int)posPeca.x][(int)posPeca.y] = null;
+		posPeca.x = pos.x;
+		posPeca.y = pos.y;
 	}
 
 	public void AtualizaPosicoesRelativas(GameObject[][] tab, GameObject peca, Vector2 pos){
@@ -913,6 +949,15 @@ public class BoardRules : MonoBehaviour {
 
 	public GameObject[][] GetTabuleiro() {
 		return tabuleiro;
+	}
+
+	// promove a ultima peça selecionada para o objeto passado como parametro
+	public void Promover(GameObject promo) {
+		if(promo.name.StartsWith("White")) {
+			tabuleiro[(int)posPeca.x][(int)posPeca.y] = brancas.transform.Find(promo.name).gameObject;
+		} else if(promo.name.StartsWith("Black")) {
+			tabuleiro[(int)posPeca.x][(int)posPeca.y] = pretas.transform.Find(promo.name).gameObject;
+		}
 	}
 	
 	public List<Vector2> JogadasPossiveis(GameObject[][] tab, string cor){
