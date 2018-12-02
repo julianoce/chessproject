@@ -813,7 +813,21 @@ public class BoardRules : MonoBehaviour {
 	}
 
 	// promove a ultima peça selecionada para o objeto passado como parametro
-	public void Promover(GameObject promo) {
+	public void Promover(GameObject peao, GameObject promo) {
+		bool achou = false;
+		for (int i = 0; i <= 1; i++) {
+			for (int j = 0; j < tabuleiro.Length; j++) {
+				if(tabuleiro[i*tabuleiro.Length-1][j] && tabuleiro[i*tabuleiro.Length-1][j].name.Equals(peao.name)) {
+					posPeca.x = i;
+					posPeca.x = j;
+					achou = true;
+					break;
+				}
+			}
+			if(achou) {
+				break;
+			}
+		}
 		if(promo.name.StartsWith("White")) {
 			tabuleiro[(int)posPeca.x][(int)posPeca.y] = brancas.transform.Find(promo.name).gameObject;
 		} else if(promo.name.StartsWith("Black")) {

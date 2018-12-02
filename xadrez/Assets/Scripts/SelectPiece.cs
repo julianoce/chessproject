@@ -74,6 +74,6 @@ public class SelectPiece : MonoBehaviour {
             }
         
         }
-        //gm.setPromoteToChange(this.gameObject);  
+        // gm.setPromoteToChange(this.gameObject);  
     }
 }
