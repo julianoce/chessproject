@@ -140,60 +140,60 @@ public class BoardRules : MonoBehaviour {
 
 	private List<Vector2> rook_moves(string adv_color, Vector2 posPeca, List<Vector2> resultado){
 		// Os 2 'for' seguintes são para subir e descer no tabuleiro
-			for(int i = (int)posPeca.x + 1; i < tabuleiro.Length; i++) {
-				if(tabuleiro[i][(int)posPeca.y] == null ) {
-					//Se o lugar ta vazio pode mover
-					resultado.Add(new Vector2(i, (int)posPeca.y));
-				} else if (tabuleiro[i][(int)posPeca.y].name.StartsWith(adv_color)) {
-					// Se o lugar possui uma peça preta pode mover, mas se sabe que a posições seguintes são invalidas
-					resultado.Add(new Vector2(i, (int)posPeca.y));
-					break;
-				} else {
-					// Se o lugar não ta vazio e nem é uma peça preta significa que é uma peça branca, logo não pode mover
-					break;
-				}
+		for(int i = (int)posPeca.x + 1; i < tabuleiro.Length; i++) {
+			if(tabuleiro[i][(int)posPeca.y] == null ) {
+				//Se o lugar ta vazio pode mover
+				resultado.Add(new Vector2(i, (int)posPeca.y));
+			} else if (tabuleiro[i][(int)posPeca.y].name.StartsWith(adv_color)) {
+				// Se o lugar possui uma peça preta pode mover, mas se sabe que a posições seguintes são invalidas
+				resultado.Add(new Vector2(i, (int)posPeca.y));
+				break;
+			} else {
+				// Se o lugar não ta vazio e nem é uma peça preta significa que é uma peça branca, logo não pode mover
+				break;
 			}
-			for(int i = (int)posPeca.x - 1; i >= 0; i--) {
-				if(tabuleiro[i][(int)posPeca.y] == (null)) {
-					// Se o lugar ta vazio pode mover
-					resultado.Add(new Vector2(i, (int)posPeca.y));
-				} else if (tabuleiro[i][(int)posPeca.y].name.StartsWith(adv_color)) {
-					// Se o lugar possui uma peça preta pode mover, mas se sabe que as posições seguintes são invalidas
-					resultado.Add(new Vector2(i, (int)posPeca.y));
-					break;
-				} else {
-					// Se o lugar não ta vazio e nem é uma peça preta significa que é uma peça branca, logo não pode mover
-					break;
-				}
+		}
+		for(int i = (int)posPeca.x - 1; i >= 0; i--) {
+			if(tabuleiro[i][(int)posPeca.y] == (null)) {
+				// Se o lugar ta vazio pode mover
+				resultado.Add(new Vector2(i, (int)posPeca.y));
+			} else if (tabuleiro[i][(int)posPeca.y].name.StartsWith(adv_color)) {
+				// Se o lugar possui uma peça preta pode mover, mas se sabe que as posições seguintes são invalidas
+				resultado.Add(new Vector2(i, (int)posPeca.y));
+				break;
+			} else {
+				// Se o lugar não ta vazio e nem é uma peça preta significa que é uma peça branca, logo não pode mover
+				break;
 			}
+		}
 
-			// Os proximos dois 'for' são para os movimentos laterais
-			for(int i = (int)posPeca.y + 1; i < tabuleiro[(int)posPeca.x].Length; i++) {
-				if(tabuleiro[(int)posPeca.x][i] == (null)) {
-					//Se o lugar ta vazio pode mover
-					resultado.Add(new Vector2((int)posPeca.x, i));
-				} else if(tabuleiro[(int)posPeca.x][i].name.StartsWith(adv_color)) {
-					// Se o lugar possui uma peça preta pode mover, mas se sabe que as posições seguintes são invalidas
-					resultado.Add(new Vector2((int)posPeca.x, i));
-					break;
-				} else {
-					// Se o lugar não ta vazio e nem é uma peça preta significa que é uma peça branca, logo não pode mover
-					break;
-				}
+		// Os proximos dois 'for' são para os movimentos laterais
+		for(int i = (int)posPeca.y + 1; i < tabuleiro[(int)posPeca.x].Length; i++) {
+			if(tabuleiro[(int)posPeca.x][i] == (null)) {
+				//Se o lugar ta vazio pode mover
+				resultado.Add(new Vector2((int)posPeca.x, i));
+			} else if(tabuleiro[(int)posPeca.x][i].name.StartsWith(adv_color)) {
+				// Se o lugar possui uma peça preta pode mover, mas se sabe que as posições seguintes são invalidas
+				resultado.Add(new Vector2((int)posPeca.x, i));
+				break;
+			} else {
+				// Se o lugar não ta vazio e nem é uma peça preta significa que é uma peça branca, logo não pode mover
+				break;
 			}
-			for(int i = (int)posPeca.y - 1; i >= 0; i--) {
-				if(tabuleiro[(int)posPeca.x][i] == (null)) {
-					//Se o lugar ta vazio pode mover
-					resultado.Add(new Vector2((int)posPeca.x, i));
-				} else if(tabuleiro[(int)posPeca.x][i].name.StartsWith(adv_color)) {
-					// Se o lugar possui uma peça preta pode mover, mas se sabe que as posições seguintes são invalidas
-					resultado.Add(new Vector2((int)posPeca.x, i));
-					break;
-				} else {
-					// Se o lugar não ta vazio e nem é uma peça preta significa que é uma peça branca, logo não pode mover
-					break;
-				}
+		}
+		for(int i = (int)posPeca.y - 1; i >= 0; i--) {
+			if(tabuleiro[(int)posPeca.x][i] == (null)) {
+				//Se o lugar ta vazio pode mover
+				resultado.Add(new Vector2((int)posPeca.x, i));
+			} else if(tabuleiro[(int)posPeca.x][i].name.StartsWith(adv_color)) {
+				// Se o lugar possui uma peça preta pode mover, mas se sabe que as posições seguintes são invalidas
+				resultado.Add(new Vector2((int)posPeca.x, i));
+				break;
+			} else {
+				// Se o lugar não ta vazio e nem é uma peça preta significa que é uma peça branca, logo não pode mover
+				break;
 			}
+		}
 		return resultado;
 	}
 
@@ -296,120 +296,120 @@ public class BoardRules : MonoBehaviour {
 
 	private List<Vector2> knight_moves(string adv_color, Vector2 posPeca, List<Vector2> resultado){
 		int xPeca = (int)posPeca.x, yPeca = (int)posPeca.y;
-			//Debug.Log(peca.name + ": (" + xPeca + "," + yPeca + ")");
-			for(int i = 1; i < 3; i++) {
-				for(int j = 1; j < 3; j++) {
-					if(i == j) continue;
-					if(xPeca + i < tabuleiro.Length) {
-						// Pode subir
-						if(yPeca + j < tabuleiro.Length) {
-							// Pode ir para a esquerda da matriz
-							if((tabuleiro[xPeca + i][yPeca + j] == null) || 
-								tabuleiro[xPeca + i][yPeca + j].name.StartsWith(adv_color)) {
-								// Se a peça clicada é branca e a posição desejada contem uma peça preta ou nenhuma peça
-								resultado.Add(new Vector2(xPeca + i, yPeca + j));
-							}
-						}
-						if(yPeca - j >= 0) {
-							// Pode ir para a direita da matriz
-							if((tabuleiro[xPeca + i][yPeca - j] == null) || 
-								tabuleiro[xPeca + i][yPeca - j].name.StartsWith(adv_color)) {
-								// Se a peça clicada é branca e a posição desejada contem uma peça preta ou nenhuma peça
-								resultado.Add(new Vector2(xPeca + i, yPeca - j));
-							}
+		//Debug.Log(peca.name + ": (" + xPeca + "," + yPeca + ")");
+		for(int i = 1; i < 3; i++) {
+			for(int j = 1; j < 3; j++) {
+				if(i == j) continue;
+				if(xPeca + i < tabuleiro.Length) {
+					// Pode subir
+					if(yPeca + j < tabuleiro.Length) {
+						// Pode ir para a esquerda da matriz
+						if((tabuleiro[xPeca + i][yPeca + j] == null) || 
+							tabuleiro[xPeca + i][yPeca + j].name.StartsWith(adv_color)) {
+							// Se a peça clicada é branca e a posição desejada contem uma peça preta ou nenhuma peça
+							resultado.Add(new Vector2(xPeca + i, yPeca + j));
 						}
 					}
-					if(xPeca - i >= 0) {
-						// Pode descer!! LEMBRANDO: SEMPRE EM RELAÇÃO A MATRIZ
-						if(yPeca + j < tabuleiro.Length) {
-							// Pode ir para a esquerda da matriz
-							if((tabuleiro[xPeca - i][yPeca + j] == null) || 
-								tabuleiro[xPeca - i][yPeca + j].name.StartsWith(adv_color)) {
-								// Se a peça clicada é branca e a posição desejada contem uma peça preta ou nenhuma peça
-								resultado.Add(new Vector2(xPeca - i, yPeca + j));
-							}
+					if(yPeca - j >= 0) {
+						// Pode ir para a direita da matriz
+						if((tabuleiro[xPeca + i][yPeca - j] == null) || 
+							tabuleiro[xPeca + i][yPeca - j].name.StartsWith(adv_color)) {
+							// Se a peça clicada é branca e a posição desejada contem uma peça preta ou nenhuma peça
+							resultado.Add(new Vector2(xPeca + i, yPeca - j));
 						}
-						if(yPeca - j >= 0) {
-							// Pode ir para a direita da matriz
-							if((tabuleiro[xPeca - i][yPeca - j] == null) || 
-								tabuleiro[xPeca - i][yPeca - j].name.StartsWith(adv_color)) {
-								// Se a peça clicada é branca e a posição desejada contem uma peça preta ou nenhuma peça
-								resultado.Add(new Vector2(xPeca - i, yPeca - j));
-							}
+					}
+				}
+				if(xPeca - i >= 0) {
+					// Pode descer!! LEMBRANDO: SEMPRE EM RELAÇÃO A MATRIZ
+					if(yPeca + j < tabuleiro.Length) {
+						// Pode ir para a esquerda da matriz
+						if((tabuleiro[xPeca - i][yPeca + j] == null) || 
+							tabuleiro[xPeca - i][yPeca + j].name.StartsWith(adv_color)) {
+							// Se a peça clicada é branca e a posição desejada contem uma peça preta ou nenhuma peça
+							resultado.Add(new Vector2(xPeca - i, yPeca + j));
+						}
+					}
+					if(yPeca - j >= 0) {
+						// Pode ir para a direita da matriz
+						if((tabuleiro[xPeca - i][yPeca - j] == null) || 
+							tabuleiro[xPeca - i][yPeca - j].name.StartsWith(adv_color)) {
+							// Se a peça clicada é branca e a posição desejada contem uma peça preta ou nenhuma peça
+							resultado.Add(new Vector2(xPeca - i, yPeca - j));
 						}
 					}
 				}
 			}
+		}
 		return resultado;
 	}
 
 	private List<Vector2> king_moves(string color, string adv_color, Vector2 posPeca, List<Vector2> resultado){
 		int xPeca = (int)posPeca.x, yPeca = (int)posPeca.y;
-			if(xPeca + 1 < tabuleiro.Length) {
-				// Pode subir
-				if(tabuleiro[xPeca + 1][yPeca] == null || 
-				(tabuleiro[xPeca + 1][yPeca].name.StartsWith(adv_color))) {
-					// Para cima na matriz está vazio ou contem peça inimiga
-					resultado.Add(new Vector2(xPeca + 1, yPeca));
-				}
-				if(yPeca + 1 < tabuleiro.Length && 
-				(tabuleiro[xPeca + 1][yPeca + 1] == null || 
-				(tabuleiro[xPeca + 1][yPeca + 1].name.StartsWith(adv_color)))) {
-					// Para cima e para esquerda em relação a matriz está vazio ou contem peça inimiga
-					resultado.Add(new Vector2(xPeca + 1, yPeca + 1));
-				}
-				if(yPeca - 1 >= 0 && 
-				(tabuleiro[xPeca + 1][yPeca - 1] == null || 
-				(tabuleiro[xPeca + 1][yPeca - 1].name.StartsWith(adv_color)))) {
-					// Para cima e para direita em relação a matriz está vazio ou contem peça inimiga
-					resultado.Add(new Vector2(xPeca + 1, yPeca - 1));
-				}
+		if(xPeca + 1 < tabuleiro.Length) {
+			// Pode subir
+			if(tabuleiro[xPeca + 1][yPeca] == null || 
+			(tabuleiro[xPeca + 1][yPeca].name.StartsWith(adv_color))) {
+				// Para cima na matriz está vazio ou contem peça inimiga
+				resultado.Add(new Vector2(xPeca + 1, yPeca));
 			}
-			if(xPeca - 1 >= 0) {
-				// Pode descer
-				if(tabuleiro[xPeca - 1][yPeca] == null || 
-				(tabuleiro[xPeca - 1][yPeca].name.StartsWith(adv_color))) {
-					// Para baixo na matriz está vazio ou contem peça inimiga
-					resultado.Add(new Vector2(xPeca - 1, yPeca));
-				}
-				if(yPeca + 1 < tabuleiro.Length && 
-				(tabuleiro[xPeca - 1][yPeca + 1] == null || 
-				(tabuleiro[xPeca - 1][yPeca + 1].name.StartsWith(adv_color)))) {
-					// Para baixo e para esquerda em relação a matriz está vazio ou contem peça inimiga
-					resultado.Add(new Vector2(xPeca - 1, yPeca + 1));
-				}
-				if(yPeca - 1 >= 0 && 
-				(tabuleiro[xPeca - 1][yPeca - 1] == null || 
-				(tabuleiro[xPeca - 1][yPeca - 1].name.StartsWith(adv_color)))) {
-					// Para baixo e para direita em relação a matriz está vazio ou contem peça inimiga
-					resultado.Add(new Vector2(xPeca - 1, yPeca - 1));
-				}
+			if(yPeca + 1 < tabuleiro.Length && 
+			(tabuleiro[xPeca + 1][yPeca + 1] == null || 
+			(tabuleiro[xPeca + 1][yPeca + 1].name.StartsWith(adv_color)))) {
+				// Para cima e para esquerda em relação a matriz está vazio ou contem peça inimiga
+				resultado.Add(new Vector2(xPeca + 1, yPeca + 1));
 			}
-			if(yPeca + 1 < tabuleiro.Length &&
-				(tabuleiro[xPeca][yPeca + 1] == null|| 
-				(tabuleiro[xPeca][yPeca + 1].name.StartsWith(adv_color)))) {
-					// Para esquerda em relação a matriz está vazio ou contem peça inimiga
-					resultado.Add(new Vector2(xPeca, yPeca + 1));
+			if(yPeca - 1 >= 0 && 
+			(tabuleiro[xPeca + 1][yPeca - 1] == null || 
+			(tabuleiro[xPeca + 1][yPeca - 1].name.StartsWith(adv_color)))) {
+				// Para cima e para direita em relação a matriz está vazio ou contem peça inimiga
+				resultado.Add(new Vector2(xPeca + 1, yPeca - 1));
 			}
-			if(yPeca - 1 >= 0 &&
-				(tabuleiro[xPeca][yPeca - 1] == null || 
-				(tabuleiro[xPeca][yPeca - 1].name.StartsWith(adv_color)))) {
-					// Para direita em relação a matriz está vazio ou contem peça inimiga
-					resultado.Add(new Vector2(xPeca, yPeca - 1));
+		}
+		if(xPeca - 1 >= 0) {
+			// Pode descer
+			if(tabuleiro[xPeca - 1][yPeca] == null || 
+			(tabuleiro[xPeca - 1][yPeca].name.StartsWith(adv_color))) {
+				// Para baixo na matriz está vazio ou contem peça inimiga
+				resultado.Add(new Vector2(xPeca - 1, yPeca));
 			}
-			// condições para o roque
-			if((color.Equals("White") && reiAndou[0] == false) || (color.Equals("Black") && reiAndou[1] == false))  {
-				// rei não andou
-				if((torresBrancas[0] == false || torresPretas[0] == false) && tabuleiro[xPeca][yPeca - 1] == null && tabuleiro[xPeca][yPeca - 2] == null) {
-					// rei pode fazer o roque com a torre mais proxima
-					resultado.Add(new Vector2(xPeca, yPeca - 2));
-					roque = true;
-				} else if((torresBrancas[1] == false || torresPretas[1] == false) && tabuleiro[xPeca][yPeca + 1] == null && tabuleiro[xPeca][yPeca + 2] == null && tabuleiro[xPeca][yPeca + 3] == null) {
-					// rei pode fazer o roque com a torre mais longe
-					resultado.Add(new Vector2(xPeca, yPeca + 2));
-					roque = true;
-				}
+			if(yPeca + 1 < tabuleiro.Length && 
+			(tabuleiro[xPeca - 1][yPeca + 1] == null || 
+			(tabuleiro[xPeca - 1][yPeca + 1].name.StartsWith(adv_color)))) {
+				// Para baixo e para esquerda em relação a matriz está vazio ou contem peça inimiga
+				resultado.Add(new Vector2(xPeca - 1, yPeca + 1));
 			}
+			if(yPeca - 1 >= 0 && 
+			(tabuleiro[xPeca - 1][yPeca - 1] == null || 
+			(tabuleiro[xPeca - 1][yPeca - 1].name.StartsWith(adv_color)))) {
+				// Para baixo e para direita em relação a matriz está vazio ou contem peça inimiga
+				resultado.Add(new Vector2(xPeca - 1, yPeca - 1));
+			}
+		}
+		if(yPeca + 1 < tabuleiro.Length &&
+			(tabuleiro[xPeca][yPeca + 1] == null|| 
+			(tabuleiro[xPeca][yPeca + 1].name.StartsWith(adv_color)))) {
+				// Para esquerda em relação a matriz está vazio ou contem peça inimiga
+				resultado.Add(new Vector2(xPeca, yPeca + 1));
+		}
+		if(yPeca - 1 >= 0 &&
+			(tabuleiro[xPeca][yPeca - 1] == null || 
+			(tabuleiro[xPeca][yPeca - 1].name.StartsWith(adv_color)))) {
+				// Para direita em relação a matriz está vazio ou contem peça inimiga
+				resultado.Add(new Vector2(xPeca, yPeca - 1));
+		}
+		// condições para o roque
+		if((color.Equals("White") && reiAndou[0] == false) || (color.Equals("Black") && reiAndou[1] == false))  {
+			// rei não andou
+			if((torresBrancas[0] == false || torresPretas[0] == false) && tabuleiro[xPeca][yPeca - 1] == null && tabuleiro[xPeca][yPeca - 2] == null) {
+				// rei pode fazer o roque com a torre mais proxima
+				resultado.Add(new Vector2(xPeca, yPeca - 2));
+				roque = true;
+			} else if((torresBrancas[1] == false || torresPretas[1] == false) && tabuleiro[xPeca][yPeca + 1] == null && tabuleiro[xPeca][yPeca + 2] == null && tabuleiro[xPeca][yPeca + 3] == null) {
+				// rei pode fazer o roque com a torre mais longe
+				resultado.Add(new Vector2(xPeca, yPeca + 2));
+				roque = true;
+			}
+		}
 		return resultado;
 	}
 
