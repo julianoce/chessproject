@@ -15,7 +15,8 @@ public class IA : MonoBehaviour {
 	private string cor_adv;
 	private List<Vector2> jogadas;
 	private List<GameObject> quem;
-	const int MAX_ITE = 3;
+	const int MAX_ITE = 11;
+	private int bla;
 
 	void Start () {
 		br = GameObject.FindObjectOfType(typeof(BoardRules)) as BoardRules;
@@ -39,22 +40,25 @@ public class IA : MonoBehaviour {
 			cor_adv = "Black";
 		}
 		//receber como parametro cor escolhida pelo jogador e a dificuldade do jogo
+		bla = 0;
 		GameObject[][] tab = br.GetTabuleiro();
 		GameObject[][] tab_aux = copiar(tab);
 		this.jogadas = new List<Vector2>();
 		this.quem = new List<GameObject>();
 	 	Max(tab_aux, int.MinValue, int.MaxValue, 0);
 		System.Random r = new System.Random();
-		int x = r.Next(0,jogadas.Count);
-		GameObject piece = quem[x];
+		int x = r.Next(0,this.jogadas.Count);
+		Debug.Log("Valor sorteado");
+		Debug.Log(this.jogadas.Count);
+		GameObject piece = this.quem[x];
 		Debug.Log("Respostas");
 		Debug.Log(piece);
-		Debug.Log(jogadas[x]);
+		Debug.Log(this.jogadas[x]);
 
 		bm.makeTiles(piece);
-		ps.movePiece(quem[x], findTile(jogadas[x]));
+		ps.movePiece(this.quem[x], findTile(this.jogadas[x]));
 		//ps.podeJogar = false;
-		
+		Debug.Log(bla);
 		Debug.Log("Terminou");
 	}
 
@@ -64,7 +68,7 @@ public class IA : MonoBehaviour {
 
 	int Max(GameObject[][] tab, int alpha, int beta, int poda){
 		if(poda == MAX_ITE)
-			return Utility(tab);
+			return UtilityDificil(tab);
 
 		int v = int.MinValue;
 
@@ -89,12 +93,12 @@ public class IA : MonoBehaviour {
 								this.quem.Add(tab[i][j]);
 							}
 						}
-						if(vLinha >= beta){
-							return v;
-						}
-						if(vLinha>alpha){
-							alpha = vLinha;
-						}
+						// if(vLinha >= beta){
+						// 	return v;
+						// }
+						// if(vLinha>alpha){
+						// 	alpha = vLinha;
+						// }
 					}
 				}
 			}
@@ -104,7 +108,7 @@ public class IA : MonoBehaviour {
 
 	int Min(GameObject[][] tab, int alpha, int beta, int poda){
 		if(poda == MAX_ITE)
-			return Utility(tab);
+			return UtilityDificil(tab);
 		
 		int v = int.MaxValue;
 		for(int i = 0; i < tab.Length; i++) {
@@ -118,11 +122,11 @@ public class IA : MonoBehaviour {
 						if(vLinha < v)
 							v = vLinha;
 
-						if(vLinha <= alpha)
-							return v;
+						// if(vLinha <= alpha)
+						// 	return v;
 
-						if(vLinha < beta)
-							beta = vLinha;
+						// if(vLinha < beta)
+						// 	beta = vLinha;
 					}
 				}
 			}
@@ -165,8 +169,14 @@ public class IA : MonoBehaviour {
 		return tab_aux;
 	}
 
-//Essa Utility eh a modo facil.
 	public int Utility(GameObject[][]tab){
+		int numPecasInimigo = br.NumPecasTime(tab, this.cor_adv);
+		int numPecas = br.NumPecasTime(tab, this.cor);
+		return numPecas - numPecasInimigo;
+	}
+
+	//Essa Utility eh a modo facil.
+	public int UtilityFacil(GameObject[][]tab){
 		int numPecasInimigo = br.NumPecasTime(tab, this.cor_adv);
 		int numPecas = br.NumPecasTime(tab, this.cor);
 		for(int i=0; i<tab.Length;i++){
@@ -217,54 +227,58 @@ public class IA : MonoBehaviour {
 	
 		int[,] black_pawn_matrix = new int[8,8]{
 			{ 0,  0,  0,  0,  0,  0,  0,  0},
-		{4,  8,  8,-17,-17,  8,  8,  4},
-		{4, -4, -8,  4,  4, -8, -4,  4},
-		{0,  4,  8, 17, 17,  8,  4,  0},
-		{4,  8, 12, 21, 21, 12,  8,  4},
-		{25, 25, 29, 29, 29, 29, 25, 25},
+			{4,  8,  8,-17,-17,  8,  8,  4},
+			{4, -4, -8,  4,  4, -8, -4,  4},
+			{0,  4,  8, 17, 17,  8,  4,  0},
+			{4,  8, 12, 21, 21, 12,  8,  4},
+			{25, 25, 29, 29, 29, 29, 25, 25},
 			{75, 75, 75, 75, 75, 75, 75, 75},
-		{0,  0,  0,  0,  0,  0,  0,  0}
+			{0,  0,  0,  0,  0,  0,  0,  0}
 		};
 		
 		int [,] white_pawn_matrix = new int[8,8] {
-		{ 0,  0,  0,  0,  0,  0,  0,  0},
-		{75, 75, 75, 75, 75, 75, 75, 75},
-		{25, 25, 29, 29, 29, 29, 25, 25},
-		{4,  8, 12, 21, 21, 12,  8,  4},
-		{0,  4,  8, 17, 17,  8,  4,  0},
-		{4, -4, -8,  4,  4, -8, -4,  4},
-		{4,  8,  8,-17,-17,  8,  8,  4},
-		{0,  0,  0,  0,  0,  0,  0,  0}};  
+			{ 0,  0,  0,  0,  0,  0,  0,  0},
+			{75, 75, 75, 75, 75, 75, 75, 75},
+			{25, 25, 29, 29, 29, 29, 25, 25},
+			{4,  8, 12, 21, 21, 12,  8,  4},
+			{0,  4,  8, 17, 17,  8,  4,  0},
+			{4, -4, -8,  4,  4, -8, -4,  4},
+			{4,  8,  8,-17,-17,  8,  8,  4},
+			{0,  0,  0,  0,  0,  0,  0,  0}
+		};  
 			
 		int [,] white_knight_matrix = new int[8,8] {
-		{-50,-40,-30,-30,-30,-30,-40,-50},
-		{-40,-20,  0,  0,  0,  0,-20,-40},
-		{-30,  0, 10, 15, 15, 10,  0,-30},
-		{-30,  5, 15, 20, 20, 15,  5,-30},
-		{-30,  0, 15, 20, 20, 15,  0,-30},
-		{-30,  5, 10, 15, 15, 10,  5,-30},
-		{-40,-20,  0,  5,  5,  0,-20,-40},
-		{-50,-40,-30,-30,-30,-30,-40,-50}}; 
+			{-50,-40,-30,-30,-30,-30,-40,-50},
+			{-40,-20,  0,  0,  0,  0,-20,-40},
+			{-30,  0, 10, 15, 15, 10,  0,-30},
+			{-30,  5, 15, 20, 20, 15,  5,-30},
+			{-30,  0, 15, 20, 20, 15,  0,-30},
+			{-30,  5, 10, 15, 15, 10,  5,-30},
+			{-40,-20,  0,  5,  5,  0,-20,-40},
+			{-50,-40,-30,-30,-30,-30,-40,-50}
+		}; 
 
 		int [,] black_knight_matrix = new int[8,8] {
-		{-50,-40,-30,-30,-30,-30,-40,-50},
-		{-40,-20,  0,  5,  5,  0,-20,-40},
-		{-30,  5, 10, 15, 15, 10,  5,-30},
-		{-30,  0, 15, 20, 20, 15,  0,-30},
-		{-30,  5, 15, 20, 20, 15,  5,-30},
-		{-30,  0, 10, 15, 15, 10,  0,-30},
-		{-40,-20,  0,  0,  0,  0,-20,-40},
-		{-50,-40,-30,-30,-30,-30,-40,-50}}; 
+			{-50,-40,-30,-30,-30,-30,-40,-50},
+			{-40,-20,  0,  5,  5,  0,-20,-40},
+			{-30,  5, 10, 15, 15, 10,  5,-30},
+			{-30,  0, 15, 20, 20, 15,  0,-30},
+			{-30,  5, 15, 20, 20, 15,  5,-30},
+			{-30,  0, 10, 15, 15, 10,  0,-30},
+			{-40,-20,  0,  0,  0,  0,-20,-40},
+			{-50,-40,-30,-30,-30,-30,-40,-50}
+		}; 
 		
 		int [,] black_bishop_matrix = new int[8,8] {
-		{-20,-10,-10,-10,-10,-10,-10,-20},
-		{-10,  5,  0,  0,  0,  0,  5,-10},
-		{-10, 10, 10, 10, 10, 10, 10,-10},
-		{-10,  0, 10, 10, 10, 10,  0,-10},
-		{-10,  5,  5, 10, 10,  5,  5,-10},
-		{-10,  0,  5, 10, 10,  5,  0,-10},
-		{-10,  0,  0,  0,  0,  0,  0,-10},
-		{-20,-10,-10,-10,-10,-10,-10,-20}}; 
+			{-20,-10,-10,-10,-10,-10,-10,-20},
+			{-10,  5,  0,  0,  0,  0,  5,-10},
+			{-10, 10, 10, 10, 10, 10, 10,-10},
+			{-10,  0, 10, 10, 10, 10,  0,-10},
+			{-10,  5,  5, 10, 10,  5,  5,-10},
+			{-10,  0,  5, 10, 10,  5,  0,-10},
+			{-10,  0,  0,  0,  0,  0,  0,-10},
+			{-20,-10,-10,-10,-10,-10,-10,-20}
+		}; 
 
 		int [,] white_bishop_matrix = new int[8,8] {
 		{-20,-10,-10,-10,-10,-10,-10,-20},
@@ -277,26 +291,27 @@ public class IA : MonoBehaviour {
 		{-20,-10,-10,-10,-10,-10,-10,-20}};  
 
 		int [,] black_rook_matrix = new int[8,8] {
-		{0,  0,  0,  5,  5,  0,  0,  0},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{5, 10, 10, 10, 10, 10, 10,  5},
-		{0,  0,  0,  0,  0,  0,  0,  0},
+			{0,  0,  0,  5,  5,  0,  0,  0},
+			{-5,  0,  0,  0,  0,  0,  0, -5},
+			{-5,  0,  0,  0,  0,  0,  0, -5},
+			{-5,  0,  0,  0,  0,  0,  0, -5},
+			{-5,  0,  0,  0,  0,  0,  0, -5},
+			{-5,  0,  0,  0,  0,  0,  0, -5},
+			{5, 10, 10, 10, 10, 10, 10,  5},
+			{0,  0,  0,  0,  0,  0,  0,  0},
 		};  
 		
 
 		int [,] white_rook_matrix = new int[8,8] {
-		{0,  0,  0,  0,  0,  0,  0,  0},
-		{5, 10, 10, 10, 10, 10, 10,  5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{-5,  0,  0,  0,  0,  0,  0, -5},
-		{0,  0,  0,  5,  5,  0,  0,  0}};  
+			{0,  0,  0,  0,  0,  0,  0,  0},
+			{5, 10, 10, 10, 10, 10, 10,  5},
+			{-5,  0,  0,  0,  0,  0,  0, -5},
+			{-5,  0,  0,  0,  0,  0,  0, -5},
+			{-5,  0,  0,  0,  0,  0,  0, -5},
+			{-5,  0,  0,  0,  0,  0,  0, -5},
+			{-5,  0,  0,  0,  0,  0,  0, -5},
+			{0,  0,  0,  5,  5,  0,  0,  0}
+		};  
 		
 		int [,] black_queen_matrix = new int[8,8] {
 			{-20,-10,-10, -5, -5,-10,-10,-20},
@@ -307,7 +322,7 @@ public class IA : MonoBehaviour {
 			{-10,  0,  5,  5,  5,  5,  0,-10},
 			{-10,  0,  0,  0,  0,  0,  0,-10},
 			{-20,-10,-10, -5, -5,-10,-10,-20}
-			};
+		};
 		
 		int [,] white_queen_matrix = new int[8,8] {
 			{-20,-10,-10, -5, -5,-10,-10,-20},
@@ -320,25 +335,26 @@ public class IA : MonoBehaviour {
 			{-20,-10,-10, -5, -5,-10,-10,-20}};
 
 		int [,] black_king_matrix_middle = new int[8,8] {
-				{20, 30, 10,  0,  0, 10, 30, 20},
-				{20, 20,  0,  0,  0,  0, 20, 20},
-				{-10,-20,-20,-20,-20,-20,-20,-10},
-				{-20,-30,-30,-40,-40,-30,-30,-20},
-				{-30,-40,-40,-50,-50,-40,-40,-30},
-				{-30,-40,-40,-50,-50,-40,-40,-30},
-				{-30,-40,-40,-50,-50,-40,-40,-30},
-				{-30,-40,-40,-50,-50,-40,-40,-30},
-				};
+			{20, 30, 10,  0,  0, 10, 30, 20},
+			{20, 20,  0,  0,  0,  0, 20, 20},
+			{-10,-20,-20,-20,-20,-20,-20,-10},
+			{-20,-30,-30,-40,-40,-30,-30,-20},
+			{-30,-40,-40,-50,-50,-40,-40,-30},
+			{-30,-40,-40,-50,-50,-40,-40,-30},
+			{-30,-40,-40,-50,-50,-40,-40,-30},
+			{-30,-40,-40,-50,-50,-40,-40,-30},
+		};
 
 		int [,] white_king_matrix_middle = new int[8,8] {
-				{-30,-40,-40,-50,-50,-40,-40,-30},
-				{-30,-40,-40,-50,-50,-40,-40,-30},
-				{-30,-40,-40,-50,-50,-40,-40,-30},
-				{-30,-40,-40,-50,-50,-40,-40,-30},
-				{-20,-30,-30,-40,-40,-30,-30,-20},
-				{-10,-20,-20,-20,-20,-20,-20,-10},
-				{20, 20,  0,  0,  0,  0, 20, 20},
-				{20, 30, 10,  0,  0, 10, 30, 20}};
+			{-30,-40,-40,-50,-50,-40,-40,-30},
+			{-30,-40,-40,-50,-50,-40,-40,-30},
+			{-30,-40,-40,-50,-50,-40,-40,-30},
+			{-30,-40,-40,-50,-50,-40,-40,-30},
+			{-20,-30,-30,-40,-40,-30,-30,-20},
+			{-10,-20,-20,-20,-20,-20,-20,-10},
+			{20, 20,  0,  0,  0,  0, 20, 20},
+			{20, 30, 10,  0,  0, 10, 30, 20}
+		};
 		int value_white = 0;
 		int value_black = 0;
 
