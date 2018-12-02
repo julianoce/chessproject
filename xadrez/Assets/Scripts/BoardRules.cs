@@ -23,7 +23,7 @@ public class BoardRules : MonoBehaviour {
 	private GameObject[][] tabuleiro;
 	private Vector2 reiBranco;
 	private Vector2 reiPreto;
-	private bool reiBrancoEmcheck;
+	private bool reiBrancoEmCheck;
 	private bool reiPretoEmCheck;
 	Vector2 posPeca = new Vector2();
 
@@ -34,7 +34,7 @@ public class BoardRules : MonoBehaviour {
 		gm = FindObjectOfType(typeof(GameManager)) as GameManager;
 		roque = false;
 		tabuleiro = new GameObject[8][];
-		reiBrancoEmcheck = false;
+		reiBrancoEmCheck = false;
 		reiPretoEmCheck = false;
 		peoesBrancos = new bool[8];
 		peoesPretos = new bool[8];
@@ -839,24 +839,67 @@ public class BoardRules : MonoBehaviour {
 			}
 		}
 		
+		//resultado = FiltrarMovimentos(tabuleiro, peca, resultado);
+		
 
 		return resultado;
 	}
+	private GameObject[][] Copiar(GameObject[][] tab){
+		GameObject[][] tab_aux = new GameObject[8][];
+		for(int i = 0; i < tab_aux.Length; i++) {
+			tab_aux[i] = new GameObject[8];
+		}
 
-	private bool VaiFicarEmCheck(GameObject[][] t, Vector2 posRei, List<Vector2> movimentos) {
+		for(int i = 0; i < tab_aux.Length; i++) {
+			tab_aux[i] = new GameObject[8];
+			for(int j = 0; j < tab_aux[i].Length; j++) {
+				if (tab[i][j] && tab[i][j].name.StartsWith("Black")){
+					tab_aux[i][j] = pretas.transform.Find(tab[i][j].name).gameObject;
+				}
+				else if (tab[i][j] && tab[i][j].name.StartsWith("White")){
+					tab_aux[i][j] = brancas.transform.Find(tab[i][j].name).gameObject;
+				}
+			}
+		}
+		return tab_aux;
+	}
 
+	public List<Vector2> FiltrarMovimentos(GameObject[][] tab, GameObject peca, List<Vector2> mov) {
+		// Se o rei que você ta defendendo ta em check, só pode movimento pra tirar ele do check
+		if(peca.name.StartsWith("White") && reiBrancoEmCheck) {
+			for(int i = 0; i < tab.Length; i++) {
+				for(int j = 0; j < tab.Length; j++) {
+					if(tab[i][j] != null && tab[i][j].name.StartsWith("Black")) {
+						
+					}
+				}
+			}
+
+		} else if(peca.name.StartsWith("Black") && reiPretoEmCheck) {
+
+		}
+		return mov;
+	}
+	private bool ReiEmCheck(GameObject[][] tab, Vector2 posRei, string corDoRei) {
+		string corInimiga;
+		if(corDoRei.Equals("White")) {
+			corInimiga = "Black";
+		} else {
+			corInimiga = "White";
+		}
 		return false;
 	}
 
 	// recebe um tabuleiro, a posRei do rei que quer checar se ta em check e a ultima peça movida
 	// retorna se o rei passado ficou em check ou não 
-	public bool EmCheck(GameObject[][] t, Vector2 posReiInimigo, GameObject ultimaPeca) {
+	public bool EntrouEmCheck(GameObject[][] t, Vector2 posReiInimigo, GameObject ultimaPeca) {
 		
 		int x = (int)posReiInimigo.x;
 		int y = (int)posReiInimigo.y;
 		List<Vector2> mov = MovimentosPossiveis(t, ultimaPeca);
 		foreach(Vector2 v in mov) {
 			if((int)v.x == x && (int)v.y == y) {
+				Debug.Log("Entrou em check!");
 				return true;
 			}
 		}
@@ -886,7 +929,7 @@ public class BoardRules : MonoBehaviour {
 				torresBrancas[1] = true;
 			} else if(peca.name.Contains("King")) {
 				// rei branco andou
-				if(roque) {
+				if(roque && Mathf.Abs((int)pos.y - (int)posPeca.y) >= 2) {
 					if((int)pos.y > (int)posPeca.y) {
 						// significa que está fazendo o roque longo
 						tabuleiro[(int)posPeca.x][(int)posPeca.y + 1] = brancas.transform.Find(tabuleiro[(int)posPeca.x][tabuleiro.Length - 1].name).gameObject;
@@ -918,7 +961,7 @@ public class BoardRules : MonoBehaviour {
 				torresPretas[1] = true;
 			} else if(peca.name.Contains("King")) {
 				// rei preto andou
-				if(roque) {
+				if(roque && Mathf.Abs((int)pos.y - (int)posPeca.y) >= 2) {
 					if((int)pos.y > (int)posPeca.y) {
 						// significa que está fazendo o roque longo
 						tabuleiro[(int)posPeca.x][(int)posPeca.y + 1] = pretas.transform.Find(tabuleiro[(int)posPeca.x][tabuleiro.Length - 1].name).gameObject;
@@ -943,9 +986,13 @@ public class BoardRules : MonoBehaviour {
 		posPeca.x = pos.x;
 		posPeca.y = pos.y;
 		if(peca.name.StartsWith("White")) {
-			reiPretoEmCheck = EmCheck(tabuleiro, reiPreto, peca);
+			if(!reiPretoEmCheck) {
+				reiPretoEmCheck = EntrouEmCheck(tabuleiro, reiPreto, peca);
+			}
 		} else {
-			reiBrancoEmCheck = EmCheck(tabuleiro, reiBranco, peca);
+			if(!reiBrancoEmCheck) {
+				reiBrancoEmCheck = EntrouEmCheck(tabuleiro, reiBranco, peca);
+			}
 		}
 	}
 
