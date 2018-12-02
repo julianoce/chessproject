@@ -642,6 +642,19 @@ public class BoardRules : MonoBehaviour {
 		return false;
 	}
 
+	public bool checkmate(GameObject[][] t, string cor) {
+		List<Vector2> aux;
+		for (int i = 0; i < t.Length; i++) {
+			for (int j = 0; j < t.Length; j++) {
+				if(t[i][j] && t[i][j].name.StartsWith(cor)) {
+					aux = MovimentosPossiveis(t, t[i][j], new Vector2(i, j), true);
+					if(aux.Count > 0) return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	public GameObject[][] Mover_tab_aux(GameObject[][] tab, Vector2 posDaPeca, Vector2 posDestino) {
 		return AtualizaPosicoes(tab, tab[(int)posDaPeca.x][(int)posDaPeca.y].gameObject, posDestino, false);
 	}
@@ -659,9 +672,6 @@ public class BoardRules : MonoBehaviour {
 			
 		}
 		if(definitivo && tab[(int)pos.x][(int)pos.y]) { 
-			if(tab[(int)pos.x][(int)pos.y].name.Contains("King")){
-				gm.endGame();
-			}
 			Destroy(tab[(int)pos.x][(int)pos.y]);
 		}
 
@@ -749,6 +759,13 @@ public class BoardRules : MonoBehaviour {
 		posPeca.y = pos.y;
 	
 		if(definitivo) {
+			if(peca.name.StartsWith("White")) {
+				reiPretoEmCheck = checkmate(tab, "Black");
+				if(reiPretoEmCheck) gm.endGame();
+			} else if (peca.name.StartsWith("Black")) {
+				reiBrancoEmCheck = checkmate(tab, "White");
+				if(reiBrancoEmCheck) gm.endGame();
+			}
 		// 	if(peca.name.StartsWith("White")) {
 		// 		if(!reiPretoEmCheck) {
 		// 			reiPretoEmCheck = EntrouEmCheck(tab, reiPreto, peca);
