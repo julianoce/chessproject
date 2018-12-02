@@ -26,8 +26,6 @@ public class BoardRules : MonoBehaviour {
 	private bool reiBrancoEmCheck;
 	private bool reiPretoEmCheck;
 	Vector2 posPeca = new Vector2();
-
-	bool parouDir, parouEsq;
 	private GameManager gm;
 	
 	// Use this for initialization
@@ -296,7 +294,7 @@ public class BoardRules : MonoBehaviour {
 		return resultado;
 	}
 
-	private List<Vector2> knight_moves(string color, string adv_color, Vector2 posPeca, List<Vector2> resultado){
+	private List<Vector2> knight_moves(string adv_color, Vector2 posPeca, List<Vector2> resultado){
 		int xPeca = (int)posPeca.x, yPeca = (int)posPeca.y;
 			//Debug.Log(peca.name + ": (" + xPeca + "," + yPeca + ")");
 			for(int i = 1; i < 3; i++) {
@@ -415,7 +413,7 @@ public class BoardRules : MonoBehaviour {
 		return resultado;
 	}
 
-	private List<Vector2> queen_moves(string color, string adv_color, Vector2 posPeca, List<Vector2> resultado) {
+	private List<Vector2> queen_moves(string adv_color, Vector2 posPeca, List<Vector2> resultado) {
 		resultado = bishop_moves(adv_color, posPeca, resultado);
 		resultado = rook_moves(adv_color, posPeca, resultado);
 		return resultado;
@@ -507,17 +505,17 @@ public class BoardRules : MonoBehaviour {
 		// Movimento dos cavalos
 		else if(peca.name.Contains("Knight")) {
 			if (peca.name.StartsWith("White")){
-				resultado = knight_moves("White","Black", posPeca, resultado);
+				resultado = knight_moves("Black", posPeca, resultado);
 			}
 			else{
-				resultado = knight_moves("Black", "White", posPeca, resultado);
+				resultado = knight_moves("White", posPeca, resultado);
 			}
 		}
 
 		// Movimento do Rei
 		else if(peca.name.Contains("King")) {
 			if (peca.name.StartsWith("White")){
-				resultado = king_moves("White","Black", posPeca, resultado);
+				resultado = king_moves("White", "Black", posPeca, resultado);
 			}
 			else{
 				resultado = king_moves("Black", "White", posPeca, resultado);
@@ -527,33 +525,14 @@ public class BoardRules : MonoBehaviour {
 		// Movimento da Rainha
 		else if(peca.name.Contains("Queen")) {
 			if (peca.name.StartsWith("White")){
-				resultado = queen_moves("White","Black", posPeca, resultado);
+				resultado = queen_moves("Black", posPeca, resultado);
 			}
 			else{
-				resultado = queen_moves("Black", "White", posPeca, resultado);
+				resultado = queen_moves("White", posPeca, resultado);
 			}
 		}
 		//resultado = FiltrarMovimentos(tabuleiro, peca, resultado);
 		return resultado;
-	}
-	private GameObject[][] Copiar(GameObject[][] tab){
-		GameObject[][] tab_aux = new GameObject[8][];
-		for(int i = 0; i < tab_aux.Length; i++) {
-			tab_aux[i] = new GameObject[8];
-		}
-
-		for(int i = 0; i < tab_aux.Length; i++) {
-			tab_aux[i] = new GameObject[8];
-			for(int j = 0; j < tab_aux[i].Length; j++) {
-				if (tab[i][j] && tab[i][j].name.StartsWith("Black")){
-					tab_aux[i][j] = pretas.transform.Find(tab[i][j].name).gameObject;
-				}
-				else if (tab[i][j] && tab[i][j].name.StartsWith("White")){
-					tab_aux[i][j] = brancas.transform.Find(tab[i][j].name).gameObject;
-				}
-			}
-		}
-		return tab_aux;
 	}
 
 	public List<Vector2> FiltrarMovimentos(GameObject[][] tab, GameObject peca, List<Vector2> mov) {
