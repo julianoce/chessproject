@@ -10,9 +10,11 @@ public class Promotion : MonoBehaviour {
 
 	private GameObject toChange, piece;
 	private GameManager gm;
+	private BoardRules br;
 	// Use this for initialization
 	void Start () {
 		gm = FindObjectOfType(typeof(GameManager)) as GameManager;
+		br = FindObjectOfType(typeof(BoardRules)) as BoardRules;
 	}
 	
 	// Update is called once per frame
@@ -78,6 +80,7 @@ public class Promotion : MonoBehaviour {
 			temp.tag = "whitePiece";
 			temp.transform.parent = whitePiece.transform;
 		}
+		br.Promover(toChange, temp);
 		Destroy(toChange);
 		gm.cleanPromotePlat();
 	}

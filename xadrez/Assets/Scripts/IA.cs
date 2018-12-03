@@ -15,7 +15,7 @@ public class IA : MonoBehaviour {
 	private string cor_adv;
 	private List<Vector2> jogadas;
 	private List<GameObject> quem;
-	const int MAX_ITE = 11;
+	const int MAX_ITE = 2;
 	private int bla;
 	private int dificuldade;
 
@@ -45,7 +45,7 @@ public class IA : MonoBehaviour {
 
 		cor = c;
 		if(cor.Equals("Black")){
-			cor_adv = "white";
+			cor_adv = "White";
 		}else{
 			cor_adv = "Black";
 		}
@@ -86,10 +86,11 @@ public class IA : MonoBehaviour {
 		for(int i = 0; i < tab.Length; i++) {
 			for(int j = 0; j < tab[i].Length; j++) {
 				if(tab[i][j] && tab[i][j].name.StartsWith(this.cor)) {
-					List<Vector2> jogadasPossiveis = br.MovimentosPossiveis(tab,tab[i][j]);
+					List<Vector2> jogadasPossiveis = br.MovimentosPossiveis(tab,tab[i][j], new Vector2(i, j), true);
 					foreach(Vector2 jogada in jogadasPossiveis) {
-						GameObject[][] tabCopy = this.copia_ref(tab);
-						br.AtualizaPosicoesRelativas(tabCopy, tab[i][j], jogada);
+						GameObject[][] tabCopy = this.copiar(tab);
+						tabCopy = br.AtualizaPosicoes(tabCopy, new Vector2(i, j), jogada, false);
+						// br.AtualizaPosicoesRelativas(tabCopy, tab[i][j], jogada);
 						int vLinha =  Min(tabCopy, alpha, beta, poda+1);
 						if(poda == 0 && vLinha == v){
 							this.jogadas.Add(jogada);
@@ -126,10 +127,11 @@ public class IA : MonoBehaviour {
 		for(int i = 0; i < tab.Length; i++) {
 			for(int j = 0; j < tab[i].Length; j++) {
 				if(tab[i][j] && tab[i][j].name.StartsWith(this.cor_adv)) {
-					List<Vector2> jogadasPossiveis = br.MovimentosPossiveis(tab,tab[i][j]);
+					List<Vector2> jogadasPossiveis = br.MovimentosPossiveis(tab, tab[i][j], new Vector2(i, j), true);
 					foreach(Vector2 jogada in jogadasPossiveis) {
-						GameObject[][] tabCopy = this.copia_ref(tab);
-						br.AtualizaPosicoesRelativas(tabCopy, tab[i][j], jogada);
+						GameObject[][] tabCopy = this.copiar(tab);
+						tabCopy = br.AtualizaPosicoes(tabCopy, new Vector2(i,j), jogada, false);
+						// br.AtualizaPosicoesRelativas(tabCopy, tab[i][j], jogada);
 						int vLinha = Max(tabCopy, alpha, beta, poda+1);
 						if(vLinha < v)
 							v = vLinha;
@@ -168,7 +170,6 @@ public class IA : MonoBehaviour {
 	private GameObject[][] copiar(GameObject[][] tab){
 		GameObject[][] tab_aux = criar(tab);
 		for(int i = 0; i < tab_aux.Length; i++) {
-			tab_aux[i] = new GameObject[8];
 			for(int j = 0; j < tab_aux[i].Length; j++) {
 				if (tab[i][j] && tab[i][j].name.StartsWith("Black")){
 					tab_aux[i][j] = pretas.transform.Find(tab[i][j].name).gameObject;

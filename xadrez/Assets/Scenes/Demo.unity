@@ -3944,6 +3944,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f32e7f30bc4b0ec408ccae5107c0bee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  brancas: {fileID: 1954849656}
+  pretas: {fileID: 1218781057}
   speed: 0.15
   heigth: 20
   podeJogar: 0
