@@ -72,8 +72,6 @@ public class SelectPiece : MonoBehaviour {
                 //faz as posições possiveis de movimentação dessa peça
                 bm.makeTiles(this.gameObject);
             }
-        
-        }
-        // gm.setPromoteToChange(this.gameObject);  
+        } 
     }
 }

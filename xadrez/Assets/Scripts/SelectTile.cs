@@ -49,7 +49,6 @@ public class SelectTile : MonoBehaviour {
     //coloca a cor de peça inimiga
     public void setEnemyColor(){
         enemy = true;
-        Debug.Log(children);
         foreach(SpriteRenderer c in children){
            c.color = enemyPiece;
         }

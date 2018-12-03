@@ -16,6 +16,7 @@ public class PlayerScript : MonoBehaviour {
      private GameObject rookToMove;
     private Vector3 rookPosToGo;
     bool roque;
+    private bool podeMudarTurno;
 
     private GameManager gm;
     private BoardMapping bm;
@@ -38,6 +39,11 @@ public class PlayerScript : MonoBehaviour {
 
         ctrlMove = false;
         podeJogar = false;
+        podeMudarTurno = true;
+    }
+
+    public void setPodeMudarTurno(bool resp){
+        podeMudarTurno = resp;
     }
 
     //guarda qual peça está selecionada no momento
@@ -73,6 +79,12 @@ public class PlayerScript : MonoBehaviour {
             
             ctrlMove = true;
             toc.Play();
+
+            if(piece.name.Contains("Pawn") && (vec.x == 0 || vec.x == 7)){
+                podeMudarTurno = false;
+                gm.setPromoteToChange(piece);
+                //podeMudarTurno = true;
+            }
 
             if(pieceToMove.name.Contains("King") && br.getRoque()) {
                 if(respf[1] == (float)1) {
@@ -136,7 +148,9 @@ public class PlayerScript : MonoBehaviour {
                 posToGo = pieceToMove.transform.position;
                 pieceToMove = null;
                 podeJogar = true;
-                gm.mudaTurno();
+                if(podeMudarTurno){
+                    gm.mudaTurno();
+                }
             }
         } 
     }

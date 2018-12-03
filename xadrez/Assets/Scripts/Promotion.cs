@@ -11,10 +11,15 @@ public class Promotion : MonoBehaviour {
 	private GameObject toChange, piece;
 	private GameManager gm;
 	private BoardRules br;
+	private PlayerScript ps;
+	private int countName;
 	// Use this for initialization
 	void Start () {
 		gm = FindObjectOfType(typeof(GameManager)) as GameManager;
 		br = FindObjectOfType(typeof(BoardRules)) as BoardRules;
+		ps = FindObjectOfType(typeof(PlayerScript)) as PlayerScript;
+
+		countName = 2;
 	}
 	
 	// Update is called once per frame
@@ -29,8 +34,7 @@ public class Promotion : MonoBehaviour {
     //enquanto o mouse tiver em cima pode-se escolher a peça para trocar
     void OnMouseOver()
     {
-		Debug.Log(this.gameObject.name);
-        if (Input.GetMouseButtonDown(0))
+		if (Input.GetMouseButtonDown(0))
         {
 			 switch (this.gameObject.name){
 				case "W Queen":
@@ -70,9 +74,11 @@ public class Promotion : MonoBehaviour {
 
 	//função que instancia a peça no tabuleiro --------- falta ajustar a posição na matriz do código
 	void instantiatePiece(){
+		countName++;
 		toChange = gm.getPromoteToChange();
 		GameObject temp = Instantiate(piece, toChange.transform.position, toChange.transform.localRotation);
-		temp.name = piece.name;
+		temp.name = piece.name +" "+ countName;
+		temp.transform.rotation = piece.transform.rotation;
 		if(this.gameObject.name.Contains("B ")){
 			temp.tag = "blackPiece";
 			temp.transform.parent = blackPiece.transform;
@@ -83,5 +89,7 @@ public class Promotion : MonoBehaviour {
 		br.Promover(toChange, temp);
 		Destroy(toChange);
 		gm.cleanPromotePlat();
+		gm.mudaTurno();
+		ps.setPodeMudarTurno(true);
 	}
 }
