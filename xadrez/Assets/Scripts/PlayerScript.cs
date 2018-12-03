@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour {
 
+    public GameObject brancas;
+	public GameObject pretas;
     public float speed;
     public float heigth;
     private GameObject piece;
@@ -11,6 +13,9 @@ public class PlayerScript : MonoBehaviour {
 
      private GameObject pieceToMove;
     private Vector3 posToGo;
+     private GameObject rookToMove;
+    private Vector3 rookPosToGo;
+    bool roque;
 
     private GameManager gm;
     private BoardMapping bm;
@@ -61,13 +66,49 @@ public class PlayerScript : MonoBehaviour {
             {
                 respf[i] = float.Parse(resp[i]);
             }
-
+            
             vec = new Vector2(respf[0], respf[1]);
 
             br.AtualizaPosicoes(piece, vec);
             
             ctrlMove = true;
             toc.Play();
+
+            if(pieceToMove.name.Contains("King") && br.getRoque()) {
+                if(respf[1] == (float)1) {
+                    // roque curto
+                    if(piece.name.StartsWith("White")) {
+                        // roque curto do rei branco
+                        GameObject torre = brancas.transform.Find("White Rook 2").gameObject;
+                        GameObject tileDaTorre = GameObject.Find("0,2");
+                        rookToMove =  torre;
+                        rookPosToGo = tileDaTorre.transform.position;
+                    } else {
+                        // roque curto do rei preto
+                        GameObject torre = pretas.transform.Find("Black Rook 2").gameObject;
+                        GameObject tileDaTorre = GameObject.Find("7,2");
+                        rookToMove =  torre;
+                        rookPosToGo = tileDaTorre.transform.position;
+                    }
+                    roque = true;
+                } else if(respf[1] == (float)5) {
+                    // roque longo
+                    if(piece.name.StartsWith("White")) {
+                        // roque longo do rei branco
+                        GameObject torre = brancas.transform.Find("White Rook 1").gameObject;
+                        GameObject tileDaTorre = GameObject.Find("0,4");
+                        rookToMove =  torre;
+                        rookPosToGo = tileDaTorre.transform.position;
+                    } else {
+                        // roque longo do rei preto
+                        GameObject torre = pretas.transform.Find("Black Rook 1").gameObject;
+                        GameObject tileDaTorre = GameObject.Find("7,4");
+                        rookToMove =  torre;
+                        rookPosToGo = tileDaTorre.transform.position;
+                    }
+                    roque = true;
+                }
+            }
         } 
     }
 
@@ -76,9 +117,19 @@ public class PlayerScript : MonoBehaviour {
         // faz a animação de movimentação da peça
         if (ctrlMove)
         {
+            if(roque) {
+                if(Vector3.Distance(rookToMove.transform.position, rookPosToGo) > 0.01f) {
+                    rookToMove.transform.position =  Vector3.Lerp(rookToMove.transform.position, rookPosToGo, speed);
+                } else {
+                    roque = false;
+                    rookPosToGo = rookToMove.transform.position;
+                    rookToMove = null;
+                }
+            }
             if (Vector3.Distance(pieceToMove.transform.position, posToGo) > 0.01f)
             {
-               pieceToMove.transform.position =  Vector3.Lerp(pieceToMove.transform.position, posToGo, speed);
+                pieceToMove.transform.position =  Vector3.Lerp(pieceToMove.transform.position, posToGo, speed);
+                
             }else
             {
                 ctrlMove = false;
