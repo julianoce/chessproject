@@ -17,6 +17,7 @@ public class IA : MonoBehaviour {
 	private List<GameObject> quem;
 	const int MAX_ITE = 2;
 	private int bla;
+	private int dificuldade;
 
 	void Start () {
 		br = GameObject.FindObjectOfType(typeof(BoardRules)) as BoardRules;
@@ -32,7 +33,16 @@ public class IA : MonoBehaviour {
 	void Update () {
 		
 	}
-	public void buscar(string c){
+	public void buscar(string c, string mode){
+		if (mode.Equals("facil")){
+			Debug.Log("facil");
+			this.dificuldade = 1;
+		}
+		else{
+			Debug.Log("dificil");
+			this.dificuldade = 2;
+		}
+
 		cor = c;
 		if(cor.Equals("Black")){
 			cor_adv = "White";
@@ -67,8 +77,9 @@ public class IA : MonoBehaviour {
 	}
 
 	int Max(GameObject[][] tab, int alpha, int beta, int poda){
-		if(poda == MAX_ITE)
-			return UtilityDificil(tab);
+		if(poda == MAX_ITE){
+			return (dificuldade==1 ? UtilityFacil(tab) : UtilityDificil(tab));
+		}
 
 		int v = int.MinValue;
 
@@ -108,8 +119,9 @@ public class IA : MonoBehaviour {
 	}
 
 	int Min(GameObject[][] tab, int alpha, int beta, int poda){
-		if(poda == MAX_ITE)
-			return UtilityDificil(tab);
+		if(poda == MAX_ITE){
+			return (dificuldade==1 ? UtilityFacil(tab) : UtilityDificil(tab));
+		}
 		
 		int v = int.MaxValue;
 		for(int i = 0; i < tab.Length; i++) {
