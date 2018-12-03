@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
                 c.enabled = false;
             }
             if(player1.Equals("IA")){
-                StartCoroutine(RunIA(0, "White"));
+                StartCoroutine(RunIA(0, "White", mode));
             } 
         
         }else if (turno == 1)
@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour
                 c.enabled = true;
             }
             if(player2.Equals("IA")){
-                StartCoroutine(RunIA(0, "Black"));
+                StartCoroutine(RunIA(0, "Black", mode));
             } 
         }
         sp.cleanSelection(true);
