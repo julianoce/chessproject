@@ -800,9 +800,9 @@ public class BoardRules : MonoBehaviour {
 		bool achou = false;
 		for (int i = 0; i <= 1; i++) {
 			for (int j = 0; j < tabuleiro.Length; j++) {
-				if(tabuleiro[i*tabuleiro.Length-1][j] && tabuleiro[i*tabuleiro.Length-1][j].name.Equals(peao.name)) {
-					posPeca.x = i;
-					posPeca.x = j;
+				if(tabuleiro[i*(tabuleiro.Length-1)][j] && tabuleiro[i*(tabuleiro.Length-1)][j].name.Equals(peao.name)) {
+					posPeca.x = i*(tabuleiro.Length-1);
+					posPeca.y = j;
 					achou = true;
 					break;
 				}
