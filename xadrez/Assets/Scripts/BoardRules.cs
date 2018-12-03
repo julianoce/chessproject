@@ -24,9 +24,10 @@ public class BoardRules : MonoBehaviour {
 	private Vector2 reiPreto;
 	private bool reiBrancoEmCheck;
 	private bool reiPretoEmCheck;
-	Vector2 posPeca = new Vector2();
+	Vector2 posPeca = new Vector2(), pretaEP = new Vector2(-1,-1), brancaEP = new Vector2(-1,-1);
 	private GameManager gm;
 	private bool roque;
+
 	private int qtdBrancas;
 	private int qtdPretas;
 	
@@ -405,13 +406,13 @@ public class BoardRules : MonoBehaviour {
 		// condições para o roque
 		if((color.Equals("White") && reiAndou[0] == false) || (color.Equals("Black") && reiAndou[1] == false))  {
 			// rei não andou
-			if((torresBrancas[0] == false || torresPretas[0] == false) && tabuleiro[xPeca][yPeca - 1] == null && tabuleiro[xPeca][yPeca - 2] == null) {
+			if((torresBrancas[0] == false || torresPretas[0] == false) && yPeca - 1 >= 0 && tabuleiro[xPeca][yPeca - 1] == null && yPeca - 2 >= 0 && tabuleiro[xPeca][yPeca - 2] == null) {
 				// rei pode fazer o roque com a torre mais proxima
 				resultado.Add(new Vector2(xPeca, yPeca - 2));
 				if(definitivo) {
 					this.roque = true;
 				}
-			} else if((torresBrancas[1] == false || torresPretas[1] == false) && tabuleiro[xPeca][yPeca + 1] == null && tabuleiro[xPeca][yPeca + 2] == null && tabuleiro[xPeca][yPeca + 3] == null) {
+			} else if((torresBrancas[1] == false || torresPretas[1] == false) && yPeca + 1 < tabuleiro.Length && tabuleiro[xPeca][yPeca + 1] == null && yPeca + 2 < tabuleiro.Length && tabuleiro[xPeca][yPeca + 2] == null  && yPeca + 3 < tabuleiro.Length && tabuleiro[xPeca][yPeca + 3] == null) {
 				// rei pode fazer o roque com a torre mais longe
 				resultado.Add(new Vector2(xPeca, yPeca + 2));
 				if(definitivo) {
@@ -467,13 +468,13 @@ public class BoardRules : MonoBehaviour {
 				}
 				if((int)posPeca.y + 1 < tab.Length && 
 					tab[(int)posPeca.x + 1][(int)posPeca.y + 1] != null && 
-					tab[(int)posPeca.x + 1][(int)posPeca.y + 1].name.StartsWith("Black")) {
+					(tab[(int)posPeca.x + 1][(int)posPeca.y + 1].name.StartsWith("Black") || tab[(int)posPeca.x + 1][(int)posPeca.y + 1].name.StartsWith("Ghost"))) {
 					// Comer para diagonal esquerda
 					resultado.Add(new Vector2(posPeca.x + 1, posPeca.y + 1));
 				}
 				if((int)posPeca.y - 1 >= 0 && 
 					tab[(int)posPeca.x + 1][(int)posPeca.y - 1] != null && 
-					tab[(int)posPeca.x + 1][(int)posPeca.y - 1].name.StartsWith("Black")) {
+					(tab[(int)posPeca.x + 1][(int)posPeca.y - 1].name.StartsWith("Black") || tab[(int)posPeca.x + 1][(int)posPeca.y - 1].name.StartsWith("Ghost"))) {
 					// Comer para diagonal direita
 					resultado.Add(new Vector2(posPeca.x + 1, posPeca.y - 1));
 				}
@@ -491,13 +492,13 @@ public class BoardRules : MonoBehaviour {
 				}
 				if((int)posPeca.y + 1 < tab.Length && 
 					tab[(int)posPeca.x - 1][(int)posPeca.y + 1] != null && 
-					tab[(int)posPeca.x - 1][(int)posPeca.y + 1].name.StartsWith("White")) {
+					(tab[(int)posPeca.x - 1][(int)posPeca.y + 1].name.StartsWith("White") || tab[(int)posPeca.x - 1][(int)posPeca.y + 1].name.StartsWith("Ghost"))) {
 					// Comer para diagonal direita em relação as peças pretas
 					resultado.Add(new Vector2(posPeca.x - 1, posPeca.y + 1));
 				}
 				if((int)posPeca.y - 1 >= 0 && 
 					tab[(int)posPeca.x - 1][(int)posPeca.y - 1] != null && 
-					tab[(int)posPeca.x - 1][(int)posPeca.y - 1].name.StartsWith("White")) {
+					(tab[(int)posPeca.x - 1][(int)posPeca.y - 1].name.StartsWith("White") || tab[(int)posPeca.x - 1][(int)posPeca.y - 1].name.StartsWith("Ghost"))) {
 					// Comer para diagonal esquerda em relação as peças pretas
 					resultado.Add(new Vector2(posPeca.x - 1, posPeca.y - 1));
 				} 
@@ -667,17 +668,55 @@ public class BoardRules : MonoBehaviour {
 		if(definitivo && tab[(int)posDestino.x][(int)posDestino.y]) {
 			if(tab[(int)posDestino.x][(int)posDestino.y].name.StartsWith("White")) {
 				this.qtdBrancas--;
-			} else {
+				Destroy(tab[(int)posDestino.x][(int)posDestino.y]);
+			} else if(tab[(int)posDestino.x][(int)posDestino.y].name.StartsWith("Black")) {
 				this.qtdPretas--;
+				Destroy(tab[(int)posDestino.x][(int)posDestino.y]);
+			} else {
+				if(tab[(int)posPeca.x][(int)posPeca.y].name.StartsWith("White")) {
+					Destroy(tab[(int)brancaEP.x-1][(int)brancaEP.y]);
+				} else {
+					Destroy(tab[(int)pretaEP.x+1][(int)pretaEP.y]);
+				}	
 			}
-			Destroy(tab[(int)posDestino.x][(int)posDestino.y]);
 		}
 		GameObject peca = tab[(int)posPeca.x][(int)posPeca.y].gameObject;
-
+		if(pretaEP.x != -1) {
+			// elimina o fantasma
+			tab[(int)pretaEP.x][(int)pretaEP.y] = null;
+			if((int)posDestino.x == (int)pretaEP.x && (int)posDestino.y == (int)pretaEP.y) {
+				// elimina a peça
+				tab[(int)pretaEP.x+1][(int)pretaEP.y] = null;
+			}
+			if(definitivo) {
+				// remove o direito da preta de fazer o enpassant
+				pretaEP.x = -1;
+				pretaEP.y = -1;
+			}
+		} else if(brancaEP.x != -1) {
+			// elimina o fantasma
+			tab[(int)brancaEP.x][(int)brancaEP.y] = null;
+			if((int)posDestino.x == (int)brancaEP.x && (int)posDestino.y == (int)brancaEP.y) {
+				// elimina a peça
+				tab[(int)brancaEP.x-1][(int)brancaEP.y] = null;
+			}
+			if(definitivo) {
+				// remove o direito da branca de fazer o enpassant
+				brancaEP.x = -1;
+				brancaEP.y = -1;
+			}
+		}
 		
 		if(peca.tag == "whitePiece") {
 			tab[(int)posDestino.x][(int)posDestino.y] = brancas.transform.Find(peca.name).gameObject;
 			if(definitivo && peca.name.Contains("Pawn")) {
+				if(Mathf.Abs(posDestino.x - posPeca.x) == 2) {
+					// se a peca que você ta movendo é um peão e vc quer andar dois pra frente
+					pretaEP = new Vector2(posDestino.x-1, posDestino.y);
+					// da o direito da preta fazer o enpassant
+					tab[(int)pretaEP.x][(int)pretaEP.y] = brancas.transform.Find("Ghost").gameObject;
+					// ^ coloca um "fantasma" na posição que precisa ser limpo na proxima rodada
+				}
 				int numeroPeao = (int)peca.name.ToCharArray()[11] - 49;
 				peoesBrancos[numeroPeao] = true;
 			} else if(definitivo && peca.name.Equals("White Rook 2")) {
@@ -717,6 +756,13 @@ public class BoardRules : MonoBehaviour {
 		} else {
 			tab[(int)posDestino.x][(int)posDestino.y] = pretas.transform.Find(peca.name).gameObject;
 			if(definitivo && peca.name.Contains("Pawn")) {
+				if(Mathf.Abs(posDestino.x - posPeca.x) == 2) {
+					// se a peca que você ta movendo é um peão e vc quer andar dois pra frente
+					brancaEP = new Vector2(posDestino.x+1, posDestino.y);
+					// da o direito da preta fazer o enpassant
+					tab[(int)brancaEP.x][(int)brancaEP.y] = brancas.transform.Find("Ghost").gameObject;
+					// ^ coloca um "fantasma" na posição que precisa ser limpo na proxima rodada
+				}
 				int numeroPeao = (int)peca.name.ToCharArray()[11] - 49;
 				peoesPretos[numeroPeao] = true;
 			} else if(definitivo && peca.name.Equals("Black Rook 2")) {
@@ -772,31 +818,8 @@ public class BoardRules : MonoBehaviour {
 		}
 	}
 
-	public void AtualizaPosicoesRelativas(GameObject[][] tab, GameObject peca, Vector2 pos){
-		for(int i = 0; i < tab.Length; i++) {
-			for(int j = 0; j < tab[i].Length; j++) {
-				if(tab[i][j] && tab[i][j].name.Equals(peca.name)) {
-					tab[(int)pos.x][(int)pos.y] = tab[i][j];
-					tab[i][j] = null;
-					return;
-				}
-			}
-		}
-	}
 	public GameObject verifyPosition (Vector2 pos){
 		return tabuleiro[(int)pos.x][(int)pos.y];
-	}
-
-	public List<GameObject> PecasDisponiveis(string cor) {
-		List<GameObject> pecas = new List<GameObject>();
-		for(int i = 0; i < tabuleiro.Length; i++) {
-			for(int j = 0; j < tabuleiro[i].Length; j++) {
-				if(tabuleiro[i][j].name.StartsWith(cor)) {
-					pecas.Add(tabuleiro[i][j]);
-				}
-			}
-		}
-		return pecas.Count > 0 ? pecas : null;
 	}
 
 	public GameObject[][] GetTabuleiro() {
@@ -828,19 +851,6 @@ public class BoardRules : MonoBehaviour {
 			reiBrancoEmCheck = checkmate(tabuleiro, "White");
 			if(reiBrancoEmCheck) gm.endGame();
 		}
-	}
-	
-	public List<Vector2> JogadasPossiveis(GameObject[][] tab, string cor){
-		List<Vector2> resultado = new List<Vector2>();
-		for(int i = 0; i < tab.Length; i++) {
-			tab[i] = new GameObject[8];
-			for(int j = 0; j < tab[i].Length; j++) {
-				if(tab[i][j] && tab[i][j].name.StartsWith(cor)){
-					resultado.AddRange(MovimentosPossiveis(tab,tab[i][j]));
-				}
-			}
-		}
-		return resultado;
 	}
 
 	public GameObject[][] copiar(GameObject[][] tab){
