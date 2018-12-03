@@ -42,23 +42,23 @@ public class IA : MonoBehaviour {
 		//receber como parametro cor escolhida pelo jogador e a dificuldade do jogo
 		bla = 0;
 		GameObject[][] tab = br.GetTabuleiro();
-		GameObject[][] tab_aux = copiar(tab);
+		GameObject[][] tab_aux = br.copiar(tab);
 		this.jogadas = new List<Vector2>();
 		this.quem = new List<GameObject>();
 	 	Max(tab_aux, int.MinValue, int.MaxValue, 0);
 		System.Random r = new System.Random();
 		int x = r.Next(0,this.jogadas.Count);
-		Debug.Log("Valor sorteado");
-		Debug.Log(this.jogadas.Count);
+		// Debug.Log("Valor sorteado");
+		// Debug.Log(this.jogadas.Count);
 		GameObject piece = this.quem[x];
-		Debug.Log("Respostas");
-		Debug.Log(piece);
-		Debug.Log(this.jogadas[x]);
+		// Debug.Log("Respostas");
+		// Debug.Log(piece);
+		// Debug.Log(this.jogadas[x]);
 
 		bm.makeTiles(piece);
 		ps.movePiece(this.quem[x], findTile(this.jogadas[x]));
 		//ps.podeJogar = false;
-		Debug.Log(bla);
+		// Debug.Log(bla);
 		Debug.Log("Terminou");
 	}
 
@@ -77,7 +77,7 @@ public class IA : MonoBehaviour {
 				if(tab[i][j] && tab[i][j].name.StartsWith(this.cor)) {
 					List<Vector2> jogadasPossiveis = br.MovimentosPossiveis(tab,tab[i][j], new Vector2(i, j), true);
 					foreach(Vector2 jogada in jogadasPossiveis) {
-						GameObject[][] tabCopy = this.copiar(tab);
+						GameObject[][] tabCopy = br.copiar(tab);
 						tabCopy = br.AtualizaPosicoes(tabCopy, new Vector2(i, j), jogada, false);
 						// br.AtualizaPosicoesRelativas(tabCopy, tab[i][j], jogada);
 						int vLinha =  Min(tabCopy, alpha, beta, poda+1);
@@ -117,7 +117,7 @@ public class IA : MonoBehaviour {
 				if(tab[i][j] && tab[i][j].name.StartsWith(this.cor_adv)) {
 					List<Vector2> jogadasPossiveis = br.MovimentosPossiveis(tab, tab[i][j], new Vector2(i, j), true);
 					foreach(Vector2 jogada in jogadasPossiveis) {
-						GameObject[][] tabCopy = this.copiar(tab);
+						GameObject[][] tabCopy = br.copiar(tab);
 						tabCopy = br.AtualizaPosicoes(tabCopy, new Vector2(i,j), jogada, false);
 						// br.AtualizaPosicoesRelativas(tabCopy, tab[i][j], jogada);
 						int vLinha = Max(tabCopy, alpha, beta, poda+1);
@@ -135,40 +135,16 @@ public class IA : MonoBehaviour {
 		}
 		return v;
 	}
-		
-
-	private GameObject[][] criar(GameObject[][] tab){
-		GameObject[][] tab_n = new GameObject[8][];
-		for(int i = 0; i < tab_n.Length; i++) {
-			tab_n[i] = new GameObject[8];
-		}
-		return tab_n;
-	}
-
-	private GameObject[][] copia_ref(GameObject[][] tab){
-		GameObject[][] tab_aux = criar(tab);
-		for(int i = 0; i < tab_aux.Length; i++) {
-			for(int j = 0; j < tab_aux[i].Length; j++) {
-				tab_aux[i][j] = tab[i][j];
-			}
-		}
-		return tab_aux;
-	}
-
-	private GameObject[][] copiar(GameObject[][] tab){
-		GameObject[][] tab_aux = criar(tab);
-		for(int i = 0; i < tab_aux.Length; i++) {
-			for(int j = 0; j < tab_aux[i].Length; j++) {
-				if (tab[i][j] && tab[i][j].name.StartsWith("Black")){
-					tab_aux[i][j] = pretas.transform.Find(tab[i][j].name).gameObject;
-				}
-				else if (tab[i][j] && tab[i][j].name.StartsWith("White")){
-					tab_aux[i][j] = brancas.transform.Find(tab[i][j].name).gameObject;
-				}
-			}
-		}
-		return tab_aux;
-	}
+	
+	// private GameObject[][] copia_ref(GameObject[][] tab){
+	// 	GameObject[][] tab_aux = criar(tab);
+	// 	for(int i = 0; i < tab_aux.Length; i++) {
+	// 		for(int j = 0; j < tab_aux[i].Length; j++) {
+	// 			tab_aux[i][j] = tab[i][j];
+	// 		}
+	// 	}
+	// 	return tab_aux;
+	// }
 
 	public int Utility(GameObject[][]tab){
 		int numPecasInimigo = br.NumPecasTime(tab, this.cor_adv);
