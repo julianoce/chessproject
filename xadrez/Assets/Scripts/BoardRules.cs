@@ -821,8 +821,12 @@ public class BoardRules : MonoBehaviour {
 		}
 		if(promo.name.StartsWith("White")) {
 			tabuleiro[(int)posPeca.x][(int)posPeca.y] = brancas.transform.Find(promo.name).gameObject;
+			reiPretoEmCheck = checkmate(tabuleiro, "Black");
+			if(reiPretoEmCheck) gm.endGame();
 		} else if(promo.name.StartsWith("Black")) {
 			tabuleiro[(int)posPeca.x][(int)posPeca.y] = pretas.transform.Find(promo.name).gameObject;
+			reiBrancoEmCheck = checkmate(tabuleiro, "White");
+			if(reiBrancoEmCheck) gm.endGame();
 		}
 	}
 	

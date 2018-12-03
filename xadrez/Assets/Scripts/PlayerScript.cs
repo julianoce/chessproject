@@ -81,8 +81,6 @@ public class PlayerScript : MonoBehaviour {
             toc.Play();
 
             if(piece.name.Contains("Pawn") && (vec.x == 0 || vec.x == 7)){
-                Debug.Log("caralhoooooooooooooooooooooooooooooo");
-                Debug.Log(vec.x);
                 podeMudarTurno = false;
                 gm.setPromoteToChange(piece);
                 //podeMudarTurno = true;

@@ -34,8 +34,7 @@ public class Promotion : MonoBehaviour {
     //enquanto o mouse tiver em cima pode-se escolher a peça para trocar
     void OnMouseOver()
     {
-		Debug.Log(this.gameObject.name);
-        if (Input.GetMouseButtonDown(0))
+		if (Input.GetMouseButtonDown(0))
         {
 			 switch (this.gameObject.name){
 				case "W Queen":
