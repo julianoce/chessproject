@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     private Collider[] coll;
     private IA ia;
     private CameraMove cm;
+
+    public static bool checkMate, whiteWon;
     // Use this for initialization
     void Start()
     {
@@ -66,6 +68,8 @@ public class GameManager : MonoBehaviour
     // função para terminar o jogo quando o rei for eliminado
     public void endGame(){
         StartCoroutine(endGameWait(1));
+        whiteWon = (turno == 1)? true : false;
+        checkMate = true;
         turno = 0;
     }
 
@@ -73,7 +77,8 @@ public class GameManager : MonoBehaviour
     IEnumerator endGameWait(float waitTime)
      {
          yield return new WaitForSeconds(waitTime);
-        SceneManager.LoadScene("Menu");
+        
+        //SceneManager.LoadScene("Menu");
      }
 
     //função que remove a visualização da promoção de peça
@@ -117,7 +122,7 @@ public class GameManager : MonoBehaviour
                 c.enabled = false;
             }
             if(player1.Equals("IA")){
-                StartCoroutine(RunIA(0, "White"));
+                StartCoroutine(RunIA(0, "White", mode));
             } 
         
         }else if (turno == 1)
@@ -132,7 +137,7 @@ public class GameManager : MonoBehaviour
                 c.enabled = true;
             }
             if(player2.Equals("IA")){
-                StartCoroutine(RunIA(0, "Black"));
+                StartCoroutine(RunIA(0, "Black", mode));
             } 
         }
         sp.cleanSelection(true);

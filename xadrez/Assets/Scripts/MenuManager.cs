@@ -11,9 +11,9 @@ public class MenuManager : MonoBehaviour {
 				//backRules, 
 				//continuePause, rulesPause, quitGamePause;
 
-	public GameObject mainMenu, pauseMenu, rulesMenu, newGameMenu;
+	public GameObject mainMenu, pauseMenu, rulesMenu, newGameMenu, checkMenu;
 
-	Animator animMain, animPause, animRules, animNewGame;
+	Animator animMain, animPause, animRules, animNewGame, animCheckMenu;
 	List<GameObject> menus;
 	public enum MenuType{none, main, newGame, pause, rules};
 	public MenuType menuType;
@@ -23,8 +23,8 @@ public class MenuManager : MonoBehaviour {
 	
     public GameObject player1, player2,cpu1, cpu2;
 	
-	public Text arrow1, arrow2, arrow3, arrow4;
-	public Button bt1, bt2, bt3, bt4; 
+	public Text arrow1, arrow2, arrow3, arrow4, victoryMsg;
+	public Button bt1, bt2, bt3, bt4, bt_ok; 
 
 	public RawImage img_alto_falante;
     public RawImage img_sem_alto_falante;
@@ -47,6 +47,7 @@ public class MenuManager : MonoBehaviour {
 		animPause = pauseMenu.GetComponent<Animator>();
 		animRules = rulesMenu.GetComponent<Animator>();
 		animNewGame = newGameMenu.GetComponent<Animator>();
+		animCheckMenu = checkMenu.GetComponent<Animator>();
 		if(sc.name == "Menu"){
 			animMain.Play("slideIn");
 			soundMenuIn.Play();
@@ -56,6 +57,7 @@ public class MenuManager : MonoBehaviour {
 		{
 			pauseMenu.SetActive(false);
 			rulesMenu.SetActive(false);
+			checkMenu.SetActive(false);
 		}
 
 		cpuw = false;
@@ -85,6 +87,13 @@ public class MenuManager : MonoBehaviour {
 				img_alto_falante.enabled = sound;
 				img_sem_alto_falante.enabled = !sound;
 				gameMusic.Pause();
+			 }
+
+			 if(GameManager.checkMate){
+				 checkMenu.SetActive(true);
+				 victoryMsg.text = GameManager.whiteWon? "BRANCAS GANHARAM" : "PRETAS GANHARAM";
+				 animCheckMenu.Play("slideIn");
+				 GameManager.checkMate = false;
 			 }
 		 }
 	}
@@ -222,7 +231,7 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void mouseOverButton(Text button){
-
+		
 		button.fontStyle = FontStyle.Bold;
 	}
 
