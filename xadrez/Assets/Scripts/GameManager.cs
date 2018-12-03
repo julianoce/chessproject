@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
 
         // ajustes de camera e jogadas de acordo com a escolha de jogadores
         if(player1.Equals("IA")){
-            StartCoroutine(RunIA(1, "White"));
+            StartCoroutine(RunIA(1, "White", mode));
         }
         if(player1.Equals("Player")&& player2.Equals("Player")){
             cm.active = true;
@@ -36,13 +36,13 @@ public class GameManager : MonoBehaviour
      }
     
      // tenta iniciar o script da IA em corotina / thread mas ainda não funciona
-     IEnumerator RunIA(float waitTime, string color)
+     IEnumerator RunIA(float waitTime, string color, string mode)
      {
          yield return new WaitForSeconds(waitTime);
          
         //Debug.Log("ia rodando em coroutine");
        // Debug.Log(color);
-        ia.buscar(color);
+        ia.buscar(color, mode);
         
      }
     
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
                 c.enabled = false;
             }
             if(player1.Equals("IA")){
-                StartCoroutine(RunIA(0, "White"));
+                StartCoroutine(RunIA(0, "White", mode));
             } 
         
         }else if (turno == 1)
@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour
                 c.enabled = true;
             }
             if(player2.Equals("IA")){
-                StartCoroutine(RunIA(0, "Black"));
+                StartCoroutine(RunIA(0, "Black", mode));
             } 
         }
         sp.cleanSelection(true);

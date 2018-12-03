@@ -27,6 +27,8 @@ public class BoardRules : MonoBehaviour {
 	Vector2 posPeca = new Vector2();
 	private GameManager gm;
 	private bool roque;
+	private int qtdBrancas;
+	private int qtdPretas;
 	
 	// Use this for initialization
 	void Start () {
@@ -39,6 +41,7 @@ public class BoardRules : MonoBehaviour {
 		reiAndou = new bool[2];
 		torresBrancas = new bool[2];
 		torresPretas = new bool[2];
+		qtdBrancas = qtdPretas = 16;
 		for(int i = 0; i < tabuleiro.Length; i++) {
 			tabuleiro[i] = new GameObject[8];
 			for(int j = 0; j < tabuleiro[i].Length; j++) {
@@ -427,6 +430,15 @@ public class BoardRules : MonoBehaviour {
 
 	public List<Vector2> MovimentosPossiveis(GameObject[][] tabuleiro, GameObject peca) {
 		Vector2 aux = new Vector2();
+		for(int i = 0; i < tabuleiro.Length; i++) {
+			for(int j = 0; j < tabuleiro[i].Length; j++) {
+				//acha a peça
+				if(peca.Equals(tabuleiro[i][j])) {
+					aux.x = i;
+					aux.y = j;
+				}
+			}
+		} 
 		return MovimentosPossiveis(tabuleiro, peca, aux, true);
 	}
 	public List<Vector2> MovimentosPossiveis(GameObject[][] tab, GameObject peca, Vector2 pos, bool definitivo) {
@@ -439,18 +451,7 @@ public class BoardRules : MonoBehaviour {
 		posPeca = pos;
 		List<Vector2> resultado = new List<Vector2>();
 		if(tab == null) {
-			Debug.Log("oiiiiii");
-		}
-		if(posPeca.magnitude == 0) {
-			for(int i = 0; i < tab.Length; i++) {
-				for(int j = 0; j < tab[i].Length; j++) {
-					//acha a peça
-					if(peca.Equals(tab[i][j])) {
-						posPeca.x = i;
-						posPeca.y = j;
-					}
-				}
-			} 
+			Debug.Log("tab == null em MovimentosPossiveis()");
 		}
 
 		// Movimento do peões
@@ -559,25 +560,22 @@ public class BoardRules : MonoBehaviour {
 	// pos é a posição da peça
 	public List<Vector2> FiltrarMovimentos(GameObject[][] tab, string adv_color, Vector2 pos, List<Vector2> mov) {
 		List<Vector2> mov_aux;
+		int contPecas = 0;
 		Vector2 posRei = new Vector2();
 		bool xeque = false;
 		List<Vector2> resp = new List<Vector2>();
 		bool ehORei = tab[(int)pos.x][(int)pos.y].name.Contains("King");
 		
-		// n² para achar o rei
 		if (!ehORei) {
-			for (int i = 0; i < tab.Length; i++) {
-				for (int j = 0; j < tab.Length; j++) {
-					if(tab[i][j] && tab[i][j].name.Contains("King") && !tab[i][j].name.StartsWith(adv_color)) {
-						posRei.x = i;
-						posRei.y = j;
-						break;
-					}
-				}
+			if(adv_color.Equals("White")) {
+				posRei = reiPreto;
+			} else {
+				posRei = reiBranco;
 			}
 		}
 
 		foreach (Vector2 m in mov) {
+			contPecas = 0;
 			GameObject[][] tab_aux = copiar(tab);
 			tab_aux = Mover_tab_aux(tab_aux, pos, m);
 			if(ehORei) {
@@ -586,8 +584,13 @@ public class BoardRules : MonoBehaviour {
 			}
 			xeque = false;
 			for(int i = 0; i < tab.Length; i++) {
+				if(adv_color.Equals("White") && contPecas == qtdBrancas) {break;}
+				else if(adv_color.Equals("Pretas") && contPecas == qtdPretas) {break;}
 				for(int j = 0; j < tab.Length; j++) {
-					if(tab_aux[i][j] && tab_aux[i][j].name.StartsWith(adv_color)) {
+					if(adv_color.Equals("White") && contPecas == qtdBrancas) {break;}
+					else if(adv_color.Equals("Pretas") && contPecas == qtdPretas) {break;}
+					else if(tab_aux[i][j] && tab_aux[i][j].name.StartsWith(adv_color)) {
+						contPecas++;
 						mov_aux = MovimentosPossiveis(tab_aux, tab_aux[i][j], new Vector2(i, j), false);
 						foreach (Vector2 ma in mov_aux) {
 							if((int)ma.x == (int)posRei.x && (int)ma.y == (int)posRei.y) {
@@ -661,7 +664,12 @@ public class BoardRules : MonoBehaviour {
 	}
 
 	public GameObject[][] AtualizaPosicoes(GameObject[][] tab, Vector2 posPeca, Vector2 posDestino, bool definitivo) {
-		if(definitivo && tab[(int)posDestino.x][(int)posDestino.y]) { 
+		if(definitivo && tab[(int)posDestino.x][(int)posDestino.y]) {
+			if(tab[(int)posDestino.x][(int)posDestino.y].name.StartsWith("White")) {
+				this.qtdBrancas--;
+			} else {
+				this.qtdPretas--;
+			}
 			Destroy(tab[(int)posDestino.x][(int)posDestino.y]);
 		}
 		GameObject peca = tab[(int)posPeca.x][(int)posPeca.y].gameObject;
@@ -831,7 +839,7 @@ public class BoardRules : MonoBehaviour {
 		return resultado;
 	}
 
-	private GameObject[][] copiar(GameObject[][] tab){
+	public GameObject[][] copiar(GameObject[][] tab){
 		GameObject[][] tab_aux = new GameObject[8][];
 		for(int i = 0; i < tab_aux.Length; i++) {
 			tab_aux[i] = new GameObject[8];
