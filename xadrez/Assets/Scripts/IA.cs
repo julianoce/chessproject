@@ -165,7 +165,7 @@ public class IA : MonoBehaviour {
 	}
 
 	//Essa Utility eh a modo facil.
-	public int UtilityFacil(GameObject[][]tab){
+	public int UtilityDificil(GameObject[][]tab){
 		int numPecasInimigo = br.NumPecasTime(tab, this.cor_adv);
 		int numPecas = br.NumPecasTime(tab, this.cor);
 		for(int i=0; i<tab.Length;i++){
@@ -212,7 +212,7 @@ public class IA : MonoBehaviour {
 
 
 
-	public int UtilityDificil(GameObject[][]tab){
+	public int UtilityFacil(GameObject[][]tab){
 	
 		int[,] black_pawn_matrix = new int[8,8]{
 			{ 0,  0,  0,  0,  0,  0,  0,  0},
