@@ -350,44 +350,47 @@ public class IA : MonoBehaviour {
 		for(int i=0; i<tab.Length;i++){
 			for(int j=0; j<tab.Length;j++){
 				if(tab[i][j]){
-					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("Queen")){
-						value_white += white_queen_matrix[i,j];
+					if(tab[i][j].name.StartsWith("White")) { // jogada do branco
+						if(tab[i][j].name.Contains("Queen")) {
+							value_white += white_queen_matrix[i,j];
+						}
+						else if(tab[i][j].name.Contains("Rook")) {
+							value_white += white_rook_matrix[i,j];
+						}
+						else if(tab[i][j].name.Contains("Knight") || tab[i][j].name.Contains("Bishop")) {
+							value_white += white_knight_matrix[i,j];
+						}
+						else if(tab[i][j].name.Contains("Pawn")) {
+							value_white += white_pawn_matrix[i,j];
+						}
+						else if(tab[i][j].name.Contains("King")){
+							value_white += white_king_matrix_middle[i,j];
+						}
 					}
-					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("Queen")){
-						value_black+= black_queen_matrix[i,j];
-					}
-					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("Rook")){
-						value_white += white_rook_matrix[i,j];
-					}
-					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("Rook")){
-						value_black += black_rook_matrix[i,j];
-						
-					}
-
-					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("Knight") || tab[i][j].name.Contains("Bishop")){
-						value_white += white_knight_matrix[i,j];
-					}
-					if(tab[i][j].name.StartsWith(this.cor) && (tab[i][j].name.Contains("Knight") || tab[i][j].name.Contains("Bishop"))){
-						value_black += black_knight_matrix[i,j];						
-					}
-
-					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("Pawn")){
-						value_white += white_pawn_matrix[i,j];
-					}
-					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("Pawn")){
-						value_black += black_pawn_matrix[i,j];
-					}
-
-					if(tab[i][j].name.StartsWith(this.cor_adv) && tab[i][j].name.Contains("King")){
-						value_white += white_king_matrix_middle[i,j];
-					}
-					if(tab[i][j].name.StartsWith(this.cor) && tab[i][j].name.Contains("King")){
-						value_black += black_king_matrix_middle[i,j];
+					else { // jogada do preto
+						if(tab[i][j].name.Contains("Queen")) {
+							value_black += black_queen_matrix[i,j];
+						}
+						else if(tab[i][j].name.Contains("Rook")) {
+							value_black += black_rook_matrix[i,j];
+						}
+						else if (tab[i][j].name.Contains("Knight") || tab[i][j].name.Contains("Bishop")) {
+							value_black += black_knight_matrix[i,j];
+						}
+						else if (tab[i][j].name.Contains("Pawn")) {
+							value_black += black_pawn_matrix[i,j];
+						}
+						else if (tab[i][j].name.Contains("King")){
+							value_black += black_king_matrix_middle[i,j];
+						}
 					}
 				}
 			}
 		}
-		return value_white - value_black;
 
+		if(this.cor_adv == "Black")
+			return value_white - value_black;
+
+		return value_black - value_white;
 	}
 }
